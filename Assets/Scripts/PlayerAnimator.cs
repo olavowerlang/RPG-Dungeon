@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerAnimator : MonoBehaviour
 {
-    private static readonly int IsWalking           = Animator.StringToHash("isWalking");
+    private static readonly int IsWalking = Animator.StringToHash("isWalking");
     private static readonly int LightAttackTrigger1 = Animator.StringToHash("LightAttackTrigger1");
     private static readonly int LightAttackTrigger2 = Animator.StringToHash("LightAttackTrigger2");
     private static readonly int LightAttackTrigger3 = Animator.StringToHash("LightAttackTrigger3");
@@ -19,7 +19,7 @@ public class PlayerAnimator : MonoBehaviour
 
     private void Awake()
     {
-        _animator       = GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 

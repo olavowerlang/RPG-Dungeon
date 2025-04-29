@@ -9,12 +9,14 @@ public class PlayerInput : MonoBehaviour
     
     private PlayerInputActions _playerInputActions;
     
+    private PlayerController _playerController;
+    
     [SerializeField] private PlayerCombat playerCombat;
 
     private void Awake()
     {
         _playerInputActions = new PlayerInputActions();
-
+        _playerController = GetComponent<PlayerController>();
     }
     
     private void OnEnable()
@@ -22,11 +24,15 @@ public class PlayerInput : MonoBehaviour
         _playerInputActions.Player.Enable();
         
         _playerInputActions.Player.LightAttack.performed += OnLightAttack;
+
+        _playerInputActions.Player.Dash.performed += OnDash;
     }
 
     private void OnDisable()
     {
         _playerInputActions.Player.LightAttack.performed -= OnLightAttack;
+        
+        _playerInputActions.Player.Dash.performed -= OnDash;
         
         _playerInputActions.Player.Disable();
     }
@@ -44,5 +50,9 @@ public class PlayerInput : MonoBehaviour
     {
         playerCombat.LightAttack();
     }
-    
+
+    private void OnDash(InputAction.CallbackContext context)
+    {
+        _playerController.Dash();
+    }
 }

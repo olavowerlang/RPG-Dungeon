@@ -63,4 +63,9 @@ public class PlayerController : MonoBehaviour
         direction = direction.normalized;
         _impulseVelocity += direction * _attackPushForce;
     }
+    
+    public void Dash()
+    {
+        _impulseVelocity += LastMovementDirection * 30f;
+    }
 }
