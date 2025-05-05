@@ -15,6 +15,9 @@ public class PlayerAnimator : MonoBehaviour
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
 
+    [SerializeField] private Transform playerVisual;
+    [SerializeField] private Collider2D[] hitboxes;
+    
     [SerializeField] private PlayerController playerController;
 
     private void Awake()
@@ -32,7 +35,15 @@ public class PlayerAnimator : MonoBehaviour
     private void DefineSpriteDirection()
     {
         if (playerController.InputDirection.x != 0)
-            _spriteRenderer.flipX = playerController.InputDirection.x < 0;
+        {
+            float dirX = playerController.LastMovementDirection.x;
+
+            bool faceLeft = dirX < 0;
+            
+            Vector3 scale = playerVisual.localScale;
+            scale.x = faceLeft ? -2f : 2f;
+            playerVisual.localScale = scale;
+        }
     }
 
     /* ------------------ COMBO ------------------ */
@@ -61,6 +72,17 @@ public class PlayerAnimator : MonoBehaviour
     }
 
     /* ---------- Animation Events ---------- */
+
+
+    public void EnableHitbox(int i)
+    {
+        hitboxes[i].enabled = true;
+    }
+
+    public void DisableHitbox(int i)
+    {
+        hitboxes[i].enabled = false;
+    }
 
     // Janela para emendar golpe 2
     public void LightAttack2Window() => _lightAttackDone = true;
