@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8912322760274998256}
   - component: {fileID: 969039738776731364}
   - component: {fileID: 3179900156674083240}
+  - component: {fileID: 5681555308861502321}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -76,8 +77,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_LinearDrag: 10
+  m_AngularDrag: 10
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -89,7 +90,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!70 &969039738776731364
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -138,6 +139,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAnimator: {fileID: 6476758847589735046}
+--- !u!114 &5681555308861502321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 126661216880809921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03d5a615c2021034bb42b84a79990b55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &329729490386019667
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,7 +318,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: -1458547266, guid: d64fdee322d99594386840d1d5369625, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -350,8 +363,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a4cc1199f451a8488149b1441a07121, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerVisual: {fileID: 0}
-  hitboxes: []
+  playerVisual: {fileID: 8461573484882669129}
+  hitboxes:
+  - {fileID: 8031406336440244978}
+  - {fileID: 329729490386019667}
+  - {fileID: 7518399919431126976}
   playerController: {fileID: 2909277444362362750}
 --- !u!1 &7518399919431126976
 GameObject:
@@ -454,7 +470,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3634629600198199263
 Transform:
   m_ObjectHideFlags: 0

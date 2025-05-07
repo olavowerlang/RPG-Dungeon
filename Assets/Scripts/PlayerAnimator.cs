@@ -16,7 +16,7 @@ public class PlayerAnimator : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
 
     [SerializeField] private Transform playerVisual;
-    [SerializeField] private Collider2D[] hitboxes;
+    [SerializeField] private GameObject[] hitboxes;
     
     [SerializeField] private PlayerController playerController;
 
@@ -76,12 +76,12 @@ public class PlayerAnimator : MonoBehaviour
 
     public void EnableHitbox(int i)
     {
-        hitboxes[i].enabled = true;
+        hitboxes[i].SetActive(true);
     }
 
     public void DisableHitbox(int i)
     {
-        hitboxes[i].enabled = false;
+        hitboxes[i].SetActive(false);
     }
 
     // Janela para emendar golpe 2
