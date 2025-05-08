@@ -5,6 +5,8 @@ public class SkeletonFighter : Enemy
     private enum State { Guard, Attack, Cooldown }
     private State _state = State.Guard;
 
+    private bool _isWalking;
+    
     [Header("Guard")]
     [SerializeField] private float guardRadius = 2.5f;
     [SerializeField] private float guardSpeed  = 1.6f;
@@ -18,6 +20,8 @@ public class SkeletonFighter : Enemy
     [Header("Cooldown")]
     [SerializeField] private float cooldownTime  = 0.9f;
 
+    private EnemyAnimator _enemyAnim;
+
     // ── Internos ──
     private float _timer;      
     private float _atkTimer;   
@@ -26,7 +30,7 @@ public class SkeletonFighter : Enemy
 
     protected override void Awake()
     {
-
+        _enemyAnim = GetComponentInChildren<EnemyAnimator>();
         _rb = GetComponent<Rigidbody2D>();
         _player = GameObject.FindWithTag("Player").transform;
         
@@ -38,6 +42,8 @@ public class SkeletonFighter : Enemy
 
     private void FixedUpdate()
     {
+         _isWalking = _rb.velocity != Vector2.zero;
+        
         Vector2 toPlayer = (Vector2)_player.position - (Vector2)transform.position;
 
         switch (_state)
@@ -91,12 +97,19 @@ public class SkeletonFighter : Enemy
     {
         _state = State.Attack;
         _atkTimer = attackDuration;
+        _enemyAnim.PlaySfAttack();
         swordHitbox.SetActive(true);
+        
     }
 
     private void EnterGuard()
     {
         _state = State.Guard;
         _timer = Random.Range(guardTime.x, guardTime.y);
+    }
+    
+    public bool IsWalking()
+    {
+        return _isWalking;
     }
 }
