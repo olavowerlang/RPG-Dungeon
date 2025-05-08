@@ -25,13 +25,13 @@ public class SkeletonFighter : Enemy
     // ── Internos ──
     private float _timer;      
     private float _atkTimer;   
-    private Rigidbody2D _rb;
+    public Rigidbody2D _SfRb {get ; private set;}
     private Transform _player;
 
     protected override void Awake()
     {
         _enemyAnim = GetComponentInChildren<EnemyAnimator>();
-        _rb = GetComponent<Rigidbody2D>();
+        _SfRb = GetComponent<Rigidbody2D>();
         _player = GameObject.FindWithTag("Player").transform;
         
         swordHitbox.SetActive(false);
@@ -42,7 +42,7 @@ public class SkeletonFighter : Enemy
 
     private void FixedUpdate()
     {
-         _isWalking = _rb.velocity != Vector2.zero;
+         _isWalking = _SfRb.velocity != Vector2.zero;
         
         Vector2 toPlayer = (Vector2)_player.position - (Vector2)transform.position;
 
@@ -52,11 +52,11 @@ public class SkeletonFighter : Enemy
             case State.Guard:
                 // aproxima ou orbita
                 if (toPlayer.sqrMagnitude > guardRadius * guardRadius)
-                    _rb.velocity = toPlayer.normalized * guardSpeed;
+                    _SfRb.velocity = toPlayer.normalized * guardSpeed;
                 else
                 {
                     Vector2 tangent = new Vector2(-toPlayer.y, toPlayer.x).normalized;
-                    _rb.velocity = tangent * guardSpeed;
+                    _SfRb.velocity = tangent * guardSpeed;
                 }
 
                 // entra em Attack se estiver no alcance ou o timer zerar
@@ -67,7 +67,7 @@ public class SkeletonFighter : Enemy
 
             // ── ATTACK ──
             case State.Attack:
-                _rb.velocity = Vector2.zero;
+                _SfRb.velocity = Vector2.zero;
                 _atkTimer -= Time.fixedDeltaTime;
                 if (_atkTimer <= 0f)
                 {
@@ -79,7 +79,7 @@ public class SkeletonFighter : Enemy
 
             // ── COOLDOWN ──
             case State.Cooldown:
-                _rb.velocity = Vector2.zero;
+                _SfRb.velocity = Vector2.zero;
                 _timer -= Time.fixedDeltaTime;
                 if (_timer <= 0f)
                 {

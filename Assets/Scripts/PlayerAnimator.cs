@@ -45,7 +45,7 @@ public class PlayerAnimator : MonoBehaviour
             playerVisual.localScale = scale;
         }
     }
-
+  
     /* ------------------ COMBO ------------------ */
 
     public void TriggerLightAttack()
