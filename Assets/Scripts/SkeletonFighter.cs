@@ -1,115 +1,165 @@
 using UnityEngine;
 
-public class SkeletonFighter : Enemy
+[RequireComponent(typeof(Rigidbody2D))]
+public class SkeletonFighter : MonoBehaviour
 {
-    private enum State { Guard, Attack, Cooldown }
-    private State _state = State.Guard;
+    public enum S { Approach, Orbit, DashPrep, DashMove, Hit, Cooldown }
+    S _state = S.Approach;
 
-    private bool _isWalking;
-    
-    [Header("Guard")]
-    [SerializeField] private float guardRadius = 2.5f;
-    [SerializeField] private float guardSpeed  = 1.6f;
-    [SerializeField] private Vector2 guardTime = new Vector2(1.5f, 3f);
+    [Header("Distances")]
+    [SerializeField] float orbitRadius  = 3.0f;
+    [SerializeField] float attackRange  = 1.2f;
 
-    [Header("Attack")]
-    [SerializeField] private float attackRange = 1.2f;
-    [SerializeField] private float attackDuration = 0.25f;
-    [SerializeField] private GameObject swordHitbox; 
+    [Header("Times")]
+    [SerializeField] Vector2 guardTimeRange = new (1.3f, 2.5f);
+    [SerializeField] float dashPrepTime = 0.35f;
+    [SerializeField] float cooldownTime = 0.7f;
 
-    [Header("Cooldown")]
-    [SerializeField] private float cooldownTime  = 0.9f;
+    [Header("Speed")]
+    [SerializeField] float approachSpeed = 1.4f;
+    [SerializeField] float orbitSpeed    = 1.2f;
+    [SerializeField] float dashSpeed     = 2.2f;
 
-    private EnemyAnimator _enemyAnim;
+    [Header("Refs")]
+    [SerializeField] GameObject swordHitbox;
+    [SerializeField] EnemyAnimator enemyAnim;
+    [SerializeField] Transform sfVisual;
 
-    // ── Internos ──
-    private float _timer;      
-    private float _atkTimer;   
-    public Rigidbody2D _SfRb {get ; private set;}
-    private Transform _player;
+    public Rigidbody2D Rb { get; private set; }
+    Transform player;
+    Vector2 dashTarget;
+    float _timer, _guardTimer;
 
-    protected override void Awake()
+    public bool IsWalking => Rb.velocity != Vector2.zero;
+
+    void Awake()
     {
-        _enemyAnim = GetComponentInChildren<EnemyAnimator>();
-        _SfRb = GetComponent<Rigidbody2D>();
-        _player = GameObject.FindWithTag("Player").transform;
-        
+        Rb     = GetComponent<Rigidbody2D>();
+        player = GameObject.FindWithTag("Player").transform;
         swordHitbox.SetActive(false);
-        
-        // prepara o primeiro Guard
-        _timer  = Random.Range(guardTime.x, guardTime.y);
+        ResetGuardTimer();
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
-         _isWalking = _SfRb.velocity != Vector2.zero;
-        
-        Vector2 toPlayer = (Vector2)_player.position - (Vector2)transform.position;
+        Vector2 toPlayer = player.position - transform.position;
+        float dist = toPlayer.magnitude;
 
         switch (_state)
         {
-            // ── GUARD ──
-            case State.Guard:
-                // aproxima ou orbita
-                if (toPlayer.sqrMagnitude > guardRadius * guardRadius)
-                    _SfRb.velocity = toPlayer.normalized * guardSpeed;
+            case S.Approach:
+                if (dist > orbitRadius)
+                    Rb.velocity = toPlayer.normalized * approachSpeed;
                 else
-                {
-                    Vector2 tangent = new Vector2(-toPlayer.y, toPlayer.x).normalized;
-                    _SfRb.velocity = tangent * guardSpeed;
-                }
-
-                // entra em Attack se estiver no alcance ou o timer zerar
-                _timer -= Time.fixedDeltaTime;
-                if (toPlayer.sqrMagnitude <= attackRange * attackRange || _timer <= 0f)
-                    StartAttack();
+                    EnterOrbit();
                 break;
 
-            // ── ATTACK ──
-            case State.Attack:
-                _SfRb.velocity = Vector2.zero;
-                _atkTimer -= Time.fixedDeltaTime;
-                if (_atkTimer <= 0f)
+            case S.Orbit:
+                Rb.velocity = new Vector2(-toPlayer.y, toPlayer.x).normalized * orbitSpeed;
+                _guardTimer -= Time.fixedDeltaTime;
+                if (dist <= attackRange || _guardTimer <= 0f)
+                    EnterDashPrep();
+                break;
+
+            case S.DashPrep:
+                Rb.velocity = Vector2.zero;
+                _timer     -= Time.fixedDeltaTime;
+                if (_timer <= 0f) EnterDashMove();
+                break;
+
+            case S.DashMove:
                 {
-                    swordHitbox.SetActive(false);
-                    _state = State.Cooldown;
-                    _timer = cooldownTime;
+                    // move em direção ao ponto congelado
+                    Vector2 toTarget  = dashTarget - (Vector2)transform.position;
+                    Vector2 movement  = toTarget.normalized * dashSpeed;
+                    Vector2 futurePos = (Vector2)transform.position + movement * Time.fixedDeltaTime;
+                    
+                    if (Vector2.Dot(toTarget, dashTarget - futurePos) <= 0f)
+                    {
+                        EnterHit();
+                    }
+                    Rb.velocity = movement;
                 }
                 break;
 
-            // ── COOLDOWN ──
-            case State.Cooldown:
-                _SfRb.velocity = Vector2.zero;
-                _timer -= Time.fixedDeltaTime;
+            case S.Hit:
+                // vazio: espera AnimationEvent chamar OnAttackAnimationEnd()
+                break;
+
+            case S.Cooldown:
+                Rb.velocity = Vector2.zero;
+                _timer     -= Time.fixedDeltaTime;
                 if (_timer <= 0f)
                 {
-                    // se ainda em range, ataca de novo; senão, volta a Guard
-                    if (toPlayer.sqrMagnitude <= attackRange * attackRange)
-                        StartAttack();
+                    if (dist <= attackRange)
+                        EnterDashPrep();
+                    else if (dist > orbitRadius)
+                        EnterApproach();
                     else
-                        EnterGuard();
+                        EnterOrbit();
                 }
                 break;
+
         }
-    }
 
-    private void StartAttack()
-    {
-        _state = State.Attack;
-        _atkTimer = attackDuration;
-        _enemyAnim.PlaySfAttack();
-        swordHitbox.SetActive(true);
-        
-    }
-
-    private void EnterGuard()
-    {
-        _state = State.Guard;
-        _timer = Random.Range(guardTime.x, guardTime.y);
-    }
     
-    public bool IsWalking()
+    }
+
+    void EnterApproach()
     {
-        return _isWalking;
+        _state = S.Approach;
+    }
+
+    void EnterOrbit()
+    {
+        _state = S.Orbit;
+        ResetGuardTimer();
+    }
+
+    void EnterDashPrep()
+    {
+        _state = S.DashPrep;
+        _timer = dashPrepTime;
+    }
+
+    void EnterDashMove()
+    {
+        _state     = S.DashMove;
+        dashTarget = player.position;
+    }
+
+    void EnterHit()
+    {
+        _state = S.Hit;
+        swordHitbox.SetActive(true);
+        enemyAnim.PlaySfAttack();
+    }
+
+    void EnterCooldown()
+    {
+        _state = S.Cooldown;
+        _timer = cooldownTime;
+        swordHitbox.SetActive(false);
+    }
+
+    void ResetGuardTimer() =>
+        _guardTimer = Random.Range(guardTimeRange.x, guardTimeRange.y);
+
+    public void OnAttackAnimationEnd()
+    {
+        if (_state == S.Hit)
+            EnterCooldown();
+    
+    }
+
+    public void DefineSfSpriteDirection()
+    {
+        bool faceLeft;
+        
+            faceLeft = player.position.x < transform.position.x;
+
+        var sc = sfVisual.localScale;
+        sc.x = faceLeft ? -1.75f : 1.75f;
+        sfVisual.localScale = sc;
     }
 }
