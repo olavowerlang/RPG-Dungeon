@@ -6,6 +6,10 @@ public class SkeletonFighter : MonoBehaviour
     public enum S { Approach, Orbit, DashPrep, DashMove, Hit, Cooldown }
     S _state = S.Approach;
 
+    [Header("Dash Tracking")]
+    [Range(0f, 1f)]
+    [SerializeField] float dashTrackingFraction = 0.5f;
+
     [Header("Distances")]
     [SerializeField] float orbitRadius  = 3.0f;
     [SerializeField] float attackRange  = 1.2f;
@@ -29,6 +33,10 @@ public class SkeletonFighter : MonoBehaviour
     Transform player;
     Vector2 dashTarget;
     float _timer, _guardTimer;
+
+    float dashDuration;
+    float dashElapsed;
+    bool dashTargetLocked;
 
     public bool IsWalking => Rb.velocity != Vector2.zero;
 
@@ -68,19 +76,36 @@ public class SkeletonFighter : MonoBehaviour
                 break;
 
             case S.DashMove:
-                {
-                    // move em direção ao ponto congelado
-                    Vector2 toTarget  = dashTarget - (Vector2)transform.position;
-                    Vector2 movement  = toTarget.normalized * dashSpeed;
-                    Vector2 futurePos = (Vector2)transform.position + movement * Time.fixedDeltaTime;
-                    
-                    if (Vector2.Dot(toTarget, dashTarget - futurePos) <= 0f)
+                {                 
+                    Vector2 currentPos = (Vector2)transform.position;
+                    Vector2 playerPos = (Vector2)player.position;
+
+                    dashElapsed += Time.fixedDeltaTime;
+                    if (!dashTargetLocked)
                     {
-                        EnterHit();
+                        if (dashElapsed <= dashDuration * dashTrackingFraction)
+                        {                          
+                            dashTarget = playerPos;
+                        }
+                        else
+                        {
+                            Vector2 dir = (playerPos - currentPos).normalized;
+                            dashTargetLocked = true;
+                            dashTarget = playerPos - dir * attackRange;
+                        }
                     }
+
+                    Vector2 toTarget = dashTarget - currentPos;
+                    Vector2 movement = toTarget.normalized * dashSpeed;
+                    Vector2 futurePos = currentPos + movement * Time.fixedDeltaTime;
                     Rb.velocity = movement;
+
+                    if (Vector2.Dot(toTarget, dashTarget - futurePos) <= 0f)
+                        EnterHit();
                 }
                 break;
+
+
 
             case S.Hit:
                 // vazio: espera AnimationEvent chamar OnAttackAnimationEnd()
@@ -124,7 +149,13 @@ public class SkeletonFighter : MonoBehaviour
 
     void EnterDashMove()
     {
-        _state     = S.DashMove;
+        _state = S.DashMove;
+
+        float initialDist = Vector2.Distance(transform.position, player.position);
+        dashDuration = initialDist / dashSpeed;
+        dashElapsed = 0f;
+        dashTargetLocked = false;
+
         dashTarget = player.position;
     }
 

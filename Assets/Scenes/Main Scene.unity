@@ -400,7 +400,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.044, z: 0}
-  m_LocalScale: {x: 43.197212, y: 30.615067, z: 0}
+  m_LocalScale: {x: 53.996513, y: 30.615067, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 914069944}
@@ -500,9 +500,41 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 969039738776731364, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: m_Size.x
+      value: 1.2361336
+      objectReference: {fileID: 0}
+    - target: {fileID: 969039738776731364, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: m_Size.y
+      value: 2.3199863
+      objectReference: {fileID: 0}
+    - target: {fileID: 969039738776731364, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.04110861
+      objectReference: {fileID: 0}
+    - target: {fileID: 969039738776731364, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.0901134
+      objectReference: {fileID: 0}
+    - target: {fileID: 8461573484882669129, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8461573484882669129, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.33
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8912322760274998256, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: m_Mass
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8912322760274998256, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: m_LinearDrag
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8912322760274998256, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: m_AngularDrag
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 9182031184127701325, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -510,7 +542,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9182031184127701325, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.96
+      value: -1.4
       objectReference: {fileID: 0}
     - target: {fileID: 9182031184127701325, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -672,6 +704,18 @@ PrefabInstance:
     - target: {fileID: 7643694029778453593, guid: 37d5d7c4736c1ab42b63e73f1273f76b, type: 3}
       propertyPath: m_Name
       value: Skeleton Fighter
+      objectReference: {fileID: 0}
+    - target: {fileID: 9120550385976642136, guid: 37d5d7c4736c1ab42b63e73f1273f76b, type: 3}
+      propertyPath: m_Mass
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 9120550385976642136, guid: 37d5d7c4736c1ab42b63e73f1273f76b, type: 3}
+      propertyPath: m_LinearDrag
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 9120550385976642136, guid: 37d5d7c4736c1ab42b63e73f1273f76b, type: 3}
+      propertyPath: m_AngularDrag
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 9120550385976642136, guid: 37d5d7c4736c1ab42b63e73f1273f76b, type: 3}
       propertyPath: m_Constraints
