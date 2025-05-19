@@ -13,8 +13,8 @@ public class SkeletonFighter : MonoBehaviour
     [SerializeField] private float dashTrackingFraction = 0.5f;
 
     [Header("Distances")]
-    [SerializeField] private float orbitRadius  = 3.0f;
-    [SerializeField] private float attackRange  = 1.2f;
+    [SerializeField] private float orbitRadius = 3.0f;
+    [SerializeField] private float attackRange = 1.2f;
 
     [Header("Times")]
     [SerializeField] private Vector2 guardTimeRange = new (1.3f, 2.5f);
@@ -23,11 +23,10 @@ public class SkeletonFighter : MonoBehaviour
 
     [Header("Speed")]
     [SerializeField] private float approachSpeed = 1.4f;
-    [SerializeField] private float orbitSpeed    = 1.2f;
-    [SerializeField] private float dashSpeed     = 2.2f;
+    [SerializeField] private float orbitSpeed = 1.2f;
+    [SerializeField] private float dashSpeed = 2.2f;
 
     [Header("Refs")]
-    [SerializeField] private GameObject swordHitbox;
     [SerializeField] private EnemyAnimator enemyAnim;
     [SerializeField] private Transform sfVisual;
 
@@ -46,7 +45,6 @@ public class SkeletonFighter : MonoBehaviour
     {
         Rb = GetComponent<Rigidbody2D>();
         _player = GameObject.FindWithTag("Player").transform;
-        swordHitbox.SetActive(false);
         ResetGuardTimer();
     }
 
@@ -73,7 +71,7 @@ public class SkeletonFighter : MonoBehaviour
 
             case S.DashPrep:
                 Rb.velocity = Vector2.zero;
-                _timer     -= Time.fixedDeltaTime;
+                _timer -= Time.fixedDeltaTime;
                 if (_timer <= 0f) EnterDashMove();
                 break;
 
@@ -115,11 +113,11 @@ public class SkeletonFighter : MonoBehaviour
 
             case S.Cooldown:
                 Rb.velocity = Vector2.zero;
-                _timer     -= Time.fixedDeltaTime;
+                _timer -= Time.fixedDeltaTime;
                 if (_timer <= 0f)
                 {
                     if (dist <= attackRange)
-                        EnterDashPrep();
+                        EnterHit();
                     else if (dist > orbitRadius)
                         EnterApproach();
                     else
@@ -164,7 +162,6 @@ public class SkeletonFighter : MonoBehaviour
     private void EnterHit()
     {
         _state = S.Hit;
-        swordHitbox.SetActive(true);
         enemyAnim.PlaySfAttack();
     }
 
@@ -172,7 +169,6 @@ public class SkeletonFighter : MonoBehaviour
     {
         _state = S.Cooldown;
         _timer = cooldownTime;
-        swordHitbox.SetActive(false);
     }
 
     private void ResetGuardTimer() =>
@@ -182,7 +178,6 @@ public class SkeletonFighter : MonoBehaviour
     {
         if (_state == S.Hit)
             EnterCooldown();
-    
     }
 
     public void DefineSfSpriteDirection()

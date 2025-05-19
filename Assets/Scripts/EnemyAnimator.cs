@@ -7,6 +7,7 @@ public class EnemyAnimator : MonoBehaviour
 
     private Animator _anim;
     private SkeletonFighter _skeletonFighter;
+    [SerializeField] private GameObject swordHitbox;
 
     void Awake()
     {
@@ -21,6 +22,17 @@ public class EnemyAnimator : MonoBehaviour
         /* Delega o flip para o próprio SkeletonFighter */
         _skeletonFighter.DefineSfSpriteDirection();
     }
+
+    public void EnableSwordHitbox()
+    {
+        swordHitbox.SetActive(true);
+    }
+
+    public void DisableSwordHitbox()
+    {
+        swordHitbox.SetActive(false);
+    }
+
 
     /* Trigger de ataque disparado pela FSM */
     public void PlaySfAttack() => _anim.SetTrigger(SfAttackTrigger);

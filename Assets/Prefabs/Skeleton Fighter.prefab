@@ -110,7 +110,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5790837967793881655}
-  - component: {fileID: 2489885665946209046}
   - component: {fileID: 1689101927490209544}
   - component: {fileID: 9120550385976642136}
   - component: {fileID: 2635936647250402135}
@@ -137,19 +136,6 @@ Transform:
   - {fileID: 2331855477847601003}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2489885665946209046
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7643694029778453593}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c0806e60a2e78845aac919dfb299398, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 3
 --- !u!70 &1689101927490209544
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -225,8 +211,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dashTrackingFraction: 0.5
-  orbitRadius: 15
-  attackRange: 1
+  orbitRadius: 10
+  attackRange: 2
   guardTimeRange: {x: 3, y: 6}
   dashPrepTime: 0.35
   cooldownTime: 1
