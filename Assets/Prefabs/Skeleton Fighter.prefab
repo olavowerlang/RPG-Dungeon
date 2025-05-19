@@ -61,7 +61,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -182,8 +182,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.019919604, y: 0.28965747}
-  m_Size: {x: 0.9055025, y: 1.6344388}
+  m_Offset: {x: 0, y: 0.1020906}
+  m_Size: {x: 1.2358081, y: 2.1479268}
   m_Direction: 0
 --- !u!50 &9120550385976642136
 Rigidbody2D:
@@ -197,9 +197,9 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 10
-  m_AngularDrag: 10
+  m_Mass: 25
+  m_LinearDrag: 20
+  m_AngularDrag: 20
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -210,7 +210,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &2635936647250402135
 MonoBehaviour:
@@ -225,17 +225,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dashTrackingFraction: 0.5
-  orbitRadius: 3
-  attackRange: 1.2
-  guardTimeRange: {x: 1.3, y: 2.5}
+  orbitRadius: 15
+  attackRange: 1
+  guardTimeRange: {x: 3, y: 6}
   dashPrepTime: 0.35
-  cooldownTime: 0.9
-  approachSpeed: 1.4
-  orbitSpeed: 1.2
-  dashSpeed: 2.2
-  swordHitbox: {fileID: 0}
-  enemyAnim: {fileID: 0}
-  sfVisual: {fileID: 0}
+  cooldownTime: 1
+  approachSpeed: 10
+  orbitSpeed: 10
+  dashSpeed: 20
+  swordHitbox: {fileID: 550430463959541312}
+  enemyAnim: {fileID: 2888495946629483239}
+  sfVisual: {fileID: 2331855477847601003}
 --- !u!1 &9062907655124595626
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,6 +247,7 @@ GameObject:
   - component: {fileID: 2331855477847601003}
   - component: {fileID: 172044002124794142}
   - component: {fileID: 3876060168609319023}
+  - component: {fileID: 2888495946629483239}
   m_Layer: 0
   m_Name: SkeletonFVisual
   m_TagString: Untagged
@@ -263,8 +264,8 @@ Transform:
   m_GameObject: {fileID: 9062907655124595626}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.07, y: 0.17, z: 0.11767846}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0.11767846}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1079488665601192057}
@@ -343,3 +344,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2888495946629483239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9062907655124595626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1579c60b70bebc6469dfdcd6d485e091, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
