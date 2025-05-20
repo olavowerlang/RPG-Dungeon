@@ -7,7 +7,7 @@ public class PlayerAnimator : MonoBehaviour
     private static readonly int IsWalking = Animator.StringToHash("isWalking");
     private static readonly int LightAttackTrigger1 = Animator.StringToHash("LightAttackTrigger1");
     private static readonly int LightAttackTrigger2 = Animator.StringToHash("LightAttackTrigger2");
-    private static readonly int LightAttackTrigger3 = Animator.StringToHash("LightAttackTrigger3");
+    //private static readonly int LightAttackTrigger3 = Animator.StringToHash("LightAttackTrigger3");
 
     private bool _lightAttackDone  = false; 
     private bool _lightAttack2Done = false; 
@@ -61,14 +61,14 @@ public class PlayerAnimator : MonoBehaviour
             _animator.SetTrigger(LightAttackTrigger2);
         }
        
-        else if (_lightAttackDone && _lightAttack2Done)
-        {
-            _animator.SetTrigger(LightAttackTrigger3);
-
-            // Reset imediato – impede retrigger
-            _lightAttackDone  = false;
-            _lightAttack2Done = false;
-        }
+        // else if (_lightAttackDone && _lightAttack2Done)
+        // {
+        //     _animator.SetTrigger(LightAttackTrigger3);
+        //
+        //     // Reset imediato – impede retrigger
+        //     _lightAttackDone  = false;
+        //     _lightAttack2Done = false;
+        // }
     }
 
     /* ---------- Animation Events ---------- */
@@ -101,13 +101,13 @@ public class PlayerAnimator : MonoBehaviour
         _lightAttack2Done = false; // obrigatório
     }
 
-    // Janela para emendar golpe 3
-    public void LightAttack3Window() => _lightAttack2Done = true;
-
-    // Golpe 3 terminou
-    public void LightAttack3Ended()
-    {
-        _lightAttackDone  = false;
-        _lightAttack2Done = false;
-    }
+    // // Janela para emendar golpe 3
+    // public void LightAttack3Window() => _lightAttack2Done = true;
+    //
+    // // Golpe 3 terminou
+    // public void LightAttack3Ended()
+    // {
+    //     _lightAttackDone  = false;
+    //     _lightAttack2Done = false;
+    // }
 }
