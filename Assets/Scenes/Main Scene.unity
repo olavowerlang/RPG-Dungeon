@@ -1065,6 +1065,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 126661216880809921, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 269910103720412481, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: hitLayers.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 329729490386019667, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2344077595519012848, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: healthImageList.Array.data[0]
       value: 
@@ -1085,6 +1097,18 @@ PrefabInstance:
       propertyPath: healthImageList.Array.data[4]
       value: 
       objectReference: {fileID: 1056138624}
+    - target: {fileID: 3621374817365952636, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684956290753258210, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: hitLayers.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 8031406336440244978, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 9182031184127701325, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.87
@@ -1138,6 +1162,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 550430463959541312, guid: 37d5d7c4736c1ab42b63e73f1273f76b, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2888495946629483239, guid: 37d5d7c4736c1ab42b63e73f1273f76b, type: 3}
       propertyPath: hitboxes.Array.size
       value: 1
@@ -1186,9 +1214,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6437679526539874532, guid: 37d5d7c4736c1ab42b63e73f1273f76b, type: 3}
+      propertyPath: hitLayers.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 7643694029778453593, guid: 37d5d7c4736c1ab42b63e73f1273f76b, type: 3}
       propertyPath: m_Name
       value: Skeleton Fighter
+      objectReference: {fileID: 0}
+    - target: {fileID: 7643694029778453593, guid: 37d5d7c4736c1ab42b63e73f1273f76b, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 9062907655124595626, guid: 37d5d7c4736c1ab42b63e73f1273f76b, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

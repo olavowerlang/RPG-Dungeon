@@ -1,11 +1,15 @@
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 public class DamageDealer : MonoBehaviour
 {
+    [Header("Configuração do Dano")]
     [SerializeField] private int damage = 1;
+    [Tooltip("Selecione apenas as layers que este hit-box deve atingir (ex.: Player)")]
+    [SerializeField] private LayerMask hitLayers;
 
-    private readonly HashSet<Health> _hitThisSwing = new();
+    private readonly HashSet<Health> _hitSet = new();
 
     private Collider2D _col;
 
@@ -16,7 +20,7 @@ public class DamageDealer : MonoBehaviour
     /* limpa ao ligar E ao desligar, não importa como o hit-box é controlado */
     public void BeginSwing()
     {
-        _hitThisSwing.Clear();
+        _hitSet.Clear();
         _col.enabled = true;
     }
     public void EndSwing()
@@ -28,17 +32,20 @@ public class DamageDealer : MonoBehaviour
     private void OnTriggerStay2D(Collider2D col)
     {
         // só primeira vez que vê esse Health no swing atual
-        if (!_hitThisSwing.Contains(col.GetComponentInParent<Health>()))
+        if (!_hitSet.Contains(col.GetComponentInParent<Health>()))
             TryHit(col);
     }
 
-    private void TryHit(Collider2D col)
+    private void TryHit(Collider2D other)
     {
-        var hp = col.GetComponentInParent<Health>();
-        if (hp == null) return;
+        int layer = other.gameObject.layer;
+        if ((hitLayers.value & (1 << layer)) == 0)
+            return;
 
-        // Add() devolve true apenas se ainda não estava no HashSet
-        if (_hitThisSwing.Add(hp))
+        if (!other.TryGetComponent<Health>(out var hp))
+            return;
+
+        if (_hitSet.Add(hp))
             hp.TakeDamage(damage);
     }
 }
