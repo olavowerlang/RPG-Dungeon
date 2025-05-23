@@ -7,8 +7,22 @@ public class DamageDealer : MonoBehaviour
 
     private readonly HashSet<Health> _hitThisSwing = new();
 
+    private Collider2D _col;
+
+    private void Awake()
+    {
+        _col = GetComponent<Collider2D>(); 
+    }
     /* limpa ao ligar E ao desligar, não importa como o hit-box é controlado */
-    private void OnEnable()  => _hitThisSwing.Clear();
+    public void BeginSwing()
+    {
+        _hitThisSwing.Clear();
+        _col.enabled = true;
+    }
+    public void EndSwing()
+    {
+        _col.enabled = false;
+    }
     private void OnTriggerEnter2D(Collider2D col) => TryHit(col);
 
     private void OnTriggerStay2D(Collider2D col)

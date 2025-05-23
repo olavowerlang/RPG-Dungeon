@@ -16,7 +16,7 @@ public class PlayerAnimator : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
 
     [SerializeField] private Transform playerVisual;
-    [SerializeField] private GameObject[] hitboxes;
+    private DamageDealer[] _hitboxes;
     
     [SerializeField] private PlayerController playerController;
 
@@ -24,6 +24,7 @@ public class PlayerAnimator : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _hitboxes = GetComponentsInChildren<DamageDealer>(true);
     }
 
     private void Update()
@@ -73,16 +74,8 @@ public class PlayerAnimator : MonoBehaviour
 
     /* ---------- Animation Events ---------- */
 
-
-    public void EnableHitbox(int i)
-    {
-        hitboxes[i].SetActive(true);
-    }
-
-    public void DisableHitbox(int i)
-    {
-        hitboxes[i].SetActive(false);
-    }
+    public void EnableHitbox(int i) => _hitboxes[i].BeginSwing();
+    public void DisableHitbox(int i) => _hitboxes[i].EndSwing();
 
     // Janela para emendar golpe 2
     public void LightAttack2Window() => _lightAttackDone = true;

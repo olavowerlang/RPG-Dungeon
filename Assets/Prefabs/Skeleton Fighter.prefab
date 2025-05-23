@@ -10,13 +10,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1079488665601192057}
   - component: {fileID: 8491352917505839124}
+  - component: {fileID: 6437679526539874532}
   m_Layer: 0
   m_Name: Hitbox Attack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1079488665601192057
 Transform:
   m_ObjectHideFlags: 0
@@ -39,7 +40,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 550430463959541312}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -101,6 +102,19 @@ PolygonCollider2D:
       - {x: 1.0045135, y: -0.42966303}
       - {x: 1.0336721, y: -0.32760856}
   m_UseDelaunayMesh: 0
+--- !u!114 &6437679526539874532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550430463959541312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1edcb23afe7c74fa1c2cb5fda99a32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
 --- !u!1 &7643694029778453593
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,6 +127,7 @@ GameObject:
   - component: {fileID: 1689101927490209544}
   - component: {fileID: 9120550385976642136}
   - component: {fileID: 2635936647250402135}
+  - component: {fileID: 1704261684058217405}
   m_Layer: 0
   m_Name: Skeleton Fighter
   m_TagString: Untagged
@@ -219,9 +234,22 @@ MonoBehaviour:
   approachSpeed: 10
   orbitSpeed: 10
   dashSpeed: 20
-  swordHitbox: {fileID: 550430463959541312}
   enemyAnim: {fileID: 2888495946629483239}
   sfVisual: {fileID: 2331855477847601003}
+--- !u!114 &1704261684058217405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7643694029778453593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f124d36075e77364ca5c5d3bf844acc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 3
+  currentHp: 0
 --- !u!1 &9062907655124595626
 GameObject:
   m_ObjectHideFlags: 0
@@ -342,3 +370,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1579c60b70bebc6469dfdcd6d485e091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitboxes: []
