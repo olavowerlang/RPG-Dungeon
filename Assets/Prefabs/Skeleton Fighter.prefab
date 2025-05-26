@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1079488665601192057}
   - component: {fileID: 8491352917505839124}
   - component: {fileID: 6437679526539874532}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hitbox Attack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,6 +115,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
+  hitLayers:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &7643694029778453593
 GameObject:
   m_ObjectHideFlags: 0
@@ -128,7 +131,7 @@ GameObject:
   - component: {fileID: 9120550385976642136}
   - component: {fileID: 2635936647250402135}
   - component: {fileID: 1704261684058217405}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Skeleton Fighter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,7 +265,7 @@ GameObject:
   - component: {fileID: 172044002124794142}
   - component: {fileID: 3876060168609319023}
   - component: {fileID: 2888495946629483239}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SkeletonFVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -370,4 +373,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1579c60b70bebc6469dfdcd6d485e091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitboxes: []
+  _hitboxes: []
