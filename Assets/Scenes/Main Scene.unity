@@ -1071,7 +1071,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35f79298f0c587b44a51b39e11bd7567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: {fileID: 0}
   skelFighter: {fileID: 7643694029778453593, guid: 37d5d7c4736c1ab42b63e73f1273f76b, type: 3}
 --- !u!4 &2030179601
 Transform:
@@ -1132,6 +1131,10 @@ PrefabInstance:
       propertyPath: healthImageList.Array.data[4]
       value: 
       objectReference: {fileID: 1056138624}
+    - target: {fileID: 2909277444362362750, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: speed
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 3621374817365952636, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: m_Layer
       value: 6

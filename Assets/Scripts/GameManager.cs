@@ -9,11 +9,12 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     
-    [SerializeField] private Health health;
-    
+    [SerializeField] GameObject skelFighter;
     private GameObject _skelFighterInstance;
-    
-    [SerializeField] private GameObject[] skelFightersActive;
+    //[SerializeField] private GameObject[] skelFightersActive;
+
+    private int _waveNumber = 0;
+    private bool _waveFinished = false;
     
    // [SerializeField] private GameObject skelFighter;
     
@@ -45,16 +46,25 @@ public class GameManager : MonoBehaviour
 
     private void SpawnSkelFighter()
     {
-        Vector3 spawnPos = new Vector3(
-            Random.Range(-25f, 25f),   // X
-            Random.Range(-13f, 13f),   // Y
-            0f);
-
-        foreach (var skelFighter in skelFightersActive )
-        {
-           _skelFighterInstance = Instantiate(skelFighter, spawnPos, Quaternion.identity);
-           
+        _waveNumber += 1;
+        
+        for (int i = 0; i < _waveNumber; i++)
+        { 
+            Vector3 spawnPos = new Vector3(
+                Random.Range(-25f, 25f),  
+                Random.Range(-13f, 13f),   
+                0f);
+            
+            _skelFighterInstance = Instantiate(skelFighter, spawnPos, Quaternion.identity);
         }
+
+        if (_waveFinished == false)
+        {   
+            _waveNumber += 1;
+            _waveFinished = true;
+        }
+        
+        _waveFinished = false;
         
        // if (_skelFighterInstance == null)
           //  _skelFighterInstance = Instantiate(skelFighter, spawnPos, Quaternion.identity);
