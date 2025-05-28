@@ -11,10 +11,10 @@ public class GameManager : MonoBehaviour
     
     [SerializeField] GameObject skelFighter;
     private GameObject _skelFighterInstance;
+    private readonly List<Health> _enemiesAlive = new();
     //[SerializeField] private GameObject[] skelFightersActive;
 
-    private int _waveNumber = 0;
-    private bool _waveFinished = false;
+    private int _waveNumber = 1;
     
    // [SerializeField] private GameObject skelFighter;
     
@@ -41,13 +41,16 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        SpawnSkelFighter();
+        if (_enemiesAlive.Count <= 0)
+        {
+            SpawnSkelFighter();
+            _waveNumber += 1;
+        }
+           
     }
 
     private void SpawnSkelFighter()
     {
-        _waveNumber += 1;
-        
         for (int i = 0; i < _waveNumber; i++)
         { 
             Vector3 spawnPos = new Vector3(
@@ -55,18 +58,17 @@ public class GameManager : MonoBehaviour
                 Random.Range(-13f, 13f),   
                 0f);
             
-            _skelFighterInstance = Instantiate(skelFighter, spawnPos, Quaternion.identity);
-        }
-
-        if (_waveFinished == false)
-        {   
-            _waveNumber += 1;
-            _waveFinished = true;
+            var enemyInstance = Instantiate(skelFighter, spawnPos, Quaternion.identity);
+            var health  = enemyInstance.GetComponent<Health>(); 
+            _enemiesAlive.Add(health);     
         }
         
-        _waveFinished = false;
-        
-       // if (_skelFighterInstance == null)
-          //  _skelFighterInstance = Instantiate(skelFighter, spawnPos, Quaternion.identity);
+        Debug.Log(_waveNumber);
+        Debug.Log(_enemiesAlive.Count);
+    }
+    
+    public void UnregisterEnemy(Health health)
+    {
+        _enemiesAlive.Remove(health);
     }
 }
