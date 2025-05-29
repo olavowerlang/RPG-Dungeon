@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         SpawnSkelFighter();
+        _waveNumber += 1;
     }
 
     private void Update()
@@ -63,8 +64,6 @@ public class GameManager : MonoBehaviour
             _enemiesAlive.Add(health);     
         }
         
-        Debug.Log(_waveNumber);
-        Debug.Log(_enemiesAlive.Count);
     }
     
     public void UnregisterEnemy(Health health)
