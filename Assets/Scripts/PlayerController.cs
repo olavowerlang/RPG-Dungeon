@@ -66,6 +66,6 @@ public class PlayerController : MonoBehaviour
     
     public void Dash()
     {
-        _impulseVelocity += LastMovementDirection * 30f;
+        _impulseVelocity += LastMovementDirection * 60f;
     }
 }

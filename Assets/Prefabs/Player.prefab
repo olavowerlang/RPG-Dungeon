@@ -16,7 +16,8 @@ GameObject:
   - component: {fileID: 3179900156674083240}
   - component: {fileID: 3939633173304301534}
   - component: {fileID: 2344077595519012848}
-  m_Layer: 0
+  - component: {fileID: 5674117071904424811}
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -51,7 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80ad931848c035a40b5d98b039c3a555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 12
+  speed: 15
 --- !u!114 &7401869741587208979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,6 +173,18 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+--- !u!114 &5674117071904424811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 126661216880809921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 914956618c6ce764c9773e4898c30711, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &329729490386019667
 GameObject:
   m_ObjectHideFlags: 0
@@ -183,7 +196,7 @@ GameObject:
   - component: {fileID: 5677874094316710814}
   - component: {fileID: 677421396012101017}
   - component: {fileID: 3684956290753258210}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Hitbox LightAttack2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -276,6 +289,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
+  hitLayers:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &3621374817365952636
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,7 +304,7 @@ GameObject:
   - component: {fileID: 8114433782510834575}
   - component: {fileID: 3649480597419035647}
   - component: {fileID: 6476758847589735046}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -352,7 +368,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 10
   m_Sprite: {fileID: -1458547266, guid: d64fdee322d99594386840d1d5369625, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -398,9 +414,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerVisual: {fileID: 8461573484882669129}
-  hitboxes:
-  - {fileID: 8031406336440244978}
-  - {fileID: 329729490386019667}
   playerController: {fileID: 2909277444362362750}
 --- !u!1 &8031406336440244978
 GameObject:
@@ -413,7 +426,7 @@ GameObject:
   - component: {fileID: 3634629600198199263}
   - component: {fileID: 5282336134589959178}
   - component: {fileID: 269910103720412481}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Hitbox LightAttack1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -514,3 +527,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
+  hitLayers:
+    serializedVersion: 2
+    m_Bits: 128
