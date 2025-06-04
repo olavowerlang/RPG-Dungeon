@@ -10,7 +10,7 @@ public class ClampOnEnter : MonoBehaviour
     {
         // Calcula limites internos da arena, igual ao GetOffscreenPosition, 
         // mas sem o extra de spawn (só pra entrada/saída):
-        var cam    = Camera.main;
+        var cam = Camera.main;
         float halfH = cam.orthographicSize;
         float halfW = halfH * cam.aspect;
 

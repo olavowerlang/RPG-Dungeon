@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 public class DamageDealer : MonoBehaviour
@@ -9,43 +8,43 @@ public class DamageDealer : MonoBehaviour
     [Tooltip("Selecione apenas as layers que este hit-box deve atingir (ex.: Player)")]
     [SerializeField] private LayerMask hitLayers;
 
-    private readonly HashSet<Health> _hitSet = new();
+    /* ← agora guarda a interface, não o Health */
+    private readonly HashSet<IDamageable> _hitSet = new();
 
     private Collider2D _col;
 
-    private void Awake()
-    {
-        _col = GetComponent<Collider2D>(); 
-    }
-    /* limpa ao ligar E ao desligar, não importa como o hit-box é controlado */
+    private void Awake() => _col = GetComponent<Collider2D>();
+
+    /* limpa a lista e liga o collider */
     public void BeginSwing()
     {
         _hitSet.Clear();
         _col.enabled = true;
     }
-    public void EndSwing()
-    {
-        _col.enabled = false;
-    }
+
+    public void EndSwing() => _col.enabled = false;
+
     private void OnTriggerEnter2D(Collider2D col) => TryHit(col);
 
     private void OnTriggerStay2D(Collider2D col)
     {
-        // só primeira vez que vê esse Health no swing atual
-        if (!_hitSet.Contains(col.GetComponentInParent<Health>()))
+        if (col.TryGetComponent<IDamageable>(out var dmg) && !_hitSet.Contains(dmg))
             TryHit(col);
     }
-
+    
     private void TryHit(Collider2D other)
     {
+
         int layer = other.gameObject.layer;
-        if ((hitLayers.value & (1 << layer)) == 0)
-            return;
+        if ((hitLayers.value & (1 << layer)) == 0) return;
 
-        if (!other.TryGetComponent<Health>(out var hp))
-            return;
+        if (!other.TryGetComponent<IDamageable>(out var target)) return;
 
-        if (_hitSet.Add(hp))
-            hp.TakeDamage(damage);
+        //garante um único hit por swing
+        if (!_hitSet.Add(target)) return;
+
+        //calcula direção p/ knockback e dispara TakeHit
+        Vector2 dir = (other.transform.position - transform.position).normalized;
+        target.TakeHit(damage, dir);
     }
 }
