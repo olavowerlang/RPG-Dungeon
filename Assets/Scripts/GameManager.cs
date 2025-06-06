@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
         {
             _spawningWave = true;
             StartCoroutine(SpawnWave());
+            _waveNumber += Random.Range(1,3);
         }
     }
 
@@ -54,8 +55,6 @@ public class GameManager : MonoBehaviour
             _enemiesAlive.Add(go.GetComponent<Health>());
             yield return new WaitForSeconds(0.1f);
         }
-        
-        _waveNumber += 1;
         _spawningWave = false;
     }
 

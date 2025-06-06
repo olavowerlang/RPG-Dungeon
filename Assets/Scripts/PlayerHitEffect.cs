@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Health), typeof(Rigidbody2D), typeof(SpriteRenderer))]
+[RequireComponent(typeof(Health), typeof(Rigidbody2D))]
 public class PlayerHitEffect : MonoBehaviour, IDamageable
 {
     [SerializeField] float knockForce = 3f;
@@ -16,7 +16,7 @@ public class PlayerHitEffect : MonoBehaviour, IDamageable
     void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _sr = GetComponent<SpriteRenderer>();
+        _sr = GetComponentInChildren<SpriteRenderer>();
         _hp = GetComponent<Health>();
     }
 
