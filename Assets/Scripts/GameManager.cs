@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
         {
             _spawningWave = true;
             StartCoroutine(SpawnWave());
-            _waveNumber += Random.Range(1,3);
+            _waveNumber += Random.Range(1,4);
         }
     }
 
