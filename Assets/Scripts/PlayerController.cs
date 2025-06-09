@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed = 10f;
-    private float _attackPushForce = 6f;
+    public float attackPushForce = 6f;
     
     private readonly float _impulseDecayRate = 10f;
 
@@ -58,10 +58,10 @@ public class PlayerController : MonoBehaviour
         return _isWalking;
     }
     
-    public void ApplyAttackPush(Vector2 direction)
+    public void ApplyAttackPush(Vector2 direction, float pushForce)
     {
         direction = direction.normalized;
-        _impulseVelocity += direction * _attackPushForce;
+        _impulseVelocity += direction * pushForce;
     }
     
     public void Dash()

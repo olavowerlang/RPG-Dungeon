@@ -12,12 +12,15 @@ public class PlayerHitEffect : MonoBehaviour, IDamageable
     private SpriteRenderer _sr;
     private Health _hp;
     private bool _invuln;
+    
+    private PlayerController _player;
 
     void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
         _sr = GetComponentInChildren<SpriteRenderer>();
         _hp = GetComponent<Health>();
+        _player = GetComponent<PlayerController>();
     }
 
     public void TakeHit(int dmg, Vector2 dir)
@@ -25,7 +28,7 @@ public class PlayerHitEffect : MonoBehaviour, IDamageable
         if (_invuln || _hp.IsDead) return;
 
         _rb.velocity = Vector2.zero;
-        _rb.AddForce(dir * knockForce, ForceMode2D.Impulse);
+        _player.ApplyAttackPush(dir, knockForce);
 
         _hp.TakeDamage(dmg);
         StartCoroutine(BlinkInvuln());

@@ -18,7 +18,7 @@ public class PlayerCombat : MonoBehaviour
         
         Vector2 attackDirection = _playerController.GetAttackDirection();
 
-        _playerController.ApplyAttackPush(attackDirection);
+        _playerController.ApplyAttackPush(attackDirection,_playerController.attackPushForce);
     }
    
 }
