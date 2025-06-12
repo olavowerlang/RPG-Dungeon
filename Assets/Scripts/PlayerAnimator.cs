@@ -7,37 +7,54 @@ public class PlayerAnimator : MonoBehaviour
     private static readonly int IsWalking = Animator.StringToHash("isWalking");
     private static readonly int LightAttackTrigger1 = Animator.StringToHash("LightAttackTrigger1");
     private static readonly int LightAttackTrigger2 = Animator.StringToHash("LightAttackTrigger2");
+
+    private static readonly int Die = Animator.StringToHash("Die");
     //private static readonly int LightAttackTrigger3 = Animator.StringToHash("LightAttackTrigger3");
 
     private bool _lightAttackDone  = false; 
     private bool _lightAttack2Done = false; 
+    private bool _deathTriggered;
 
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
 
     [SerializeField] private Transform playerVisual;
-    private DamageDealer[] _hitboxes;
     
-    [SerializeField] private PlayerController playerController;
+    private DamageDealer[] _hitboxes;
+    private PlayerController _playerController;
+    private PlayerHitEffect _playerHitEffect;
+    private Health _health;
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _hitboxes = GetComponentsInChildren<DamageDealer>(true);
+        _health = GetComponentInParent<Health>();
+        _playerHitEffect= GetComponentInParent<PlayerHitEffect>();
+        _playerController = GetComponentInParent<PlayerController>();
     }
 
     private void Update()
     {
-        _animator.SetBool(IsWalking, playerController.IsWalking());
+        _animator.SetBool(IsWalking, _playerController.IsWalking());
         DefineSpriteDirection();
+        
+        if (_health.IsDead && !_deathTriggered)
+        {
+            _deathTriggered = true;   
+            _animator.SetTrigger(Die);
+            _playerHitEffect.enabled = false;
+            StartCoroutine(WaitForDeathAnim());
+        }
+        
     }
 
     private void DefineSpriteDirection()
     {
-        if (playerController.InputDirection.x != 0)
+        if (_playerController.InputDirection.x != 0)
         {
-            float dirX = playerController.LastMovementDirection.x;
+            float dirX = _playerController.LastMovementDirection.x;
 
             bool faceLeft = dirX < 0;
             
@@ -70,6 +87,18 @@ public class PlayerAnimator : MonoBehaviour
         //     _lightAttackDone  = false;
         //     _lightAttack2Done = false;
         // }
+    }
+    private IEnumerator WaitForDeathAnim()
+    {
+        // espera entrar na state "Player_Death"
+        yield return new WaitUntil(() =>
+            _animator.GetCurrentAnimatorStateInfo(0).IsName("Player_Death"));
+
+        // espera terminar (normalizedTime vai de 0-1)
+        yield return new WaitUntil(() =>
+            _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
+
+        gameObject.SetActive(false);
     }
 
     /* ---------- Animation Events ---------- */

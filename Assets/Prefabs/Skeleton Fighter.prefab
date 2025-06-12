@@ -418,3 +418,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hitboxes: []
+  skullFighter: {fileID: 7643694029778453593}

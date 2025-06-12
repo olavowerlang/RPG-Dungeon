@@ -4,23 +4,24 @@ using UnityEngine;
 [RequireComponent(typeof(Health), typeof(Rigidbody2D))]
 public class SkeletonHitEffect : MonoBehaviour, IDamageable
 {
-    [Header("Knock / Blink / Stun")]
-    [SerializeField] float knockForce       = 6f;
-    [SerializeField] float impulseDecayRate = 10f;
-    [SerializeField] float blinkDur         = 0.3f;
-    [SerializeField] float blinkFreq        = 0.05f;
-    [SerializeField] float stunTime         = 0.3f;
+    [Header("Knock / Blink / Stun")] [SerializeField]
+    private float knockForce = 6f;
 
-    Health           _hp;
-    SpriteRenderer   _sr;
-    SkeletonFighter  _ai;
-    EnemyAnimator    _enemyAnim;  
-    Animator         _anim; //tive que pegar o ANIM, talvez de pra puxar o takehit direto no enemyanimator?
-    Rigidbody2D      _rb;
+    [SerializeField] private float impulseDecayRate = 10f;
+    [SerializeField] private float blinkDur = 0.3f;
+    [SerializeField] private float blinkFreq = 0.05f;
+    [SerializeField] private float stunTime = 0.3f;
 
-    Vector2 _impulseVel;
+    private Health _hp;
+    private SpriteRenderer _sr;
+    private SkeletonFighter _ai;
+    private EnemyAnimator _enemyAnim;
+    private Animator _anim; //tive que pegar o ANIM, talvez de pra puxar o takehit direto no enemyanimator?
+    private Rigidbody2D _rb;
 
-    void Awake()
+    private Vector2 _impulseVel;
+
+    private void Awake()
     {
         _hp        = GetComponent<Health>();
         _sr        = GetComponentInChildren<SpriteRenderer>(true);
@@ -30,7 +31,7 @@ public class SkeletonHitEffect : MonoBehaviour, IDamageable
         _rb        = GetComponent<Rigidbody2D>();
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         if (_impulseVel != Vector2.zero)
         {
@@ -39,6 +40,13 @@ public class SkeletonHitEffect : MonoBehaviour, IDamageable
                                          Time.fixedDeltaTime * impulseDecayRate);
         }
     }
+    
+   // private void OnDisable()
+    //{
+    //    StopAllCoroutines();   // mata qualquer coroutine pendente
+     //   _sr.enabled = true;    // garante Sprite visível no fim// 
+   // }
+
 
     public void TakeHit(int dmg, Vector2 dir)
     {
@@ -46,12 +54,14 @@ public class SkeletonHitEffect : MonoBehaviour, IDamageable
 
         _impulseVel += dir.normalized * knockForce;
         _hp.TakeDamage(dmg);
+        
+        if (_hp.IsDead) return;
 
         StartCoroutine(Blink());
         StartCoroutine(Stun());
     }
 
-    IEnumerator Blink()
+    private IEnumerator Blink()
     {
         float t = 0;
         while (t < blinkDur)
@@ -63,14 +73,14 @@ public class SkeletonHitEffect : MonoBehaviour, IDamageable
         _sr.enabled = true;
     }
 
-    IEnumerator Stun()
+    private IEnumerator Stun()
     {
         _ai.enabled = false;               // trava IA
 
         /* --- congela animação em Idle --- */
         if (_anim)
         {
-            _anim.Play("Idle", 0, 0f);     // ajuste o nome se preciso
+            _anim.Play("SkeletonFighter_Idle", 0, 0f);     // ajuste o nome se preciso
             _anim.enabled = false;
         }
         if (_enemyAnim) _enemyAnim.enabled = false;

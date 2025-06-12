@@ -4,9 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(Health), typeof(Rigidbody2D))]
 public class PlayerHitEffect : MonoBehaviour, IDamageable
 {
-    [SerializeField] float knockForce = 3f;
-    [SerializeField] float invulnTime = 1f;
-    [SerializeField] float blinkFreq  = 0.06f;
+    [SerializeField] private float knockForce = 3f;
+    [SerializeField] private float invulnTime = 1f;
+    [SerializeField] private float blinkFreq = 0.06f;
 
     private Rigidbody2D _rb;
     private SpriteRenderer _sr;
@@ -15,12 +15,19 @@ public class PlayerHitEffect : MonoBehaviour, IDamageable
     
     private PlayerController _player;
 
-    void Awake()
+    private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
         _sr = GetComponentInChildren<SpriteRenderer>();
         _hp = GetComponent<Health>();
         _player = GetComponent<PlayerController>();
+    }
+    
+    private void OnDisable()
+    {
+        StopAllCoroutines();   // mata qualquer coroutine pendente
+        _sr.enabled = true;    // garante Sprite visível no fim
+        _invuln = false;       // reseta flag
     }
 
     public void TakeHit(int dmg, Vector2 dir)
@@ -34,7 +41,7 @@ public class PlayerHitEffect : MonoBehaviour, IDamageable
         StartCoroutine(BlinkInvuln());
     }
 
-    IEnumerator BlinkInvuln()
+    private IEnumerator BlinkInvuln()
     {
         _invuln = true;
         float t = 0;
