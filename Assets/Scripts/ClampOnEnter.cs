@@ -4,7 +4,7 @@ public class ClampOnEnter : MonoBehaviour
 {
     bool   _inArena = false;
     float  _minX, _maxX, _minY, _maxY;
-    const float Margin = 0.5f;
+    const float Margin = 0.75f;
 
     void Start()
     {
