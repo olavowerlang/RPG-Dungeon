@@ -180,6 +180,7 @@ public class SkeletonFighter : MonoBehaviour
             EnterCooldown();
     }
 
+    //Precisa ser modularizado
     public void DefineSfSpriteDirection()
     {
         var faceLeft = _player.position.x < transform.position.x;

@@ -2,7 +2,8 @@ using System.Collections;
 using UnityEngine;
 
 public class EnemyAnimator : MonoBehaviour
-{
+{//animator handling too much, not following separation of responsibility
+
     private static readonly int SfAttackTrigger = Animator.StringToHash("SFAttackTrigger");
     private static readonly int IsWalking = Animator.StringToHash("isWalking");
     private static readonly int Die = Animator.StringToHash("Die");
@@ -12,7 +13,8 @@ public class EnemyAnimator : MonoBehaviour
     private SkeletonFighter _skeletonFighter;
     private SkeletonHitEffect _skeletonHitEffect;
     private Health _health;
-    
+    private Rigidbody2D _rb;
+
     [SerializeField] private GameObject skullFighter;
 
     private bool _deathTriggered;
@@ -25,6 +27,8 @@ public class EnemyAnimator : MonoBehaviour
         _hitboxes = GetComponentsInChildren<DamageDealer>(true);
         _skeletonHitEffect = GetComponentInParent<SkeletonHitEffect>();
         _health = GetComponentInParent<Health>();
+        _rb = GetComponentInParent<Rigidbody2D>();
+
     }
 
     private void Update()
@@ -32,27 +36,27 @@ public class EnemyAnimator : MonoBehaviour
         _anim.SetBool(IsWalking, _skeletonFighter.IsWalking);
 
         /* Delega o flip para o próprio SkeletonFighter */
-        _skeletonFighter.DefineSfSpriteDirection();
+        if (!_deathTriggered)        
+            _skeletonFighter.DefineSfSpriteDirection();
 
         if (_health.IsDead && !_deathTriggered)
         {
             _deathTriggered = true;
-
+            _anim.applyRootMotion = false;
             _anim.SetTrigger(Die);
-
-            _skeletonHitEffect.enabled = false;
-            _skeletonFighter.enabled   = false;
-
-            // desliga o único collider raiz
+            _skeletonFighter.enabled = false;
             skullFighter.GetComponent<Collider2D>().enabled = false;
 
+            StartCoroutine(FreezeAfterDeath());
             StartCoroutine(WaitForEnemyDeathAnim());
         }
 
-       
+
     }
-    
+
     //por enquanto so funciona pro SkeletonFighter, precisa ser modularizado later on
+    /* ---------- NEEDS TO BE SEPARATADED FROM ANIM ---------- */
+
     private IEnumerator WaitForEnemyDeathAnim() 
     {
        
@@ -65,7 +69,22 @@ public class EnemyAnimator : MonoBehaviour
 
         Destroy(transform.root.gameObject);
     }
-    
+
+    private IEnumerator FreezeAfterDeath()
+    {
+        // 1) Deixa entrar o último impulso de física
+        yield return new WaitForFixedUpdate();
+        // 2) Dá um pequeno delay extra pra visibilizar melhor o knockback
+        yield return new WaitForSeconds(0.25f);
+
+        // 3) Desativa todos os colliders do inimigo pra não gerar mais repulsões
+        foreach (var col in transform.root.GetComponentsInChildren<Collider2D>())
+            col.enabled = false;
+
+        // 4) Desliga totalmente a simulação física
+        _rb.simulated = false;
+    }
+
     /* Trigger de ataque disparado pela FSM */
     public void PlaySfAttack() => _anim.SetTrigger(SfAttackTrigger);
     
