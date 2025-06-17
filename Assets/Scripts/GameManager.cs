@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
@@ -12,8 +13,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject skelFighter;
     private readonly List<Health> _enemiesAlive = new();
     
+    
     private int _waveNumber = 1;
-    private bool _spawningWave = false;
+    [FormerlySerializedAs("_spawningWave")] public bool spawningWave = false;
 
     private Camera _cam;
     
@@ -33,23 +35,24 @@ public class GameManager : MonoBehaviour
         _cam = Camera.main;
     }
 
-    private void Start()
-    {
-        _spawningWave = true;
-        StartCoroutine(SpawnWave());
-    }
-
     private void Update()
     {
-        if (!_spawningWave && _enemiesAlive.Count == 0)
+        if (!spawningWave && _enemiesAlive.Count == 0 && gameStarted)
         {
-            _spawningWave = true;
+            spawningWave = true;
             StartCoroutine(SpawnWave());
-            _waveNumber += Random.Range(1,4);
+            _waveNumber += Random.Range(1, 4);
         }
     }
 
-    IEnumerator SpawnWave()
+    public void StartGame()
+    {
+        gameStarted = true;
+        spawningWave = true;
+        StartCoroutine(nameof(SpawnWave));
+    }
+
+    public IEnumerator SpawnWave()
     {
         for (int i = 0; i < _waveNumber; i++)
         {
@@ -58,7 +61,8 @@ public class GameManager : MonoBehaviour
             _enemiesAlive.Add(skelFighterInstance.GetComponent<Health>());
             yield return new WaitForSeconds(0.1f);
         }
-        _spawningWave = false;
+        
+        spawningWave = false;
     }
 
     Vector2 GetOffscreenPosition(float margin = 2f)
