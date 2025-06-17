@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour
     private bool _spawningWave = false;
 
     private Camera _cam;
+    
+    public bool gameStarted = false;
+    
     private void Awake()
     {
         if (Instance != null)
@@ -51,8 +54,8 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < _waveNumber; i++)
         {
             Vector2 pos = GetOffscreenPosition();
-            var go = Instantiate(skelFighter, pos, Quaternion.identity);
-            _enemiesAlive.Add(go.GetComponent<Health>());
+            var skelFighterInstance = Instantiate(skelFighter, pos, Quaternion.identity);
+            _enemiesAlive.Add(skelFighterInstance.GetComponent<Health>());
             yield return new WaitForSeconds(0.1f);
         }
         _spawningWave = false;
