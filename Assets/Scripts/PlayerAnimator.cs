@@ -96,7 +96,7 @@ public class PlayerAnimator : MonoBehaviour
 
         // espera terminar (normalizedTime vai de 0-1)
         yield return new WaitUntil(() =>
-            _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
+            _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f);
 
         gameObject.SetActive(false);
     }

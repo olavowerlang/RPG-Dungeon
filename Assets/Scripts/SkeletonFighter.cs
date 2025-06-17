@@ -13,18 +13,17 @@ public class SkeletonFighter : MonoBehaviour
     [SerializeField] private float dashTrackingFraction = 0.5f;
 
     [Header("Distances")]
-    [SerializeField] private float orbitRadius = 3.0f;
-    [SerializeField] private float attackRange = 1.2f;
+    [SerializeField] private float orbitRadius = 10f;
+    [SerializeField] private float attackRange = 2f;
 
     [Header("Times")]
-    [SerializeField] private Vector2 guardTimeRange = new (1.3f, 2.5f);
+    [SerializeField] private Vector2 guardTimeRange = new (3f, 6f);
     [SerializeField] private float dashPrepTime = 0.35f;
     [SerializeField] private float cooldownTime = 0.7f;
 
-    [Header("Speed")]
-    [SerializeField] private float approachSpeed = 1.4f;
-    [SerializeField] private float orbitSpeed = 1.2f;
-    [SerializeField] private float dashSpeed = 2.2f;
+    [Header("Speed")] [SerializeField] private float approachSpeed;
+    [SerializeField] private float orbitSpeed;
+    [SerializeField] private float dashSpeed;
 
     [Header("Refs")]
     [SerializeField] private EnemyAnimator enemyAnim;
@@ -46,6 +45,13 @@ public class SkeletonFighter : MonoBehaviour
         Rb = GetComponent<Rigidbody2D>();
         _player = GameObject.FindWithTag("Player").transform;
         ResetGuardTimer();
+        
+        dashSpeed = Random.Range(18f, 25f);
+        orbitSpeed = Random.Range(8f, 15f); 
+        approachSpeed = Random.Range(8f, 15f);
+        orbitRadius = Random.Range(7f, 14f);
+        cooldownTime = Random.Range(0.3f, 1f);
+        
     }
 
     private void FixedUpdate()
