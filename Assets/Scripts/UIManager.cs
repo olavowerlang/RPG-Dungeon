@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -8,8 +9,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Image gameTitle;
     [SerializeField] private Button startGameButton;
     [SerializeField] private Button quitGameButton;
+    [SerializeField] private Button restartGameButton;
     [SerializeField] private GameObject healthImages;
-    
     
     private GameManager _gameManager;
   
@@ -20,15 +21,17 @@ public class UIManager : MonoBehaviour
 
     public void HideMainMenu()
     {
-        gameTitle.enabled = false;
-        startGameButton.enabled = false;
-        quitGameButton.enabled = false;
-        
-        startGameButton.image.enabled = false;
-        quitGameButton.image.enabled = false;
+        gameTitle.gameObject.SetActive(false);
+        startGameButton.gameObject.SetActive(false);
+        quitGameButton.gameObject.SetActive(false);
         
         healthImages.gameObject.SetActive(true);
 
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void QuitGame()

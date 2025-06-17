@@ -25,6 +25,8 @@ public class PlayerAnimator : MonoBehaviour
     private PlayerHitEffect _playerHitEffect;
     private Health _health;
 
+    public bool animationEnded;
+
     private void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -97,8 +99,10 @@ public class PlayerAnimator : MonoBehaviour
         // espera terminar (normalizedTime vai de 0-1)
         yield return new WaitUntil(() =>
             _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f);
-
+        
         gameObject.SetActive(false);
+        
+        animationEnded = true;
     }
 
     /* ---------- Animation Events ---------- */
