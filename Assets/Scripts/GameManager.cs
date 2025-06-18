@@ -30,9 +30,7 @@ public class GameManager : MonoBehaviour
         }
         
         Instance = this;
-        DontDestroyOnLoad(gameObject);
-            
-        _cam = Camera.main;
+
     }
 
     private void Update()
@@ -67,8 +65,9 @@ public class GameManager : MonoBehaviour
 
     Vector2 GetOffscreenPosition(float margin = 2f)
     {
-        float halfH = _cam.orthographicSize;    
-        float halfW = halfH * _cam.aspect;  
+        Camera cam = Camera.main;          // pega da cena atual
+        float halfH = cam.orthographicSize;
+        float halfW = halfH * cam.aspect;  
 
         int side = Random.Range(0, 4);
         switch (side)

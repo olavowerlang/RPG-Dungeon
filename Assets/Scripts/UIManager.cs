@@ -29,6 +29,11 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void ShowRestartButton()
+    {
+        restartGameButton.gameObject.SetActive(true);
+    }
+
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);

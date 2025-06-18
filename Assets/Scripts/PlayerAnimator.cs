@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerAnimator : MonoBehaviour
 {
@@ -25,7 +26,7 @@ public class PlayerAnimator : MonoBehaviour
     private PlayerHitEffect _playerHitEffect;
     private Health _health;
 
-    public bool animationEnded;
+    public UnityEvent onDeathAnimEnd;
 
     private void Awake()
     {
@@ -95,14 +96,21 @@ public class PlayerAnimator : MonoBehaviour
         // espera entrar na state "Player_Death"
         yield return new WaitUntil(() =>
             _animator.GetCurrentAnimatorStateInfo(0).IsName("Player_Death"));
+        
+        Rigidbody2D _rb = GetComponentInParent<Rigidbody2D>();
+        yield return new WaitForFixedUpdate();
+
+        _playerController.enabled = false;    // trava movimento
 
         // espera terminar (normalizedTime vai de 0-1)
         yield return new WaitUntil(() =>
             _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f);
         
-        gameObject.SetActive(false);
+        _rb.velocity = Vector2.zero;          // zera física
+        _animator.speed = 0f;                 // pausa Animator
         
-        animationEnded = true;
+        onDeathAnimEnd?.Invoke();
+        
     }
 
     /* ---------- Animation Events ---------- */

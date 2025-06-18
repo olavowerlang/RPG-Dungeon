@@ -4,7 +4,10 @@ public class ClampOnEnter : MonoBehaviour
 {
     bool   _inArena = false;
     float  _minX, _maxX, _minY, _maxY;
-    const float Margin = 0.75f;
+    const float MarginW = 0.75f;
+    const float MarginHDown = 1f;
+    const float MarginHUp = 1.25f;
+    
 
     void Start()
     {
@@ -14,10 +17,10 @@ public class ClampOnEnter : MonoBehaviour
         float halfH = cam.orthographicSize;
         float halfW = halfH * cam.aspect;
 
-        _minX = -halfW + Margin;
-        _maxX =  halfW - Margin;
-        _minY = -halfH + Margin;
-        _maxY =  halfH - Margin;
+        _minX = -halfW + MarginW;
+        _maxX =  halfW - MarginW;
+        _minY = -halfH + MarginHDown;
+        _maxY = halfH - MarginHUp;
     }
 
     void LateUpdate()
