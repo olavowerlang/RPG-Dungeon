@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private Image gameTitle;
+    //[SerializeField] private Image gameTitle;
     [SerializeField] private Button startGameButton;
     [SerializeField] private Button quitGameButton;
     [SerializeField] private Button restartGameButton;
@@ -21,7 +21,7 @@ public class UIManager : MonoBehaviour
 
     public void HideMainMenu()
     {
-        gameTitle.gameObject.SetActive(false);
+        //gameTitle.gameObject.SetActive(false);
         startGameButton.gameObject.SetActive(false);
         quitGameButton.gameObject.SetActive(false);
         

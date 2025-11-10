@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 
 public class EnemyAnimator : MonoBehaviour
@@ -17,7 +18,7 @@ public class EnemyAnimator : MonoBehaviour
 
     [SerializeField] private GameObject skullFighter;
 
-    private bool _deathTriggered;
+    private bool _enemyDeathTriggered;
    
 
     private void Awake()
@@ -36,12 +37,12 @@ public class EnemyAnimator : MonoBehaviour
         _anim.SetBool(IsWalking, _skeletonFighter.IsWalking);
 
         /* Delega o flip para o próprio SkeletonFighter */
-        if (!_deathTriggered)        
+        if (!_enemyDeathTriggered)        
             _skeletonFighter.DefineSfSpriteDirection();
 
-        if (_health.IsDead && !_deathTriggered)
+        if (_health.IsDead && !_enemyDeathTriggered)
         {
-            _deathTriggered = true;
+            _enemyDeathTriggered = true;
             _anim.applyRootMotion = false;
             _anim.SetTrigger(Die);
             _skeletonFighter.enabled = false;
@@ -57,15 +58,25 @@ public class EnemyAnimator : MonoBehaviour
     //por enquanto so funciona pro SkeletonFighter, precisa ser modularizado later on
     /* ---------- NEEDS TO BE SEPARATADED FROM ANIM ---------- */
 
-    private IEnumerator WaitForEnemyDeathAnim() 
+    private IEnumerator WaitForEnemyDeathAnim()
     {
-       
         yield return new WaitUntil(() =>
             _anim.GetCurrentAnimatorStateInfo(0).IsName("SkeletonFighter_Die"));
 
-        // espera terminar (normalizedTime vai de 0-1)
+        // wait for it to finish (normalizedTime goes from 0-1)
         yield return new WaitUntil(() =>
             _anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f);
+
+        // --- ADD THIS HERE ---
+        // Finds the XPManager in the scene (which is on the Player)
+        XPManager playerXP = FindObjectOfType<XPManager>();
+
+        // If found, give 5 XP
+        if (playerXP != null)
+        {
+            playerXP.GainXP(5); // <-- The enemy gives the XP
+        }
+        // -------------------------
 
         Destroy(transform.root.gameObject);
     }
