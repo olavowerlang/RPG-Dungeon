@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class XPManager : MonoBehaviour
@@ -6,6 +7,13 @@ public class XPManager : MonoBehaviour
     [SerializeField] private int level = 1;
     [SerializeField] private int xpLimit = 10;
     [SerializeField] private int xpStorage = 0;
+    
+    private PlayerController _player;
+
+    private void Awake()
+    {
+        _player = GetComponent<PlayerController>();
+    }
 
     // This is the method the enemy will call
     // It's public so other scripts can access it
@@ -32,7 +40,11 @@ public class XPManager : MonoBehaviour
             // 3. Double the XP limit (as you requested)
             xpLimit *= 2; // (same as xpLimit = xpLimit + xpLimit)
 
-            Debug.Log($"LEVEL UP! Level: {level}. Next level at {xpLimit} XP.");
+            _player.speed += 5f;
+
+            Debug.Log($"LEVEL UP! Level: {level}. Next level at {xpLimit} XP. speed is now {_player.speed}");
+            
+            
         }
     }
 }

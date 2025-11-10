@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float speed = 10f;
+    public float speed = 10f;
     public float attackPushForce = 6f;
     
     private readonly float _impulseDecayRate = 10f;
