@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
         if (!spawningWave && _enemiesAlive.Count == 0 && gameStarted)
         {
             spawningWave = true;
-            StartCoroutine(SpawnWave());
+            //StartCoroutine(SpawnWave());
             _waveNumber += Random.Range(1, 4);
         }
     }
@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
     {
         gameStarted = true;
         spawningWave = true;
-        StartCoroutine(nameof(SpawnWave));
+        //StartCoroutine(nameof(SpawnWave));
     }
 
     public IEnumerator SpawnWave()
