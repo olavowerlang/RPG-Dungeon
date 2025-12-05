@@ -7,7 +7,7 @@ using TMPro;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
-    
+
     [Header("Menu Principal")]
     [SerializeField] private Button startGameButton;
     [SerializeField] private Button quitGameButton;
@@ -23,6 +23,9 @@ public class UIManager : MonoBehaviour
 
     [Header("Game Over")]
     [SerializeField] private GameObject gameOverPanel;
+
+    [Header("Victory")]
+    [SerializeField] private GameObject victoryPanel;
 
     private GameManager _gameManager;
 
@@ -76,7 +79,7 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator LevelUpRoutine(int level)
     {
-        levelUpText.text = $"LEVEL UP!\nLevel {level}\n+5 SPD";
+        levelUpText.text = $"LEVEL UP! + SPD";
         levelUpPanel.SetActive(true);
         yield return new WaitForSeconds(3f);
         levelUpPanel.SetActive(false);
@@ -95,5 +98,10 @@ public class UIManager : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void ShowVictory()
+    {
+        victoryPanel.SetActive(true);
     }
 }

@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    private int _enemiesKilled = 0; // Contador de mortes
+
     [SerializeField] GameObject skelFighter;
     private readonly List<Health> _enemiesAlive = new();
     
@@ -41,6 +43,8 @@ public class GameManager : MonoBehaviour
             //StartCoroutine(SpawnWave());
             _waveNumber += Random.Range(1, 4);
         }
+
+         
     }
 
     public void StartGame()
@@ -79,8 +83,32 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //public void UnregisterEnemy(Health health)
+    //{
+    //    _enemiesAlive.Remove(health);
+    //}
     public void UnregisterEnemy(Health health)
     {
+        // Remove da lista de vivos
         _enemiesAlive.Remove(health);
+
+        // Aumenta a contagem de mortos
+        _enemiesKilled++;
+
+        // Verifica se matou 4 (ou mais)
+        if (_enemiesKilled >= 4)
+        {
+            Debug.Log("Vitória!");
+
+            // Para o spawn de novas ondas para não bugar a tela de vitória
+            gameStarted = false;
+            spawningWave = false;
+
+            // Chama a UI (Garanta que esse método existe no seu UIManager)
+            if (UIManager.Instance != null)
+            {
+                UIManager.Instance.ShowVictory();
+            }
+        }
     }
 }
