@@ -1,8 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using UnityEngine.UI; 
+using TMPro; 
 
 public class UIManager : MonoBehaviour
 {
@@ -12,61 +12,88 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button startGameButton;
     [SerializeField] private Button quitGameButton;
 
-    [Header("HUD")]
+    [Header("HUD - Vida")]
     [SerializeField] private GameObject healthImages;
+    
+    [Header("HUD - XP e Level")]
+    [SerializeField] private Slider xpSlider; 
+    [SerializeField] private TextMeshProUGUI levelText; // <--- NOVO: Arraste o texto do Nível aqui (ex: "Lvl 1")
+    [SerializeField] private GameObject levelUpPanel; 
+    [SerializeField] private TextMeshProUGUI levelUpText; 
 
     [Header("Game Over")]
-    // Muda aqui: Referenciamos o PAINEL inteiro, nao so o botao
     [SerializeField] private GameObject gameOverPanel;
 
     private GameManager _gameManager;
 
     private void Awake()
-        {
-            // Se já existir uma instância (e não for essa), destrói a duplicata
-            if (Instance != null && Instance != this) 
-            { 
-                Destroy(this); 
-            } 
-            else 
-            { 
-                Instance = this; 
-            }
-        }
+    {
+        if (Instance != null && Instance != this) Destroy(this); 
+        else Instance = this; 
+    }
     
     private void Start()
     {
         _gameManager = FindObjectOfType<GameManager>();
 
-        // Garante que o Game Over comece escondido, so por seguranca
-        if (gameOverPanel != null)
-            gameOverPanel.SetActive(false);
+        if (gameOverPanel != null) gameOverPanel.SetActive(false);
+        if (levelUpPanel != null) levelUpPanel.SetActive(false);
+
+        // --- CORREÇÃO: Esconde o HUD inteiro ao abrir o jogo ---
+        healthImages.SetActive(false);
+        xpSlider.gameObject.SetActive(false);
+        if(levelText != null) levelText.gameObject.SetActive(false);
     }
 
+    // Chamado quando aperta "Start Game"
     public void HideMainMenu()
     {
         startGameButton.gameObject.SetActive(false);
         quitGameButton.gameObject.SetActive(false);
 
+        // --- CORREÇÃO: Mostra o HUD agora ---
         healthImages.gameObject.SetActive(true);
+        xpSlider.gameObject.SetActive(true);
+        if(levelText != null) levelText.gameObject.SetActive(true);
     }
 
-    // Renomeei para ficar mais claro
+    // --- Atualiza Barra e Texto do Nível ---
+    public void UpdateXPUI(int currentXp, int targetXp, int currentLevel)
+    {
+        // Atualiza a Barra
+        float progress = (float)currentXp / targetXp;
+        xpSlider.value = progress;
+
+        // Atualiza o Texto ao lado da barra
+        if (levelText != null)
+            levelText.text = "Lvl " + currentLevel;
+    }
+
+    public void ShowLevelUpMessage(int newLevel)
+    {
+        StartCoroutine(LevelUpRoutine(newLevel));
+    }
+
+    private IEnumerator LevelUpRoutine(int level)
+    {
+        levelUpText.text = $"LEVEL UP!\nLevel {level}\n+5 SPD";
+        levelUpPanel.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        levelUpPanel.SetActive(false);
+    }
+
     public void ShowGameOver()
     {
-        // Ao ativar o painel, o fundo escuro, o texto e o botao aparecem juntos
         gameOverPanel.SetActive(true);
     }
 
     public void RestartGame()
     {
-        // Reinicia a cena atual
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void QuitGame()
     {
-        Debug.Log("Saindo do jogo..."); // util para testar no Editor
         Application.Quit();
     }
 }

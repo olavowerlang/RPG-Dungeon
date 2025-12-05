@@ -113,8 +113,6 @@ public class PlayerAnimator : MonoBehaviour
         
         UIManager.Instance.ShowGameOver(); //obviamente n devia ser chamado aqui but oh well
         
-        
-        
     }
 
     /* ---------- Animation Events ---------- */
