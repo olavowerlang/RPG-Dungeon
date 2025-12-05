@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    public static UIManager Instance;
+    
     [Header("Menu Principal")]
     [SerializeField] private Button startGameButton;
     [SerializeField] private Button quitGameButton;
@@ -14,16 +16,29 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject healthImages;
 
     [Header("Game Over")]
-    // Mudança aqui: Referenciamos o PAINEL inteiro, não só o botão
+    // Muda aqui: Referenciamos o PAINEL inteiro, nao so o botao
     [SerializeField] private GameObject gameOverPanel;
 
     private GameManager _gameManager;
 
+    private void Awake()
+        {
+            // Se jÃ¡ existir uma instÃ¢ncia (e nÃ£o for essa), destrÃ³i a duplicata
+            if (Instance != null && Instance != this) 
+            { 
+                Destroy(this); 
+            } 
+            else 
+            { 
+                Instance = this; 
+            }
+        }
+    
     private void Start()
     {
         _gameManager = FindObjectOfType<GameManager>();
 
-        // Garante que o Game Over comece escondido, só por segurança
+        // Garante que o Game Over comece escondido, so por seguranca
         if (gameOverPanel != null)
             gameOverPanel.SetActive(false);
     }
@@ -39,7 +54,7 @@ public class UIManager : MonoBehaviour
     // Renomeei para ficar mais claro
     public void ShowGameOver()
     {
-        // Ao ativar o painel, o fundo escuro, o texto e o botão aparecem juntos
+        // Ao ativar o painel, o fundo escuro, o texto e o botao aparecem juntos
         gameOverPanel.SetActive(true);
     }
 
@@ -51,7 +66,7 @@ public class UIManager : MonoBehaviour
 
     public void QuitGame()
     {
-        Debug.Log("Saindo do jogo..."); // Útil para testar no Editor
+        Debug.Log("Saindo do jogo..."); // util para testar no Editor
         Application.Quit();
     }
 }

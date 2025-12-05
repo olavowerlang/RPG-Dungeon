@@ -111,6 +111,10 @@ public class PlayerAnimator : MonoBehaviour
         
         onDeathAnimEnd?.Invoke();
         
+        UIManager.Instance.ShowGameOver(); //obviamente n devia ser chamado aqui but oh well
+        
+        
+        
     }
 
     /* ---------- Animation Events ---------- */
