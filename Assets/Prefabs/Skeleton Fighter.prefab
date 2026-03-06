@@ -132,7 +132,6 @@ GameObject:
   - component: {fileID: 2635936647250402135}
   - component: {fileID: 1704261684058217405}
   - component: {fileID: -1579834184393299920}
-  - component: {fileID: 1831245747421843270}
   - component: {fileID: -3792695307111177358}
   m_Layer: 7
   m_Name: Skeleton Fighter
@@ -266,18 +265,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc38271bc8cbfd84daa2c36f62e17fed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1831245747421843270
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7643694029778453593}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 914956618c6ce764c9773e4898c30711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &-3792695307111177358
@@ -419,3 +406,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hitboxes: []
   skullFighter: {fileID: 7643694029778453593}
+  lootTable: {fileID: 11400000, guid: d41ec8def443ae94f941b887f4651549, type: 2}
+  itemDropPrefab: {fileID: 6502097253406911691, guid: 69c06d2c3c5692c4a937952e1da7849d, type: 3}

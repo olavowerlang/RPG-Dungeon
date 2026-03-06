@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbddb4f035f08be4abc6a3e9828c6b25, type: 3}
+  m_Name: SkeletonLootTable
+  m_EditorClassIdentifier: 
+  entries:
+  - item: {fileID: 11400000, guid: db2f7d077016b9942934e824fc713f3c, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: eb8516da371237046aed31744211e5f4, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: 669c677c30ed35c44be8644e118294cb, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: be7e82b0701f1b6439d29ad84a32b1cd, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: ad0f58c26042ffa439c6ecd3dfce6583, type: 2}
+    weight: 1
+  dropChance: 0.5

@@ -17,8 +17,11 @@ public class EnemyAnimator : MonoBehaviour
 
     [SerializeField] private GameObject skullFighter;
 
+    [Header("Loot")]
+    [SerializeField] private LootTable lootTable;
+    [SerializeField] private GameObject itemDropPrefab; // prefab with ItemDrop component + sprite
+
     private bool _enemyDeathTriggered;
-   
 
     private void Awake()
     {
@@ -28,7 +31,6 @@ public class EnemyAnimator : MonoBehaviour
         _skeletonHitEffect = GetComponentInParent<SkeletonHitEffect>();
         _health = GetComponentInParent<Health>();
         _rb = GetComponentInParent<Rigidbody2D>();
-
     }
 
     private void Update()
@@ -36,7 +38,7 @@ public class EnemyAnimator : MonoBehaviour
         _anim.SetBool(IsWalking, _skeletonFighter.IsWalking);
 
         /* Delega o flip para o próprio SkeletonFighter */
-        if (!_enemyDeathTriggered)        
+        if (!_enemyDeathTriggered)
             _skeletonFighter.DefineSfSpriteDirection();
 
         if (_health.IsDead && !_enemyDeathTriggered)
@@ -50,34 +52,44 @@ public class EnemyAnimator : MonoBehaviour
             StartCoroutine(FreezeAfterDeath());
             StartCoroutine(WaitForEnemyDeathAnim());
         }
-
-
     }
 
     //por enquanto so funciona pro SkeletonFighter, precisa ser modularizado later on
-    /* ---------- NEEDS TO BE SEPARATADED FROM ANIM ---------- */
+    /* ---------- NEEDS TO BE SEPARATED FROM ANIM ---------- */
 
     private IEnumerator WaitForEnemyDeathAnim()
     {
         yield return new WaitUntil(() =>
             _anim.GetCurrentAnimatorStateInfo(0).IsName("SkeletonFighter_Die"));
 
-        // wait for it to finish (normalizedTime goes from 0-1)
         yield return new WaitUntil(() =>
             _anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f);
 
-        // --- ADD THIS HERE ---
-        // Finds the XPManager in the scene (which is on the Player)
+        // Give XP
         XPManager playerXP = FindObjectOfType<XPManager>();
-
-        // If found, give 5 XP
         if (playerXP != null)
-        {
-            playerXP.GainXP(5); // <-- The enemy gives the XP
-        }
-        // -------------------------
+            playerXP.GainXP(5);
+
+        // Drop loot
+        SpawnLoot();
 
         Destroy(transform.root.gameObject);
+    }
+
+    private void SpawnLoot()
+    {
+        if (lootTable == null || itemDropPrefab == null) return;
+
+        ItemData drop = lootTable.Roll();
+        if (drop == null) return;
+
+        // Spawn slightly offset so it's visible
+        Vector3 spawnPos = transform.root.position + new Vector3(0.5f, 0f, 0f);
+        GameObject dropGO = Instantiate(itemDropPrefab, spawnPos, Quaternion.identity);
+
+        ItemDrop itemDrop = dropGO.GetComponent<ItemDrop>();
+        if (itemDrop != null)
+            itemDrop.Init(drop);
     }
 
     private IEnumerator FreezeAfterDeath()
@@ -97,13 +109,10 @@ public class EnemyAnimator : MonoBehaviour
 
     /* Trigger de ataque disparado pela FSM */
     public void PlaySfAttack() => _anim.SetTrigger(SfAttackTrigger);
-    
+
     /* ---------- Animation Events ---------- */
 
     public void EnableHitbox(int i) => _hitboxes[i].BeginSwing();
     public void DisableHitbox(int i) => _hitboxes[i].EndSwing();
     public void OnAttackAnimationEnd() => _skeletonFighter.OnAttackAnimationEnd();
-
-
-
 }

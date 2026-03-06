@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05f697432cd1d5245a1a4181332e4775, type: 3}
+  m_Name: Recipe_HerbForge
+  m_EditorClassIdentifier: 
+  recipeName: Herb Forge
+  resultDescription: +Knockback
+  ingredient: {fileID: 11400000, guid: be7e82b0701f1b6439d29ad84a32b1cd, type: 2}
+  quantity: 1
+  buffType: 3
+  buffValue: 1
