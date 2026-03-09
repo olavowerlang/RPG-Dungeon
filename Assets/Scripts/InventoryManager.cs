@@ -29,26 +29,33 @@ public class InventoryManager : MonoBehaviour
 
     public event Action OnInventoryChanged;
 
+    // TEMP: assign the Sword ScriptableObject here in the Inspector
+    // Remove this when the NPC pig gives the sword instead
+    [SerializeField] private ItemData _startingSword;
+
     private void Awake()
     {
         if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
     }
 
-    // Called by the NPC pig to give the sword
+    private void Start()
+    {
+        if (_startingSword != null)
+            EquipSword(_startingSword);
+    }
+
     public void EquipSword(ItemData sword)
     {
-        if (equippedSword != null) return; // already has sword
+        if (equippedSword != null) return;
         equippedSword = sword;
         OnInventoryChanged?.Invoke();
     }
 
     public bool HasSword() => equippedSword != null;
 
-    // Add ingredient to inventory
     public bool AddItem(ItemData item, int quantity = 1)
     {
-        // Stack if already exists
         foreach (var slot in ingredientSlots)
         {
             if (slot.item == item)
@@ -99,11 +106,9 @@ public class InventoryManager : MonoBehaviour
         return false;
     }
 
-    // Called when player dies
     public void ClearInventory()
     {
         ingredientSlots.Clear();
-        // Sword is kept on death? Or lost? Currently: kept.
         OnInventoryChanged?.Invoke();
     }
 }
