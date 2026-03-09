@@ -5,8 +5,18 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(Rigidbody2D))]
 public class SkeletonFighter : MonoBehaviour
 {
-    public enum S { Approach, Orbit, DashPrep, DashMove, Hit, Cooldown }
-    S _state = S.Approach;
+    public enum S { Patrol, Approach, Orbit, DashPrep, DashMove, Hit, Cooldown }
+    S _state = S.Patrol;
+
+    [Header("Patrol")]
+    [SerializeField] private float patrolSpeed = 3f;
+    [SerializeField] private float detectionRadius = 10f;
+    [SerializeField] private float patrolRadius = 5f;
+    [SerializeField] private float waypointReachThreshold = 0.3f;
+    [SerializeField] private float patrolWaitTime = 1.5f;
+    private Vector2 _spawnPoint;
+    private Vector2 _patrolTarget;
+    private float _patrolWaitTimer;
 
     [Header("Dash Tracking")]
     [Range(0f, 1f)]
@@ -44,11 +54,14 @@ public class SkeletonFighter : MonoBehaviour
     {
         Rb = GetComponent<Rigidbody2D>();
         _player = GameObject.FindWithTag("Player").transform;
+        _spawnPoint = transform.position;
+        PickNewPatrolTarget();
         ResetGuardTimer();
         
         dashSpeed = Random.Range(18f, 25f);
-        orbitSpeed = Random.Range(8f, 15f); 
+        orbitSpeed = Random.Range(8f, 15f);
         approachSpeed = Random.Range(8f, 15f);
+        patrolSpeed = approachSpeed;
         orbitRadius = Random.Range(7f, 14f);
         cooldownTime = Random.Range(0.3f, 1f);
         
@@ -61,6 +74,28 @@ public class SkeletonFighter : MonoBehaviour
 
         switch (_state)
         {
+            case S.Patrol:
+                if (dist <= detectionRadius)
+                {
+                    EnterApproach();
+                    break;
+                }
+                if (_patrolWaitTimer > 0f)
+                {
+                    _patrolWaitTimer -= Time.fixedDeltaTime;
+                    Rb.velocity = Vector2.zero;
+                    break;
+                }
+                Vector2 toWaypoint = _patrolTarget - (Vector2)transform.position;
+                if (toWaypoint.magnitude <= waypointReachThreshold)
+                {
+                    _patrolWaitTimer = patrolWaitTime;
+                    PickNewPatrolTarget();
+                    break;
+                }
+                Rb.velocity = toWaypoint.normalized * patrolSpeed;
+                break;
+
             case S.Approach:
                 if (dist > orbitRadius)
                     Rb.velocity = toPlayer.normalized * approachSpeed;
@@ -124,6 +159,8 @@ public class SkeletonFighter : MonoBehaviour
                 {
                     if (dist <= attackRange)
                         EnterHit();
+                    else if (dist > detectionRadius)
+                        EnterPatrol();
                     else if (dist > orbitRadius)
                         EnterApproach();
                     else
@@ -134,6 +171,11 @@ public class SkeletonFighter : MonoBehaviour
         }
 
     
+    }
+
+    private void EnterPatrol()
+    {
+        _state = S.Patrol;
     }
 
     private void EnterApproach()
@@ -177,6 +219,12 @@ public class SkeletonFighter : MonoBehaviour
         _timer = cooldownTime;
     }
 
+    private void PickNewPatrolTarget()
+    {
+        Vector2 offset = Random.insideUnitCircle * patrolRadius;
+        _patrolTarget = _spawnPoint + offset;
+    }
+
     private void ResetGuardTimer() =>
         _guardTimer = Random.Range(guardTimeRange.x, guardTimeRange.y);
 
@@ -189,8 +237,12 @@ public class SkeletonFighter : MonoBehaviour
     //Precisa ser modularizado
     public void DefineSfSpriteDirection()
     {
-        var faceLeft = _player.position.x < transform.position.x;
-        
+        bool faceLeft;
+        if (_state == S.Patrol)
+            faceLeft = Rb.velocity.x < 0f;
+        else
+            faceLeft = _player.position.x < transform.position.x;
+
         var sc = sfVisual.localScale;
         sc.x = faceLeft ? -1.75f : 1.75f;
         sfVisual.localScale = sc;

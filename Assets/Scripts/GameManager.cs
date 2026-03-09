@@ -95,20 +95,6 @@ public class GameManager : MonoBehaviour
         // Aumenta a contagem de mortos
         _enemiesKilled++;
 
-        // Verifica se matou 4 (ou mais)
-        if (_enemiesKilled >= 4)
-        {
-            Debug.Log("Vitória!");
-
-            // Para o spawn de novas ondas para não bugar a tela de vitória
-            gameStarted = false;
-            spawningWave = false;
-
-            // Chama a UI (Garanta que esse método existe no seu UIManager)
-            if (UIManager.Instance != null)
-            {
-                UIManager.Instance.ShowVictory();
-            }
-        }
+        // Win condition disabled for testing
     }
 }
