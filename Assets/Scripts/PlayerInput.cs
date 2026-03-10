@@ -39,20 +39,25 @@ public class PlayerInput : MonoBehaviour
 
     public Vector2 GetInputDirection()
     {
+        if (DialogueManager.Instance != null && DialogueManager.Instance.IsInDialogue)
+            return Vector2.zero;
+
         InputDirection = _playerInputActions.Player.Move.ReadValue<Vector2>();
-        
+
         InputDirection = InputDirection.normalized;
-        
+
         return InputDirection;
     }
 
     private void OnLightAttack(InputAction.CallbackContext context)
     {
+        if (DialogueManager.Instance != null && DialogueManager.Instance.IsInDialogue) return;
         playerCombat.LightAttack();
     }
 
     private void OnDash(InputAction.CallbackContext context)
     {
+        if (DialogueManager.Instance != null && DialogueManager.Instance.IsInDialogue) return;
         _playerController.Dash();
     }
 }
