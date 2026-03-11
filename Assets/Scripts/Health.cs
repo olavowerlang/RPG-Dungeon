@@ -7,7 +7,7 @@ public class Health : MonoBehaviour
     public int currentHp;
     public bool IsDead { get; private set; }
 
-    // Fired when this entity dies — InventoryManager and CraftingSystem listen if it's the player
+    // Fired when this entity dies â€” InventoryManager and CraftingSystem listen if it's the player
     public event Action OnDeath;
 
     private void Awake() => currentHp = maxHP;

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4df0014cb02a0cf4bbbc7addabd2224a, type: 3}
-  m_Name: DialogueData
+  m_Name: MainDialogue1NPC
   m_EditorClassIdentifier: 
   lines:
   - speakerName: Pig
@@ -29,4 +29,10 @@ MonoBehaviour:
       Use it right and maybe you'll stop being such a weakling. Now for your lack
       of wits...I'm afraid that's beyond me.
   - speakerName: Pig
-    text: Aight Good luck!
+    text: Now, there are some mean skeletons over there, go kill them and absorb
+      their components!!! ("I" opens your inventory by the way).
+  - speakerName: Pig
+    text: Not that I know what this "I" means or anything I don't know why I said
+      that honestly.
+  - speakerName: Pig
+    text: Aight good luck!!!
