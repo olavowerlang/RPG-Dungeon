@@ -12,4 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4df0014cb02a0cf4bbbc7addabd2224a, type: 3}
   m_Name: DialogueData
   m_EditorClassIdentifier: 
-  lines: []
+  lines:
+  - speakerName: Pig
+    text: Wassup homie, you seem lost
+  - speakerName: Pig
+    text: And...weak, honestly
+  - speakerName: Pig
+    text: What? Don't give me that face homie, do you even know where you are?
+  - speakerName: Pig
+    text: Bro, you don't even have a weapon! You are in the goddamn Cursed Forest
+      and you don't even have a SWORD.
+  - speakerName: Pig
+    text: Ugh..here, take this dude.
+  - speakerName: Pig
+    text: This sword is magical, it absorbs certain components to make you stronger.
+      Use it right and maybe you'll stop being such a weakling. Now for your lack
+      of wits...I'm afraid that's beyond me.
+  - speakerName: Pig
+    text: Aight Good luck!
