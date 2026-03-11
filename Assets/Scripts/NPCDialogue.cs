@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class NPCDialogue : MonoBehaviour
 {
-    [SerializeField] private DialogueData dialogueData;
-    [SerializeField] private GameObject interactionPrompt; // "[E] Falar" — objeto filho do NPC
+    [SerializeField] private DialogueData mainDialogue;
+    [SerializeField] private DialogueData repeatDialogue;
+    [SerializeField] private GameObject interactionPrompt;
 
     private bool _playerInRange;
+    private bool _mainDone;
 
     private void Update()
     {
@@ -15,7 +17,12 @@ public class NPCDialogue : MonoBehaviour
             interactionPrompt.SetActive(canInteract);
 
         if (canInteract && Input.GetKeyDown(KeyCode.E))
-            DialogueManager.Instance.StartDialogue(dialogueData);
+        {
+            if (!_mainDone)
+                DialogueManager.Instance.StartDialogue(mainDialogue, () => _mainDone = true);
+            else
+                DialogueManager.Instance.StartDialogue(repeatDialogue);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)

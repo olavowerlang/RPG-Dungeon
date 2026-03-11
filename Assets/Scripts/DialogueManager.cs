@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using TMPro;
 
@@ -16,6 +17,7 @@ public class DialogueManager : MonoBehaviour
     private DialogueLine[] _lines;
     private int _currentLine;
     private bool _justOpened;
+    private Action _onComplete;
 
     private void Awake()
     {
@@ -38,7 +40,7 @@ public class DialogueManager : MonoBehaviour
             AdvanceDialogue();
     }
 
-    public void StartDialogue(DialogueData data)
+    public void StartDialogue(DialogueData data, Action onComplete = null)
     {
         if (IsInDialogue) return;
 
@@ -46,6 +48,7 @@ public class DialogueManager : MonoBehaviour
         _currentLine = 0;
         IsInDialogue = true;
         _justOpened = true;
+        _onComplete = onComplete;
 
         dialoguePanel.SetActive(true);
         ShowLine(_currentLine);
@@ -73,5 +76,7 @@ public class DialogueManager : MonoBehaviour
     {
         IsInDialogue = false;
         dialoguePanel.SetActive(false);
+        _onComplete?.Invoke();
+        _onComplete = null;
     }
 }
