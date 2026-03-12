@@ -203,9 +203,9 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 20
-  m_LinearDrag: 20
-  m_AngularDrag: 20
+  m_Mass: 250
+  m_LinearDrag: 100
+  m_AngularDrag: 100
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -230,6 +230,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 280a6173961f2cb40968f753e45fa698, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  patrolSpeed: 3
+  detectionRadius: 10
+  patrolRadius: 5
+  waypointReachThreshold: 0.3
+  patrolWaitTime: 1.5
   dashTrackingFraction: 0.5
   orbitRadius: 10
   attackRange: 2
@@ -253,8 +258,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f124d36075e77364ca5c5d3bf844acc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 3
-  currentHp: 0
+  maxHP: 10
+  currentHp: 10
 --- !u!114 &-1579834184393299920
 MonoBehaviour:
   m_ObjectHideFlags: 0

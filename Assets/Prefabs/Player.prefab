@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 3179900156674083240}
   - component: {fileID: 3939633173304301534}
   - component: {fileID: 2344077595519012848}
-  - component: {fileID: 5674117071904424811}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -53,6 +52,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 15
+  attackPushForce: 6
+  dashForce: 60
 --- !u!114 &7401869741587208979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,18 +174,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
---- !u!114 &5674117071904424811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 126661216880809921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 914956618c6ce764c9773e4898c30711, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &329729490386019667
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,7 +403,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerVisual: {fileID: 8461573484882669129}
-  playerController: {fileID: 2909277444362362750}
+  onDeathAnimEnd:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8031406336440244978
 GameObject:
   m_ObjectHideFlags: 0
