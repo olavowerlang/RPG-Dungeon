@@ -19,7 +19,12 @@ public class EnemyAnimator : MonoBehaviour
 
     [Header("Loot")]
     [SerializeField] private LootTable lootTable;
-    [SerializeField] private GameObject itemDropPrefab; // prefab with ItemDrop component + sprite
+    [SerializeField] private GameObject itemDropPrefab;
+
+    [Header("Gold Drop")]
+    [SerializeField] private GameObject goldDropPrefab;
+    [SerializeField] private int minGold = 5;
+    [SerializeField] private int maxGold = 15;
 
     private bool _enemyDeathTriggered;
 
@@ -71,8 +76,9 @@ public class EnemyAnimator : MonoBehaviour
         if (playerXP != null)
             playerXP.GainXP(5);
 
-        // Drop loot
+        // Drop loot and gold
         SpawnLoot();
+        SpawnGold();
 
         Destroy(_skeletonFighter.gameObject);
     }
@@ -91,6 +97,15 @@ public class EnemyAnimator : MonoBehaviour
         ItemDrop itemDrop = dropGO.GetComponent<ItemDrop>();
         if (itemDrop != null)
             itemDrop.Init(drop);
+    }
+
+    private void SpawnGold()
+    {
+        if (goldDropPrefab == null) return;
+        int amount = Random.Range(minGold, maxGold + 1);
+        Vector3 pos = _skeletonFighter.transform.position + new Vector3(-0.5f, 0.3f, 0f);
+        GameObject go = Instantiate(goldDropPrefab, pos, Quaternion.identity);
+        go.GetComponent<GoldDrop>()?.Init(amount);
     }
 
     private IEnumerator FreezeAfterDeath()

@@ -6,10 +6,9 @@ using UnityEngine.Tilemaps;
 /// Automatically handles Y-sorting for every sprite and tilemap — no per-object setup needed.
 /// For moving objects (player, enemies) also attach YSort.cs to them.
 /// </summary>
-[ExecuteAlways]
 public class YSortSetup : MonoBehaviour
 {
-    void OnEnable() => Apply();
+    void Awake() => Apply();
 
     void Apply()
     {

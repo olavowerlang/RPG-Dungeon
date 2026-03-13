@@ -21,6 +21,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject levelUpPanel; 
     [SerializeField] private TextMeshProUGUI levelUpText; 
 
+    [Header("HUD - Gold")]
+    [SerializeField] private TextMeshProUGUI goldText;
+    [SerializeField] private UnityEngine.UI.Image goldIcon;
+
     [Header("Game Over")]
     [SerializeField] private GameObject gameOverPanel;
 
@@ -42,10 +46,17 @@ public class UIManager : MonoBehaviour
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
         if (levelUpPanel != null) levelUpPanel.SetActive(false);
 
-        // --- CORREÇÃO: Esconde o HUD inteiro ao abrir o jogo ---
         healthImages.SetActive(false);
         xpSlider.gameObject.SetActive(false);
-        if(levelText != null) levelText.gameObject.SetActive(false);
+        if (levelText != null) levelText.gameObject.SetActive(false);
+        if (goldText != null) goldText.gameObject.SetActive(false);
+        if (goldIcon != null) goldIcon.gameObject.SetActive(false);
+
+        if (GoldManager.Instance != null)
+        {
+            GoldManager.Instance.OnGoldChanged += UpdateGoldUI;
+            UpdateGoldUI(GoldManager.Instance.Gold);
+        }
     }
 
     // Chamado quando aperta "Start Game"
@@ -57,7 +68,16 @@ public class UIManager : MonoBehaviour
         // --- CORREÇÃO: Mostra o HUD agora ---
         healthImages.gameObject.SetActive(true);
         xpSlider.gameObject.SetActive(true);
-        if(levelText != null) levelText.gameObject.SetActive(true);
+        if (levelText != null) levelText.gameObject.SetActive(true);
+        if (goldText != null)
+        {
+            goldText.gameObject.SetActive(true);
+            UpdateGoldUI(GoldManager.Instance != null ? GoldManager.Instance.Gold : 0);
+        }
+        if (goldIcon != null) goldIcon.gameObject.SetActive(true);
+
+        if (GoldManager.Instance != null)
+            GoldManager.Instance.OnGoldChanged += UpdateGoldUI;
     }
 
     // --- Atualiza Barra e Texto do Nível ---
@@ -103,5 +123,17 @@ public class UIManager : MonoBehaviour
     public void ShowVictory()
     {
         victoryPanel.SetActive(true);
+    }
+
+    public void UpdateGoldUI(int amount)
+    {
+        if (goldText != null)
+            goldText.text = amount.ToString();
+    }
+
+    private void OnDestroy()
+    {
+        if (GoldManager.Instance != null)
+            GoldManager.Instance.OnGoldChanged -= UpdateGoldUI;
     }
 }

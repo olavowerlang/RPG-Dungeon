@@ -413,3 +413,6 @@ MonoBehaviour:
   skullFighter: {fileID: 7643694029778453593}
   lootTable: {fileID: 11400000, guid: d41ec8def443ae94f941b887f4651549, type: 2}
   itemDropPrefab: {fileID: 6502097253406911691, guid: 69c06d2c3c5692c4a937952e1da7849d, type: 3}
+  goldDropPrefab: {fileID: 6010953109853743787, guid: 41a564709ca0fb14db9ba8b376eb5d91, type: 3}
+  minGold: 1
+  maxGold: 1

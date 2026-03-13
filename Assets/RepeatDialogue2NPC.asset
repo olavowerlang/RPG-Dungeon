@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4df0014cb02a0cf4bbbc7addabd2224a, type: 3}
   m_Name: RepeatDialogue2NPC
   m_EditorClassIdentifier: 
-  lines: []
+  lines:
+  - speakerName: Pig
+    text: 'Ok, so, I need you to to do some other stuff for me. '
+  - speakerName: Pig
+    text: 'Since you''ve proven that you can deal with '
