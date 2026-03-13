@@ -41,26 +41,30 @@ public class SkeletonFighter : MonoBehaviour
 
     private Rigidbody2D Rb { get; set; }
     private Transform _player;
+    private Health _health;
+    public S CurrentState => _state;
     private Vector2 _dashTarget;
     private float _timer, _guardTimer;
 
     private float _dashDuration;
     private float _dashElapsed;
     private bool _dashTargetLocked;
+    private float _hitTimer;
 
     public bool IsWalking => Rb.velocity != Vector2.zero;
 
     private void Awake()
     {
         Rb = GetComponent<Rigidbody2D>();
+        _health = GetComponent<Health>();
         _player = GameObject.FindWithTag("Player").transform;
         _spawnPoint = transform.position;
         PickNewPatrolTarget();
         ResetGuardTimer();
         
-        dashSpeed = Random.Range(18f, 25f);
-        orbitSpeed = Random.Range(8f, 15f);
-        approachSpeed = Random.Range(8f, 15f);
+        dashSpeed = Random.Range(36f, 50f);
+        orbitSpeed = Random.Range(16f, 30f);
+        approachSpeed = Random.Range(16f, 30f);
         patrolSpeed = approachSpeed;
         orbitRadius = Random.Range(7f, 14f);
         cooldownTime = Random.Range(0.3f, 1f);
@@ -149,7 +153,8 @@ public class SkeletonFighter : MonoBehaviour
 
 
             case S.Hit:
-                // vazio: espera AnimationEvent chamar OnAttackAnimationEnd()
+                _hitTimer += Time.fixedDeltaTime;
+                if (_hitTimer > 1.5f) EnterCooldown(); // failsafe: animation event missed
                 break;
 
             case S.Cooldown:
@@ -209,7 +214,9 @@ public class SkeletonFighter : MonoBehaviour
 
     private void EnterHit()
     {
+        if (enemyAnim == null || (_health != null && _health.IsDead)) return;
         _state = S.Hit;
+        _hitTimer = 0f;
         enemyAnim.PlaySfAttack();
     }
 

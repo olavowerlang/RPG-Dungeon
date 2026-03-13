@@ -41,11 +41,11 @@ public class SkeletonHitEffect : MonoBehaviour, IDamageable
         }
     }
     
-   // private void OnDisable()
-    //{
-    //    StopAllCoroutines();   // mata qualquer coroutine pendente
-     //   _sr.enabled = true;    // garante Sprite visível no fim// 
-   // }
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+        if (_sr != null) _sr.enabled = true;
+    }
 
 
     public void TakeHit(int dmg, Vector2 dir)
@@ -66,21 +66,25 @@ public class SkeletonHitEffect : MonoBehaviour, IDamageable
         float t = 0;
         while (t < blinkDur)
         {
+            if (_sr == null) yield break;
             _sr.enabled = !_sr.enabled;
             yield return new WaitForSeconds(blinkFreq);
             t += blinkFreq;
         }
-        _sr.enabled = true;
+        if (_sr != null) _sr.enabled = true;
     }
 
     private IEnumerator Stun()
     {
-        _ai.enabled = false;               // trava IA
+        // don't interrupt the skeleton mid-attack — let it finish its swing
+        if (_ai.CurrentState == SkeletonFighter.S.Hit) yield break;
+
+        _ai.enabled = false;
 
         /* --- congela animação em Idle --- */
         if (_anim)
         {
-            _anim.Play("SkeletonFighter_Idle", 0, 0f);     // ajuste o nome se preciso
+            _anim.Play("SkeletonFighter_Idle", 0, 0f);
             _anim.enabled = false;
         }
         if (_enemyAnim) _enemyAnim.enabled = false;

@@ -14,13 +14,15 @@ public class CameraConfinerSetup : MonoBehaviour
     private const float WallThickness = 1f;
     private CinemachineConfiner _confiner;
     private PolygonCollider2D _sharedPoly;
+    private CameraZone _activeZone;
+    private CameraZone[] _allZones;
+    private Transform _player;
 
     private void Awake()
     {
         Instance = this;
         transform.position = Vector3.zero;
 
-        // One shared poly that Cinemachine always references — we just update its path
         _sharedPoly = GetComponent<PolygonCollider2D>();
         _sharedPoly.isTrigger = true;
 
@@ -39,11 +41,34 @@ public class CameraConfinerSetup : MonoBehaviour
         SpawnWalls(min, max);
 
         if (startingZone != null)
-            ActivateZone(startingZone);
+            ApplyZone(startingZone);
     }
 
-    public void ActivateZone(CameraZone zone)
+    private void Start()
     {
+        _allZones = FindObjectsOfType<CameraZone>();
+        var playerGO = GameObject.FindWithTag("Player");
+        if (playerGO != null) _player = playerGO.transform;
+    }
+
+    private void Update()
+    {
+        if (_player == null || _allZones == null) return;
+
+        foreach (var zone in _allZones)
+        {
+            if (zone.ContainsPoint(_player.position))
+            {
+                ApplyZone(zone);
+                return;
+            }
+        }
+    }
+
+    private void ApplyZone(CameraZone zone)
+    {
+        if (zone == _activeZone) return;
+        _activeZone = zone;
         _sharedPoly.SetPath(0, zone.GetConfinerPath());
         _confiner.InvalidatePathCache();
     }

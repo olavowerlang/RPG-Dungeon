@@ -67,15 +67,8 @@ public class CameraZone : MonoBehaviour
         go.AddComponent<BoxCollider2D>().size = size;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    public bool ContainsPoint(Vector2 point)
     {
-        if (other.CompareTag("Player"))
-            CameraConfinerSetup.Instance.ActivateZone(this);
-    }
-
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-            CameraConfinerSetup.Instance.ActivateZone(this);
+        return GetComponent<BoxCollider2D>().OverlapPoint(point);
     }
 }

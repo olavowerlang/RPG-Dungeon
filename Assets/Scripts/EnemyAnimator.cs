@@ -35,7 +35,8 @@ public class EnemyAnimator : MonoBehaviour
 
     private void Update()
     {
-        _anim.SetBool(IsWalking, _skeletonFighter.IsWalking);
+        bool inHit = _skeletonFighter.CurrentState == SkeletonFighter.S.Hit;
+        _anim.SetBool(IsWalking, !inHit && _skeletonFighter.IsWalking);
 
         /* Delega o flip para o próprio SkeletonFighter */
         if (!_enemyDeathTriggered)
@@ -73,7 +74,7 @@ public class EnemyAnimator : MonoBehaviour
         // Drop loot
         SpawnLoot();
 
-        Destroy(transform.root.gameObject);
+        Destroy(_skeletonFighter.gameObject);
     }
 
     private void SpawnLoot()
@@ -84,7 +85,7 @@ public class EnemyAnimator : MonoBehaviour
         if (drop == null) return;
 
         // Spawn slightly offset so it's visible
-        Vector3 spawnPos = transform.root.position + new Vector3(0.5f, 0f, 0f);
+        Vector3 spawnPos = _skeletonFighter.transform.position + new Vector3(0.5f, 0f, 0f);
         GameObject dropGO = Instantiate(itemDropPrefab, spawnPos, Quaternion.identity);
 
         ItemDrop itemDrop = dropGO.GetComponent<ItemDrop>();
@@ -100,7 +101,7 @@ public class EnemyAnimator : MonoBehaviour
         yield return new WaitForSeconds(0.25f);
 
         // 3) Desativa todos os colliders do inimigo pra não gerar mais repulsões
-        foreach (var col in transform.root.GetComponentsInChildren<Collider2D>())
+        foreach (var col in _skeletonFighter.GetComponentsInChildren<Collider2D>())
             col.enabled = false;
 
         // 4) Desliga totalmente a simulação física

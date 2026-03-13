@@ -13,6 +13,6 @@ public class YSort : MonoBehaviour
 
     void LateUpdate()
     {
-        sr.sortingOrder = Mathf.RoundToInt(-transform.position.y * 100);
+        sr.sortingOrder = 10000 + Mathf.RoundToInt(-transform.position.y * 100);
     }
 }

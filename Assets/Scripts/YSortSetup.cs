@@ -32,7 +32,7 @@ public class YSortSetup : MonoBehaviour
         foreach (SpriteRenderer sr in FindObjectsOfType<SpriteRenderer>())
         {
             if (sr.GetComponent<YSort>() != null) continue;
-            sr.sortingOrder = Mathf.RoundToInt(-sr.transform.position.y * 100);
+            sr.sortingOrder = 10000 + Mathf.RoundToInt(-sr.transform.position.y * 100);
         }
     }
 }
