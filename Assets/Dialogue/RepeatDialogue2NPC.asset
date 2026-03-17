@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - speakerName: Pig
-    text: 'Ok, so, I need you to to do some other stuff for me. '
+    text: What? Having second thoughts?
   - speakerName: Pig
-    text: 'Since you''ve proven that you can deal with '
+    text: Too late for that! I'll take that sword back and you might as well give
+      up on life!

@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4df0014cb02a0cf4bbbc7addabd2224a, type: 3}
-  m_Name: MainDialogue2NPC
+  m_Name: IntroShopDialogue
   m_EditorClassIdentifier: 
   lines:
   - speakerName: Pig
     text: Ho ho! I see you've slain all the skeletons and are a bit stronger. Seems
       like you're not THAT useless after all. Congrats. Yay.
   - speakerName: Pig
-    text: 'Now, as you can see, this here''s my lil'' shop You can buy all kinds
+    text: 'Now, as you can see, this here''s my lil'' shop. You can buy all kinds
       of upgrades in this establishment. '
   - speakerName: Pig
     text: 'You know, those same ones you use in crafting, and some other that are
       exclusive to this store. '
   - speakerName: Pig
     text: So, as a reward for not being completely useless, I'll let you grab a cool
-      new power for free.
+      new power with a discount
   - speakerName: Pig
     text: Click on me to open up the store window! After you get your new power,
       we will talk more.

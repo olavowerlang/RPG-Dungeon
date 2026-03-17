@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdc82e067832bc544b627f46be2150c6, type: 3}
   m_Name: GoldOre
   m_EditorClassIdentifier: 
-  displayName: 
+  displayName: Gold
   description: 
-  icon: {fileID: 0}
-  price: 0
+  icon: {fileID: -1358499486, guid: 572bb35294ab715449c4c06f31b1fa55, type: 3}
+  price: 5
   itemData: {fileID: 11400000, guid: 669c677c30ed35c44be8644e118294cb, type: 2}

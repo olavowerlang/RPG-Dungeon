@@ -1295,7 +1295,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &129883162
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1374,7 +1374,12 @@ MonoBehaviour:
   itemSlotPrefab: {fileID: 3007656683379712991, guid: f3a4f15156df21140b324b592689295c, type: 3}
   goldText: {fileID: 1964994266}
   closeButton: {fileID: 2003053515}
-  itemsForSale: []
+  itemsForSale:
+  - {fileID: 11400000, guid: 65688c39ada3a6f4094597bca11bd007, type: 2}
+  - {fileID: 11400000, guid: 2eaf1b1ca0a2e304caed3f00cba02f95, type: 2}
+  - {fileID: 11400000, guid: 6501462616b2d4e47991a1593953869e, type: 2}
+  - {fileID: 11400000, guid: 3fcb4c0dc1c77544a9307b3b9f8d7923, type: 2}
+  - {fileID: 11400000, guid: d59f721c74ef94a4aa6ba70fb80b25f2, type: 2}
 --- !u!1 &133542583
 GameObject:
   m_ObjectHideFlags: 0
@@ -2653,6 +2658,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2263645559438877877, guid: 2f77d2f4e06ec744fbb4af28c71b8dcd, type: 3}
   m_PrefabInstance: {fileID: 355869964}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &355869966 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1566982400747739545, guid: 2f77d2f4e06ec744fbb4af28c71b8dcd, type: 3}
+  m_PrefabInstance: {fileID: 355869964}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &355869969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2665,7 +2675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36f39c83d93fa084aa45ff17b0e50fcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueData: {fileID: 0}
+  dialogueData: {fileID: 11400000, guid: 9cc3e4e6c47822b48904e9497b511e8f, type: 2}
 --- !u!114 &355869970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2678,10 +2688,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd8de4f6f6f27e743939b0f7537725e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainDialogue: {fileID: 11400000, guid: 9cc3e4e6c47822b48904e9497b511e8f, type: 2}
-  repeatDialogue: {fileID: 11400000, guid: 8c8f1087dc1e04a429d1b0507a35dd82, type: 2}
-  interactionPrompt: {fileID: 0}
-  gates: []
+  repeatDialogue: {fileID: 11400000, guid: 9725b3f40e6eb4943a141c6a5e3bc2b5, type: 2}
+  interactionPrompt: {fileID: 355869966}
+  gates:
+  - {fileID: 355869969}
 --- !u!1 &368172711
 GameObject:
   m_ObjectHideFlags: 0

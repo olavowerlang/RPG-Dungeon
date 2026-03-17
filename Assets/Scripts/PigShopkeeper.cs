@@ -2,11 +2,9 @@ using UnityEngine;
 
 /// <summary>
 /// Full NPC logic for the pig shopkeeper (MainNPCInstance2).
-/// Replaces NPCDialogue on that object.
 ///
-/// E key    → always dialogue (main first, then repeat)
-/// Click    → checks gates in order; first uncleared gate activates instead of store.
-///            Once all gates are cleared, opens the store directly.
+/// E key    → checks gates first; if all cleared plays repeat dialogue, otherwise activates gate
+/// Click    → same gate check; once all cleared opens the store
 ///
 /// To add a future gate: add a ShopGate subclass component to this GameObject,
 /// then drag it into the Gates array in the correct position.
@@ -14,7 +12,6 @@ using UnityEngine;
 public class PigShopkeeper : MonoBehaviour
 {
     [Header("Dialogue")]
-    [SerializeField] private DialogueData mainDialogue;
     [SerializeField] private DialogueData repeatDialogue;
 
     [Header("UI")]
@@ -24,7 +21,6 @@ public class PigShopkeeper : MonoBehaviour
     [SerializeField] private ShopGate[] gates;
 
     private bool _playerInRange;
-    private bool _mainDone;
 
     private void Update()
     {
@@ -37,11 +33,11 @@ public class PigShopkeeper : MonoBehaviour
 
         if (!canInteract) return;
 
-        // E key → always dialogue
+        // E key → gate check first, then repeat dialogue if all cleared
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (!_mainDone)
-                DialogueManager.Instance.StartDialogue(mainDialogue, OnMainDialogueDone);
+            if (!AllGatesCleared())
+                ActivateFirstUnclearedGate();
             else
                 DialogueManager.Instance.StartDialogue(repeatDialogue);
             return;
@@ -63,21 +59,15 @@ public class PigShopkeeper : MonoBehaviour
         }
     }
 
-    private void OnMainDialogueDone()
+    private bool AllGatesCleared()
     {
-        _mainDone = true;
+        foreach (var gate in gates)
+            if (gate != null && !gate.IsCleared) return false;
+        return true;
     }
 
-    private void TryOpenStore()
+    private void ActivateFirstUnclearedGate()
     {
-        // Main dialogue must be completed first
-        if (!_mainDone)
-        {
-            DialogueManager.Instance.StartDialogue(mainDialogue, OnMainDialogueDone);
-            return;
-        }
-
-        // Check gates in order — first uncleared one blocks the store
         foreach (var gate in gates)
         {
             if (gate != null && !gate.IsCleared)
@@ -86,8 +76,22 @@ public class PigShopkeeper : MonoBehaviour
                 return;
             }
         }
+    }
 
-        // All gates cleared → open store
+    private void TryOpenStore()
+    {
+        if (!AllGatesCleared())
+        {
+            ActivateFirstUnclearedGate();
+            return;
+        }
+
+        if (StoreManager.Instance == null)
+        {
+            Debug.LogError("StoreManager instance is null!");
+            return;
+        }
+
         StoreManager.Instance.OpenStore();
     }
 

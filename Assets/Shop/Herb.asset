@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdc82e067832bc544b627f46be2150c6, type: 3}
   m_Name: Herb
   m_EditorClassIdentifier: 
-  displayName: 
+  displayName: Herb
   description: 
-  icon: {fileID: 0}
-  price: 0
-  itemData: {fileID: 0}
+  icon: {fileID: 681820928, guid: 91c99c336ceaf0f409f4e0f58a883845, type: 3}
+  price: 5
+  itemData: {fileID: 11400000, guid: be7e82b0701f1b6439d29ad84a32b1cd, type: 2}
