@@ -59,6 +59,8 @@ public class StoreUI : MonoBehaviour
 
         foreach (var item in itemsForSale)
         {
+            if (item.isUnlock && item.unlockType == UnlockType.Dash && PlayerStats.Instance != null && PlayerStats.Instance.hasDash)
+                continue;
             var slot = Instantiate(itemSlotPrefab, itemContainer);
             slot.GetComponent<StoreSlot>().Setup(item, this);
         }

@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bdc82e067832bc544b627f46be2150c6, type: 3}
-  m_Name: HeartContainer
+  m_Name: Dash
   m_EditorClassIdentifier: 
-  displayName: Heart Container
-  description: An extra life.
-  icon: {fileID: 21300000, guid: bb6c0900e0a96a64e8b1d59657ddba95, type: 3}
-  price: 10
+  displayName: 
+  description: 'Reposition yourself faster. '
+  icon: {fileID: 21300000, guid: b7d7d6e7b939d7e44a794909577872b3, type: 3}
+  price: 0
   itemData: {fileID: 0}
-  isDirectBuff: 1
-  directBuffType: 4
-  isUnlock: 0
+  isDirectBuff: 0
+  directBuffType: 0
+  isUnlock: 1
   unlockType: 0

@@ -69,7 +69,7 @@ public class DialogueManager : MonoBehaviour
         dialogueText.text = _lines[index].text;
 
         bool isLast = index == _lines.Length - 1;
-        continuePrompt.text = isLast ? "[E] Close" : "[E] Continue";
+        continuePrompt.text = isLast ? "[E / Space] Close" : "[E / Space] Continue";
     }
 
     private void EndDialogue()

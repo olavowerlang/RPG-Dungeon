@@ -12,6 +12,7 @@ using UnityEngine;
 public class PigShopkeeper : MonoBehaviour
 {
     [Header("Dialogue")]
+    [SerializeField] private DialogueData mainDialogue;
     [SerializeField] private DialogueData repeatDialogue;
 
     [Header("UI")]
@@ -21,6 +22,7 @@ public class PigShopkeeper : MonoBehaviour
     [SerializeField] private ShopGate[] gates;
 
     private bool _playerInRange;
+    private bool _mainDone;
 
     private void Update()
     {
@@ -33,13 +35,19 @@ public class PigShopkeeper : MonoBehaviour
 
         if (!canInteract) return;
 
-        // E key → gate check first, then repeat dialogue if all cleared
+        // E key → gate check first, then repeat dialogue only after dash is unlocked
         if (Input.GetKeyDown(KeyCode.E))
         {
             if (!AllGatesCleared())
                 ActivateFirstUnclearedGate();
-            else
-                DialogueManager.Instance.StartDialogue(repeatDialogue);
+            else if (PlayerStats.Instance != null && PlayerStats.Instance.hasDash)
+            {
+                if (!_mainDone)
+                    DialogueManager.Instance.StartDialogue(mainDialogue, () => _mainDone = true);
+                else
+                    DialogueManager.Instance.StartDialogue(repeatDialogue);
+            }
+            // gates cleared but dash not yet bought: E does nothing — go buy dash from store
             return;
         }
 

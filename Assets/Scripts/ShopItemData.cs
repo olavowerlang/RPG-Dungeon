@@ -12,4 +12,8 @@ public class ShopItemData : ScriptableObject
     [Header("Direct Buff (bypasses crafting)")]
     public bool isDirectBuff;
     public BuffType directBuffType;
+
+    [Header("Unlock")]
+    public bool isUnlock;
+    public UnlockType unlockType;
 }

@@ -52,7 +52,7 @@ public class CraftingSystem : MonoBehaviour
     public CraftingRecipe GetRecipeForIngredient(ItemData ingredient)
     {
         foreach (var recipe in recipes)
-            if (recipe.ingredient == ingredient)
+            if (recipe != null && recipe.ingredient == ingredient)
                 return recipe;
         return null;
     }
@@ -101,8 +101,8 @@ public class CraftingSystem : MonoBehaviour
         switch (buffType)
         {
             case BuffType.Damage:
-                foreach (var dd in _damageDealers)
-                    if (dd != null) dd.Damage += damageIncrement;
+                if (_playerStats != null)
+                    _playerStats.AddDamage(damageIncrement);
                 break;
 
             case BuffType.DashSpeed:
@@ -111,8 +111,11 @@ public class CraftingSystem : MonoBehaviour
                 break;
 
             case BuffType.Knockback:
-                foreach (var dd in _damageDealers)
-                    if (dd != null) dd.knockbackForce += knockbackIncrement;
+                if (_playerStats != null)
+                {
+                    _playerStats.knockbackForce += knockbackIncrement;
+                    _playerStats.PushToDealers();
+                }
                 break;
 
             case BuffType.MoveSpeed:
@@ -131,19 +134,12 @@ public class CraftingSystem : MonoBehaviour
     {
         if (_playerStats != null)
         {
-            _playerStats.speed          = _baseSpeed;
+            _playerStats.speed           = _baseSpeed;
             _playerStats.attackPushForce = _baseAttackPush;
-            _playerStats.dashForce      = _baseDashForce;
-        }
-
-        if (_damageDealers != null)
-        {
-            foreach (var dd in _damageDealers)
-            {
-                if (dd == null) continue;
-                dd.Damage          = _baseDamage;
-                dd.knockbackForce  = _baseKnockback;
-            }
+            _playerStats.dashForce       = _baseDashForce;
+            _playerStats.damage          = _baseDamage;
+            _playerStats.knockbackForce  = _baseKnockback;
+            _playerStats.PushToDealers();
         }
     }
 }

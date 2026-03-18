@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Recipe_HerbForge
   m_EditorClassIdentifier: 
   recipeName: Herb Forge
-  resultDescription: +Knockback
+  resultDescription: +Speed
   ingredient: {fileID: 11400000, guid: be7e82b0701f1b6439d29ad84a32b1cd, type: 2}
   quantity: 1
   buffType: 3

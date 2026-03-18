@@ -10,13 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cbddb4f035f08be4abc6a3e9828c6b25, type: 3}
-  m_Name: SkeletonLootTable
+  m_Name: LootTable
   m_EditorClassIdentifier: 
   entries:
   - item: {fileID: 11400000, guid: eb8516da371237046aed31744211e5f4, type: 2}
-    weight: 0
+    weight: 1
+    requiresDashUnlock: 0
   - item: {fileID: 11400000, guid: 669c677c30ed35c44be8644e118294cb, type: 2}
-    weight: 0
-  - item: {fileID: 0}
-    weight: 0
+    weight: 1
+    requiresDashUnlock: 1
+  - item: {fileID: 11400000, guid: be7e82b0701f1b6439d29ad84a32b1cd, type: 2}
+    weight: 1
+    requiresDashUnlock: 0
   dropChance: 1

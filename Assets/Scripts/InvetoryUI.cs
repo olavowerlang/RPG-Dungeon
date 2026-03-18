@@ -92,14 +92,9 @@ public class InventoryUI : MonoBehaviour
         if (inv == null) return;
 
         if (inv.HasSword())
-        {
-            // Build a temporary slot just for display
             swordSlotUI.SetSlot(new InventorySlot(inv.equippedSword, 1));
-        }
         else
-        {
             swordSlotUI.Clear();
-        }
     }
 
     private void RefreshIngredientSlots()
@@ -111,7 +106,7 @@ public class InventoryUI : MonoBehaviour
             if (slots != null && i < slots.Count)
             {
                 ingredientSlotUIs[i].SetSlot(slots[i]);
-                // Pass click callback — clicking an ingredient selects it
+                // Pass click callback ï¿½ clicking an ingredient selects it
                 int captured = i;
                 ingredientSlotUIs[i].SetClickCallback(() => SelectIngredient(slots[captured].item));
             }

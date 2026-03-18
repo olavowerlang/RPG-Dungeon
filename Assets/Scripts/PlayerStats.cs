@@ -6,6 +6,12 @@ using UnityEngine;
 /// </summary>
 public class PlayerStats : MonoBehaviour
 {
+    public static PlayerStats Instance { get; private set; }
+
+    [Header("— Unlocks —")]
+    public bool hasSword = false;
+    public bool hasDash = false;
+
     [Header("— Upgradable Stats —")]
     public float speed = 10f;
     public float dashForce = 60f;
@@ -27,11 +33,15 @@ public class PlayerStats : MonoBehaviour
     public int startingXPLimit = 10;
     public int damagePerLevel = 1;
 
-    private void Awake() => PushToDealers();
+    private void Awake()
+    {
+        Instance = this;
+        PushToDealers();
+    }
 
     private void OnValidate() => PushToDealers();
 
-    private void PushToDealers()
+    public void PushToDealers()
     {
         if (damageDealers == null) return;
         foreach (var dd in damageDealers)

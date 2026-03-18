@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Recipe_FruitForge
   m_EditorClassIdentifier: 
   recipeName: Fruit Forge
-  resultDescription: +Move Speed
+  resultDescription: +Knockback
   ingredient: {fileID: 11400000, guid: eb8516da371237046aed31744211e5f4, type: 2}
   quantity: 1
   buffType: 2

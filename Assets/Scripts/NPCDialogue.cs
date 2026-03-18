@@ -5,6 +5,8 @@ public class NPCDialogue : MonoBehaviour
     [SerializeField] private DialogueData mainDialogue;
     [SerializeField] private DialogueData repeatDialogue;
     [SerializeField] private GameObject interactionPrompt;
+    [SerializeField] private bool unlockSwordOnComplete;
+    [SerializeField] private ItemData swordItem;
 
     private bool _playerInRange;
     private bool _mainDone;
@@ -19,7 +21,16 @@ public class NPCDialogue : MonoBehaviour
         if (canInteract && Input.GetKeyDown(KeyCode.E))
         {
             if (!_mainDone)
-                DialogueManager.Instance.StartDialogue(mainDialogue, () => _mainDone = true);
+                DialogueManager.Instance.StartDialogue(mainDialogue, () =>
+                {
+                    _mainDone = true;
+                    if (unlockSwordOnComplete && PlayerStats.Instance != null)
+                    {
+                        PlayerStats.Instance.hasSword = true;
+                        if (swordItem != null)
+                            InventoryManager.Instance.EquipSword(swordItem);
+                    }
+                });
             else
                 DialogueManager.Instance.StartDialogue(repeatDialogue);
         }

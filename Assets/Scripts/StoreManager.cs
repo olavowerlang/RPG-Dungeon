@@ -28,6 +28,14 @@ public class StoreManager : MonoBehaviour
 
     public bool TryPurchase(ShopItemData item)
     {
+        if (item.isUnlock)
+        {
+            if (!GoldManager.Instance.SpendGold(item.price)) return false;
+            if (PlayerStats.Instance != null && item.unlockType == UnlockType.Dash)
+                PlayerStats.Instance.hasDash = true;
+            return true;
+        }
+
         if (item.isDirectBuff)
         {
             if (!GoldManager.Instance.SpendGold(item.price)) return false;

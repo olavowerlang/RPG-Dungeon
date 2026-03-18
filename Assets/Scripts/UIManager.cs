@@ -99,7 +99,7 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator LevelUpRoutine(int level)
     {
-        levelUpText.text = $"LEVEL UP! + SPD";
+        levelUpText.text = "LEVEL UP! +DMG";
         levelUpPanel.SetActive(true);
         yield return new WaitForSeconds(3f);
         levelUpPanel.SetActive(false);

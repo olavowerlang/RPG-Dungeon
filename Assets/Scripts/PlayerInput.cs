@@ -10,13 +10,15 @@ public class PlayerInput : MonoBehaviour
     private PlayerInputActions _playerInputActions;
     
     private PlayerController _playerController;
-    
+    private PlayerStats _stats;
+
     [SerializeField] private PlayerCombat playerCombat;
 
     private void Awake()
     {
         _playerInputActions = new PlayerInputActions();
         _playerController = GetComponent<PlayerController>();
+        _stats = GetComponent<PlayerStats>();
     }
     
     private void OnEnable()
@@ -52,12 +54,14 @@ public class PlayerInput : MonoBehaviour
     private void OnLightAttack(InputAction.CallbackContext context)
     {
         if (DialogueManager.Instance != null && DialogueManager.Instance.IsInDialogue) return;
+        if (_stats == null || !_stats.hasSword) return;
         playerCombat.LightAttack();
     }
 
     private void OnDash(InputAction.CallbackContext context)
     {
         if (DialogueManager.Instance != null && DialogueManager.Instance.IsInDialogue) return;
+        if (_stats == null || !_stats.hasDash) return;
         _playerController.Dash();
     }
 }
