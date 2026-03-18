@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Fruit
   m_EditorClassIdentifier: 
   itemName: Fruit
-  description: A juicy fruit
+  description: A juicy fruit. Gives greater knockback.
   icon: {fileID: 298038387, guid: 338eb9325b511bf4dbf0184fff5f5d9c, type: 3}
   itemType: 0
   goldValue: 0

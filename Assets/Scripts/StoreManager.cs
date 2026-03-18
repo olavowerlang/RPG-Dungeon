@@ -28,9 +28,20 @@ public class StoreManager : MonoBehaviour
 
     public bool TryPurchase(ShopItemData item)
     {
+        if (item.isDirectBuff)
+        {
+            if (!GoldManager.Instance.SpendGold(item.price)) return false;
+            CraftingSystem.Instance.ApplyDirectBuff(item.directBuffType);
+            return true;
+        }
+
+        if (item.itemData == null) return false;
         if (!GoldManager.Instance.SpendGold(item.price)) return false;
-        if (item.itemData != null)
-            InventoryManager.Instance.AddItem(item.itemData);
+        if (!InventoryManager.Instance.AddItem(item.itemData))
+        {
+            GoldManager.Instance.AddGold(item.price); // refund — inventory full
+            return false;
+        }
         return true;
     }
 }

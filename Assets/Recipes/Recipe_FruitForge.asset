@@ -16,5 +16,5 @@ MonoBehaviour:
   resultDescription: +Move Speed
   ingredient: {fileID: 11400000, guid: eb8516da371237046aed31744211e5f4, type: 2}
   quantity: 1
-  buffType: 4
+  buffType: 2
   buffValue: 3

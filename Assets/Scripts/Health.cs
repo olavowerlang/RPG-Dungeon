@@ -18,6 +18,12 @@ public class Health : MonoBehaviour
         if (currentHp <= 0) Die();
     }
 
+    public void AddMaxHP(int amount)
+    {
+        maxHP = Mathf.Min(maxHP + amount, 10);
+        currentHp = Mathf.Min(currentHp + amount, maxHP);
+    }
+
     public void Die()
     {
         if (IsDead) return; // prevent double-firing

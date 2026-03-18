@@ -17,4 +17,4 @@ MonoBehaviour:
   ingredient: {fileID: 11400000, guid: ad0f58c26042ffa439c6ecd3dfce6583, type: 2}
   quantity: 1
   buffType: 0
-  buffValue: 0.5
+  buffValue: 1

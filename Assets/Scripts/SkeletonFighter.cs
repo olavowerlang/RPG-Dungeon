@@ -42,6 +42,7 @@ public class SkeletonFighter : MonoBehaviour
     private Rigidbody2D Rb { get; set; }
     private Transform _player;
     private Health _health;
+    private SkeletonHitEffect _hitEffect;
     public S CurrentState => _state;
     private Vector2 _dashTarget;
     private float _timer, _guardTimer;
@@ -57,14 +58,15 @@ public class SkeletonFighter : MonoBehaviour
     {
         Rb = GetComponent<Rigidbody2D>();
         _health = GetComponent<Health>();
+        _hitEffect = GetComponent<SkeletonHitEffect>();
         _player = GameObject.FindWithTag("Player").transform;
         _spawnPoint = transform.position;
         PickNewPatrolTarget();
         ResetGuardTimer();
         
-        dashSpeed = Random.Range(36f, 50f);
-        orbitSpeed = Random.Range(16f, 30f);
-        approachSpeed = Random.Range(16f, 30f);
+        dashSpeed = Random.Range(18f, 25f);
+        orbitSpeed = Random.Range(8f, 15f);
+        approachSpeed = Random.Range(8f, 15f);
         patrolSpeed = approachSpeed;
         orbitRadius = Random.Range(7f, 14f);
         cooldownTime = Random.Range(0.3f, 1f);
@@ -87,7 +89,7 @@ public class SkeletonFighter : MonoBehaviour
                 if (_patrolWaitTimer > 0f)
                 {
                     _patrolWaitTimer -= Time.fixedDeltaTime;
-                    Rb.velocity = Vector2.zero;
+                    Rb.velocity = _hitEffect.KnockbackVelocity;
                     break;
                 }
                 Vector2 toWaypoint = _patrolTarget - (Vector2)transform.position;
@@ -97,25 +99,25 @@ public class SkeletonFighter : MonoBehaviour
                     PickNewPatrolTarget();
                     break;
                 }
-                Rb.velocity = toWaypoint.normalized * patrolSpeed;
+                Rb.velocity = toWaypoint.normalized * patrolSpeed + _hitEffect.KnockbackVelocity;
                 break;
 
             case S.Approach:
                 if (dist > orbitRadius)
-                    Rb.velocity = toPlayer.normalized * approachSpeed;
+                    Rb.velocity = toPlayer.normalized * approachSpeed + _hitEffect.KnockbackVelocity;
                 else
                     EnterOrbit();
                 break;
 
             case S.Orbit:
-                Rb.velocity = new Vector2(-toPlayer.y, toPlayer.x).normalized * orbitSpeed;
+                Rb.velocity = new Vector2(-toPlayer.y, toPlayer.x).normalized * orbitSpeed + _hitEffect.KnockbackVelocity;
                 _guardTimer -= Time.fixedDeltaTime;
                 if (dist <= attackRange || _guardTimer <= 0f)
                     EnterDashPrep();
                 break;
 
             case S.DashPrep:
-                Rb.velocity = Vector2.zero;
+                Rb.velocity = _hitEffect.KnockbackVelocity;
                 _timer -= Time.fixedDeltaTime;
                 if (_timer <= 0f) EnterDashMove();
                 break;
@@ -143,7 +145,7 @@ public class SkeletonFighter : MonoBehaviour
                     Vector2 toTarget = _dashTarget - currentPos;
                     Vector2 movement = toTarget.normalized * dashSpeed;
                     Vector2 futurePos = currentPos + movement * Time.fixedDeltaTime;
-                    Rb.velocity = movement;
+                    Rb.velocity = movement + _hitEffect.KnockbackVelocity;
 
                     if (Vector2.Dot(toTarget, _dashTarget - futurePos) <= 0f)
                         EnterHit();
@@ -158,7 +160,7 @@ public class SkeletonFighter : MonoBehaviour
                 break;
 
             case S.Cooldown:
-                Rb.velocity = Vector2.zero;
+                Rb.velocity = _hitEffect.KnockbackVelocity;
                 _timer -= Time.fixedDeltaTime;
                 if (_timer <= 0f)
                 {

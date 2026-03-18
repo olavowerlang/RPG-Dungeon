@@ -10,10 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bdc82e067832bc544b627f46be2150c6, type: 3}
-  m_Name: Diamond
+  m_Name: HeartContainer
   m_EditorClassIdentifier: 
-  displayName: Diamond
-  description: 
-  icon: {fileID: -1092153859, guid: 572bb35294ab715449c4c06f31b1fa55, type: 3}
-  price: 5
-  itemData: {fileID: 11400000, guid: db2f7d077016b9942934e824fc713f3c, type: 2}
+  displayName: Heart Container
+  description: Extra life
+  icon: {fileID: 21300000, guid: bb6c0900e0a96a64e8b1d59657ddba95, type: 3}
+  price: 10
+  itemData: {fileID: 0}
+  isDirectBuff: 1
+  directBuffType: 4

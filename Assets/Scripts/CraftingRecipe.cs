@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum BuffType { Damage, DashSpeed, Range, Knockback, MoveSpeed }
+public enum BuffType { Damage, DashSpeed, Knockback, MoveSpeed, MaxHP }
 
 // Each recipe = one ingredient fused into the sword
 [CreateAssetMenu(fileName = "New Recipe", menuName = "Inventory/Crafting Recipe")]

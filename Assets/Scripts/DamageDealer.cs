@@ -5,6 +5,7 @@ public class DamageDealer : MonoBehaviour
 {
     [Header("Configuração do Dano")]
     [SerializeField] private int damage = 1;
+    public float knockbackForce = 0f;
     [Tooltip("Selecione apenas as layers que este hit-box deve atingir (ex.: Player)")]
     [SerializeField] private LayerMask hitLayers;
 
@@ -51,6 +52,6 @@ public class DamageDealer : MonoBehaviour
 
         //calcula direção p/ knockback e dispara TakeHit
         Vector2 dir = (other.transform.position - transform.position).normalized;
-        target.TakeHit(damage, dir);
+        target.TakeHit(damage, dir, knockbackForce);
     }
 }

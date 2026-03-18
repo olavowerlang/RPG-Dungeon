@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Herb
   m_EditorClassIdentifier: 
   displayName: Herb
-  description: 
+  description: A medicinal herb. Increases movement speed.
   icon: {fileID: 681820928, guid: 91c99c336ceaf0f409f4e0f58a883845, type: 3}
-  price: 5
+  price: 1
   itemData: {fileID: 11400000, guid: be7e82b0701f1b6439d29ad84a32b1cd, type: 2}
+  isDirectBuff: 0
+  directBuffType: 3

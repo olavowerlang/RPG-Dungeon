@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GoldOre
   m_EditorClassIdentifier: 
   itemName: Gold Ore
-  description: A chunk of gold ore
+  description: A chunk of gold ore. Gives more dash force
   icon: {fileID: -1358499486, guid: 572bb35294ab715449c4c06f31b1fa55, type: 3}
   itemType: 0
   goldValue: 0

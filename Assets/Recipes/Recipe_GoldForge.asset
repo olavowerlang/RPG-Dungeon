@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Recipe_GoldForge
   m_EditorClassIdentifier: 
   recipeName: Gold Forge
-  resultDescription: +Dash Speed
+  resultDescription: +Dash Force
   ingredient: {fileID: 11400000, guid: 669c677c30ed35c44be8644e118294cb, type: 2}
   quantity: 1
   buffType: 1

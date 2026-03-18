@@ -81,10 +81,10 @@ public class UIManager : MonoBehaviour
     }
 
     // --- Atualiza Barra e Texto do Nível ---
-    public void UpdateXPUI(int currentXp, int targetXp, int currentLevel)
+    public void UpdateXPUI(float currentXp, int targetXp, int currentLevel)
     {
         // Atualiza a Barra
-        float progress = (float)currentXp / targetXp;
+        float progress = currentXp / targetXp;
         xpSlider.value = progress;
 
         // Atualiza o Texto ao lado da barra

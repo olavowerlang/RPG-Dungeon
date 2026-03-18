@@ -5,17 +5,25 @@ public class CraftingSystem : MonoBehaviour
 {
     public static CraftingSystem Instance;
 
-    [Header("Recipes — all fuse ingredient into sword")]
+    [Header("Recipes â€” all fuse ingredient into sword")]
     public List<CraftingRecipe> recipes = new();
+
+    [Header("Upgrade Increments")]
+    public float speedIncrement = 2.5f;
+    public float dashIncrement = 5f;
+    public int damageIncrement = 1;
+    public float knockbackIncrement = 3.5f;
 
     // Base values for reset on death
     private float _baseSpeed;
     private float _baseAttackPush;
     private float _baseDashForce;
     private int _baseDamage;
+    private float _baseKnockback;
 
-    private PlayerController _playerController;
-    private DamageDealer _damageDealer;
+    private PlayerStats _playerStats;
+    private DamageDealer[] _damageDealers;
+    private Health _playerHealth;
 
     public event System.Action<string> OnFuseSuccess;
 
@@ -27,21 +35,20 @@ public class CraftingSystem : MonoBehaviour
 
     private void Start()
     {
-        _playerController = FindObjectOfType<PlayerController>();
-        _damageDealer = FindObjectOfType<DamageDealer>();
+        _playerStats = FindObjectOfType<PlayerStats>();
 
-        if (_playerController != null)
+        if (_playerStats != null)
         {
-            _baseSpeed = _playerController.speed;
-            _baseAttackPush = _playerController.attackPushForce;
-            _baseDashForce = _playerController.dashForce;
+            _damageDealers = _playerStats.GetDamageDealers();
+            _playerHealth  = _playerStats.GetComponent<Health>();
+            _baseSpeed        = _playerStats.speed;
+            _baseAttackPush   = _playerStats.attackPushForce;
+            _baseDashForce    = _playerStats.dashForce;
+            _baseDamage       = _playerStats.damage;
+            _baseKnockback    = _playerStats.knockbackForce;
         }
-
-        if (_damageDealer != null)
-            _baseDamage = _damageDealer.Damage;
     }
 
-    // Returns the recipe that matches this ingredient, or null
     public CraftingRecipe GetRecipeForIngredient(ItemData ingredient)
     {
         foreach (var recipe in recipes)
@@ -50,13 +57,12 @@ public class CraftingSystem : MonoBehaviour
         return null;
     }
 
-    // Try to fuse selected ingredient into the sword
     public bool TryFuse(ItemData ingredient)
     {
         if (InventoryManager.Instance == null) return false;
         if (!InventoryManager.Instance.HasSword())
         {
-            Debug.Log("No sword equipped — cannot fuse.");
+            Debug.Log("No sword equipped â€” cannot fuse.");
             return false;
         }
 
@@ -74,66 +80,70 @@ public class CraftingSystem : MonoBehaviour
         }
 
         InventoryManager.Instance.RemoveItem(ingredient, recipe.quantity);
-        ApplyBuff(recipe.buffType, recipe.buffValue);
+        ApplyBuff(recipe.buffType);
 
         OnFuseSuccess?.Invoke(recipe.resultDescription);
-        Debug.Log($"Fused {ingredient.itemName} into sword — {recipe.resultDescription}");
+        Debug.Log($"Fused {ingredient.itemName} into sword â€” {recipe.resultDescription}");
         return true;
     }
 
-    private void ApplyBuff(BuffType buffType, float value)
+    public void ApplyDirectBuff(BuffType buffType) => ApplyBuff(buffType);
+
+    private void ApplyBuff(BuffType buffType)
     {
-        if (_playerController == null)
-            _playerController = FindObjectOfType<PlayerController>();
-        if (_damageDealer == null)
-            _damageDealer = FindObjectOfType<DamageDealer>();
+        if (_playerStats == null)
+        {
+            _playerStats = FindObjectOfType<PlayerStats>();
+            if (_playerStats != null)
+                _damageDealers = _playerStats.GetDamageDealers();
+        }
 
         switch (buffType)
         {
             case BuffType.Damage:
-                if (_damageDealer != null)
-                    _damageDealer.Damage += (int)value;
+                foreach (var dd in _damageDealers)
+                    if (dd != null) dd.Damage += damageIncrement;
                 break;
 
             case BuffType.DashSpeed:
-                if (_playerController != null)
-                    _playerController.dashForce += value;
+                if (_playerStats != null)
+                    _playerStats.dashForce += dashIncrement;
                 break;
 
             case BuffType.Knockback:
-                if (_playerController != null)
-                    _playerController.attackPushForce += value;
+                foreach (var dd in _damageDealers)
+                    if (dd != null) dd.knockbackForce += knockbackIncrement;
                 break;
 
             case BuffType.MoveSpeed:
-                if (_playerController != null)
-                    _playerController.speed += value;
+                if (_playerStats != null)
+                    _playerStats.speed += speedIncrement;
                 break;
 
-            case BuffType.Range:
-                if (_damageDealer != null)
-                {
-                    Vector3 scale = _damageDealer.transform.localScale;
-                    scale *= (1f + value);
-                    _damageDealer.transform.localScale = scale;
-                }
+            case BuffType.MaxHP:
+                if (_playerHealth != null)
+                    _playerHealth.AddMaxHP(1);
                 break;
         }
     }
 
     public void ResetBuffs()
     {
-        if (_playerController != null)
+        if (_playerStats != null)
         {
-            _playerController.speed = _baseSpeed;
-            _playerController.attackPushForce = _baseAttackPush;
-            _playerController.dashForce = _baseDashForce;
+            _playerStats.speed          = _baseSpeed;
+            _playerStats.attackPushForce = _baseAttackPush;
+            _playerStats.dashForce      = _baseDashForce;
         }
 
-        if (_damageDealer != null)
+        if (_damageDealers != null)
         {
-            _damageDealer.Damage = _baseDamage;
-            _damageDealer.transform.localScale = Vector3.one;
+            foreach (var dd in _damageDealers)
+            {
+                if (dd == null) continue;
+                dd.Damage          = _baseDamage;
+                dd.knockbackForce  = _baseKnockback;
+            }
         }
     }
 }

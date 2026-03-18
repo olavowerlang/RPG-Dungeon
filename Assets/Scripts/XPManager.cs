@@ -4,14 +4,15 @@ using UnityEngine;
 public class XPManager : MonoBehaviour
 {
     [SerializeField] private int level = 1;
-    [SerializeField] private int xpLimit = 10;
-    [SerializeField] private int xpStorage = 0;
-    
-    private PlayerController _player;
+    [SerializeField] private float xpStorage = 0;
+
+    private int _xpLimit;
+    private PlayerStats _stats;
 
     private void Awake()
     {
-        _player = GetComponent<PlayerController>();
+        _stats = GetComponent<PlayerStats>();
+        _xpLimit = _stats.startingXPLimit;
     }
 
     private void Start()
@@ -20,7 +21,7 @@ public class XPManager : MonoBehaviour
         UpdateUI();
     }
 
-    public void GainXP(int amount)
+    public void GainXP(float amount)
     {
         xpStorage += amount;
         
@@ -31,18 +32,18 @@ public class XPManager : MonoBehaviour
 
     private void LevelUpCheck()
     {
-        while (xpStorage >= xpLimit)
+        while (xpStorage >= _xpLimit)
         {
-            xpStorage -= xpLimit;
+            xpStorage -= _xpLimit;
             level++;
-            xpLimit *= 2; 
+            _xpLimit *= 2;
 
-            _player.speed += 5f;
+            _stats.AddDamage(_stats.damagePerLevel);
 
             if(UIManager.Instance != null)
                 UIManager.Instance.ShowLevelUpMessage(level);
 
-            Debug.Log($"LEVEL UP! Level: {level}. + SPD");
+            Debug.Log($"LEVEL UP! Level: {level}. +{_stats.damagePerLevel} DMG");
         }
         // Atualiza a UI após o loop (para garantir que a barra esvazie se subiu de nível)
         UpdateUI();
@@ -51,7 +52,7 @@ public class XPManager : MonoBehaviour
     // Função auxiliar para não repetir código
     private void UpdateUI()
     {
-        if(UIManager.Instance != null) 
-            UIManager.Instance.UpdateXPUI(xpStorage, xpLimit, level);
+        if(UIManager.Instance != null)
+            UIManager.Instance.UpdateXPUI(xpStorage, _xpLimit, level);
     }
 }

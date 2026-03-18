@@ -31,14 +31,18 @@ public class SkeletonHitEffect : MonoBehaviour, IDamageable
         _rb        = GetComponent<Rigidbody2D>();
     }
 
+    public Vector2 KnockbackVelocity => _impulseVel;
+
     private void FixedUpdate()
     {
-        if (_impulseVel != Vector2.zero)
-        {
-            _rb.velocity += _impulseVel;
-            _impulseVel   = Vector2.Lerp(_impulseVel, Vector2.zero,
-                                         Time.fixedDeltaTime * impulseDecayRate);
-        }
+        if (_impulseVel == Vector2.zero) return;
+
+        // When AI is disabled (stunned), apply directly — nobody else is setting velocity
+        if (!_ai.enabled)
+            _rb.velocity = _impulseVel;
+
+        _impulseVel = Vector2.Lerp(_impulseVel, Vector2.zero,
+                                   Time.fixedDeltaTime * impulseDecayRate);
     }
     
     private void OnDisable()
@@ -48,11 +52,11 @@ public class SkeletonHitEffect : MonoBehaviour, IDamageable
     }
 
 
-    public void TakeHit(int dmg, Vector2 dir)
+    public void TakeHit(int dmg, Vector2 dir, float knockback = 0f)
     {
         if (_hp.IsDead) return;
 
-        _impulseVel += dir.normalized * knockForce;
+        _impulseVel += dir.normalized * (knockForce + knockback);
         _hp.TakeDamage(dmg);
         
         if (_hp.IsDead) return;

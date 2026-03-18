@@ -21,6 +21,9 @@ public class EnemyAnimator : MonoBehaviour
     [SerializeField] private LootTable lootTable;
     [SerializeField] private GameObject itemDropPrefab;
 
+    [Header("XP Reward")]
+    [SerializeField] private float xpReward = 2f;
+
     [Header("Gold Drop")]
     [SerializeField] private GameObject goldDropPrefab;
     [SerializeField] private int minGold = 5;
@@ -74,7 +77,7 @@ public class EnemyAnimator : MonoBehaviour
         // Give XP
         XPManager playerXP = FindObjectOfType<XPManager>();
         if (playerXP != null)
-            playerXP.GainXP(5);
+            playerXP.GainXP(xpReward);
 
         // Drop loot and gold
         SpawnLoot();

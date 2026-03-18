@@ -5,14 +5,11 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 10f;
-    public float attackPushForce = 6f;
-    public float dashForce = 60f; // exposed so CraftingSystem can buff it
-
     private readonly float _impulseDecayRate = 10f;
 
     private Rigidbody2D _rb;
     private PlayerInput _input;
+    private PlayerStats _stats;
     private bool _isWalking;
     public Vector2 InputDirection { get; private set; }
     public Vector2 LastMovementDirection { get; private set; } = Vector2.right;
@@ -23,6 +20,7 @@ public class PlayerController : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _input = GetComponent<PlayerInput>();
+        _stats = GetComponent<PlayerStats>();
     }
 
     private void FixedUpdate()
@@ -32,7 +30,7 @@ public class PlayerController : MonoBehaviour
         if (InputDirection != Vector2.zero)
             LastMovementDirection = InputDirection;
 
-        var inputVelocity = new Vector2(InputDirection.x * speed, InputDirection.y * speed);
+        var inputVelocity = new Vector2(InputDirection.x * _stats.speed, InputDirection.y * _stats.speed);
 
         _rb.velocity = inputVelocity + _impulseVelocity;
 
@@ -58,6 +56,6 @@ public class PlayerController : MonoBehaviour
 
     public void Dash()
     {
-        _impulseVelocity += LastMovementDirection * dashForce;
+        _impulseVelocity += LastMovementDirection * _stats.dashForce;
     }
 }

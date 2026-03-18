@@ -8,4 +8,8 @@ public class ShopItemData : ScriptableObject
     public Sprite icon;
     public int price;
     public ItemData itemData; // item added to player inventory on purchase
+
+    [Header("Direct Buff (bypasses crafting)")]
+    public bool isDirectBuff;
+    public BuffType directBuffType;
 }

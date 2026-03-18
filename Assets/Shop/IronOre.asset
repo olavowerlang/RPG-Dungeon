@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: IronOre
   m_EditorClassIdentifier: 
   displayName: Iron
-  description: 
+  description: A chunk of iron ore. Makes you stronger.
   icon: {fileID: 844263125, guid: 572bb35294ab715449c4c06f31b1fa55, type: 3}
   price: 5
   itemData: {fileID: 11400000, guid: ad0f58c26042ffa439c6ecd3dfce6583, type: 2}
+  isDirectBuff: 0
+  directBuffType: 0
