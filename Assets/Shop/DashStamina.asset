@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bdc82e067832bc544b627f46be2150c6, type: 3}
-  m_Name: IronOre
+  m_Name: DashStamina
   m_EditorClassIdentifier: 
-  displayName: Iron
-  description: A chunk of iron ore. Makes you stronger.
-  icon: {fileID: 844263125, guid: 572bb35294ab715449c4c06f31b1fa55, type: 3}
-  price: 5
-  itemData: {fileID: 11400000, guid: ad0f58c26042ffa439c6ecd3dfce6583, type: 2}
-  isDirectBuff: 0
+  displayName: 
+  description: Bigger stamina bar.
+  icon: {fileID: 21300000, guid: a1f8b2690f57c054d95826c79d9d1b8b, type: 3}
+  price: 10
+  itemData: {fileID: 0}
+  isDirectBuff: 1
   directBuffType: 0
   isUnlock: 0
   unlockType: 0
-  requiresDashUnlock: 0
+  requiresDashUnlock: 1

@@ -17,14 +17,16 @@ MonoBehaviour:
     text: Ho ho! I see you've slain all the skeletons and are a bit stronger. Seems
       like you're not THAT useless after all. Congrats. Yay.
   - speakerName: Pig
-    text: 'Now, as you can see, this here''s my lil'' shop. You can buy all kinds
-      of upgrades in this establishment. '
+    text: 'Now, as you can see, this here''s my lil'' shop. Remember those purple
+      orbs I told you about?  '
   - speakerName: Pig
-    text: 'You know, those same ones you use in crafting, and some other that are
-      exclusive to this store. '
+    text: You can use them to buy all kinds of things in this establishment.
+  - speakerName: Pig
+    text: 'You know, those same ones you use in crafting, and others that are exclusive
+      to this store. '
   - speakerName: Pig
     text: So, as a reward for not being completely useless, I'll let you grab a cool
-      new power with a discount
+      new power with a discount.
   - speakerName: Pig
     text: Click on me to open up the store window! After you get your new power,
       we will talk more.

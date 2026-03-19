@@ -47,8 +47,6 @@ public class UIManager : MonoBehaviour
         if (levelUpPanel != null) levelUpPanel.SetActive(false);
 
         healthImages.SetActive(false);
-        xpSlider.gameObject.SetActive(false);
-        if (levelText != null) levelText.gameObject.SetActive(false);
         if (goldText != null) goldText.gameObject.SetActive(false);
         if (goldIcon != null) goldIcon.gameObject.SetActive(false);
 
@@ -67,8 +65,6 @@ public class UIManager : MonoBehaviour
 
         // --- CORREÇÃO: Mostra o HUD agora ---
         healthImages.gameObject.SetActive(true);
-        xpSlider.gameObject.SetActive(true);
-        if (levelText != null) levelText.gameObject.SetActive(true);
         if (goldText != null)
         {
             goldText.gameObject.SetActive(true);

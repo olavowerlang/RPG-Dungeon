@@ -5,6 +5,9 @@ public class GoldManager : MonoBehaviour
 {
     public static GoldManager Instance;
 
+    [SerializeField] private int startingGold = 0;
+    [SerializeField] private int debugAddGold = 0;
+
     public int Gold { get; private set; }
     public event Action<int> OnGoldChanged;
 
@@ -12,6 +15,17 @@ public class GoldManager : MonoBehaviour
     {
         if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
+        Gold = startingGold;
+        OnGoldChanged?.Invoke(Gold);
+    }
+
+    private void Update()
+    {
+        if (debugAddGold != 0)
+        {
+            AddGold(debugAddGold);
+            debugAddGold = 0;
+        }
     }
 
     public void AddGold(int amount)

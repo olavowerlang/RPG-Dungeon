@@ -15,12 +15,23 @@ public class PlayerController : MonoBehaviour
     public Vector2 LastMovementDirection { get; private set; } = Vector2.right;
 
     private Vector2 _impulseVelocity = Vector2.zero;
+    private float _currentDashStamina;
+    public float CurrentDashStamina => _currentDashStamina;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
         _input = GetComponent<PlayerInput>();
         _stats = GetComponent<PlayerStats>();
+        _currentDashStamina = _stats.maxDashStamina;
+    }
+
+    private void Update()
+    {
+        float regenRate = _stats.dashStaminaRegenTime > 0f ? 1f / _stats.dashStaminaRegenTime : float.MaxValue;
+        _currentDashStamina = Mathf.Clamp(
+            _currentDashStamina + regenRate * Time.deltaTime,
+            0f, _stats.maxDashStamina);
     }
 
     private void FixedUpdate()
@@ -54,8 +65,12 @@ public class PlayerController : MonoBehaviour
         _impulseVelocity += direction * pushForce;
     }
 
+    public bool CanDash() => _currentDashStamina >= _stats.dashStaminaCost;
+
     public void Dash()
     {
+        if (!CanDash()) return;
+        _currentDashStamina -= _stats.dashStaminaCost;
         _impulseVelocity += LastMovementDirection * _stats.dashForce;
     }
 }

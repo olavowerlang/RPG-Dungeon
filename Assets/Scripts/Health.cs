@@ -4,6 +4,7 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     [SerializeField] private int maxHP = 3;
+    public int MaxHP => maxHP;
     public int currentHp;
     public bool IsDead { get; private set; }
 
@@ -16,6 +17,16 @@ public class Health : MonoBehaviour
     {
         currentHp -= dmg;
         if (currentHp <= 0) Die();
+    }
+
+    public void Heal(int amount)
+    {
+        currentHp = Mathf.Min(currentHp + amount, maxHP);
+    }
+
+    public void HealFull()
+    {
+        currentHp = maxHP;
     }
 
     public void AddMaxHP(int amount)

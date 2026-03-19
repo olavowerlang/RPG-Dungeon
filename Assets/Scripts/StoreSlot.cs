@@ -23,7 +23,21 @@ public class StoreSlot : MonoBehaviour
         if (icon != null && item.icon != null) icon.sprite = item.icon;
         if (itemNameText != null) itemNameText.text = item.displayName;
         if (descriptionText != null) descriptionText.text = item.description;
-        if (priceText != null) priceText.text = item.price == 0 ? "Free" : $"{item.price}g";
+        if (priceText != null)
+        {
+            if (item.price == 0)
+            {
+                priceText.text = "Free";
+                priceText.color = Color.red;
+                priceText.fontStyle = TMPro.FontStyles.Bold;
+            }
+            else
+            {
+                priceText.text = $"{item.price}g";
+                priceText.color = Color.white;
+                priceText.fontStyle = TMPro.FontStyles.Normal;
+            }
+        }
         if (feedbackText != null) feedbackText.gameObject.SetActive(false);
 
         buyButton.onClick.AddListener(OnBuyClicked);

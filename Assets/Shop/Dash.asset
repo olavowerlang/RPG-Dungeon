@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdc82e067832bc544b627f46be2150c6, type: 3}
   m_Name: Dash
   m_EditorClassIdentifier: 
-  displayName: 
+  displayName: Dash
   description: 'Reposition yourself faster. '
   icon: {fileID: 21300000, guid: b7d7d6e7b939d7e44a794909577872b3, type: 3}
   price: 0

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum BuffType { Damage, DashSpeed, Knockback, MoveSpeed, MaxHP }
+public enum BuffType { Damage, DashSpeed, Knockback, MoveSpeed, MaxHP, DashStamina }
 public enum UnlockType { Dash }
 
 // Each recipe = one ingredient fused into the sword

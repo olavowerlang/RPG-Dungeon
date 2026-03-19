@@ -52,14 +52,18 @@ public class StoreUI : MonoBehaviour
         return StoreManager.Instance.TryPurchase(item);
     }
 
-    private void RefreshSlots()
+    public void RefreshSlots()
     {
         foreach (Transform child in itemContainer)
             Destroy(child.gameObject);
 
+        bool dashUnlocked = PlayerStats.Instance != null && PlayerStats.Instance.hasDash;
+
         foreach (var item in itemsForSale)
         {
-            if (item.isUnlock && item.unlockType == UnlockType.Dash && PlayerStats.Instance != null && PlayerStats.Instance.hasDash)
+            if (item.isUnlock && item.unlockType == UnlockType.Dash && dashUnlocked)
+                continue;
+            if (item.requiresDashUnlock && !dashUnlocked)
                 continue;
             var slot = Instantiate(itemSlotPrefab, itemContainer);
             slot.GetComponent<StoreSlot>().Setup(item, this);

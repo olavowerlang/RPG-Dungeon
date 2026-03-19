@@ -33,6 +33,7 @@ public class StoreManager : MonoBehaviour
             if (!GoldManager.Instance.SpendGold(item.price)) return false;
             if (PlayerStats.Instance != null && item.unlockType == UnlockType.Dash)
                 PlayerStats.Instance.hasDash = true;
+            storeUI.RefreshSlots();
             return true;
         }
 

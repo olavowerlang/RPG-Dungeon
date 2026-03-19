@@ -18,6 +18,11 @@ public class PlayerStats : MonoBehaviour
     public int damage = 1;
     public float knockbackForce = 0f;
 
+    [Header("Dash Stamina")]
+    public float maxDashStamina = 3f;
+    public float dashStaminaCost = 1f;
+    public float dashStaminaRegenTime = 1f; // seconds per unit
+
     [Header("Movement (Fixed)")]
     public float attackPushForce = 6f;
 

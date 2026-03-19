@@ -106,9 +106,11 @@ public class InventoryUI : MonoBehaviour
             if (slots != null && i < slots.Count)
             {
                 ingredientSlotUIs[i].SetSlot(slots[i]);
-                // Pass click callback � clicking an ingredient selects it
                 int captured = i;
-                ingredientSlotUIs[i].SetClickCallback(() => SelectIngredient(slots[captured].item));
+                if (slots[captured].item != null && slots[captured].item.itemType == ItemType.Consumable)
+                    ingredientSlotUIs[i].SetClickCallback(() => UseConsumable(slots[captured].item));
+                else
+                    ingredientSlotUIs[i].SetClickCallback(() => SelectIngredient(slots[captured].item));
             }
             else
             {
@@ -116,6 +118,15 @@ public class InventoryUI : MonoBehaviour
                 ingredientSlotUIs[i].SetClickCallback(null);
             }
         }
+    }
+
+    private void UseConsumable(ItemData item)
+    {
+        if (item == null || item.itemType != ItemType.Consumable) return;
+        var health = PlayerStats.Instance?.GetComponent<Health>();
+        if (health == null) return;
+        health.HealFull();
+        InventoryManager.Instance.RemoveItem(item, 1);
     }
 
     // Called when player clicks an ingredient slot

@@ -13,6 +13,7 @@ public class CraftingSystem : MonoBehaviour
     public float dashIncrement = 5f;
     public int damageIncrement = 1;
     public float knockbackIncrement = 3.5f;
+    public float dashStaminaIncrease = 1f;
 
     // Base values for reset on death
     private float _baseSpeed;
@@ -20,6 +21,7 @@ public class CraftingSystem : MonoBehaviour
     private float _baseDashForce;
     private int _baseDamage;
     private float _baseKnockback;
+    private float _baseDashStamina;
 
     private PlayerStats _playerStats;
     private DamageDealer[] _damageDealers;
@@ -46,6 +48,7 @@ public class CraftingSystem : MonoBehaviour
             _baseDashForce    = _playerStats.dashForce;
             _baseDamage       = _playerStats.damage;
             _baseKnockback    = _playerStats.knockbackForce;
+            _baseDashStamina = _playerStats.maxDashStamina;
         }
     }
 
@@ -127,6 +130,14 @@ public class CraftingSystem : MonoBehaviour
                 if (_playerHealth != null)
                     _playerHealth.AddMaxHP(1);
                 break;
+
+            case BuffType.DashStamina:
+                if (_playerStats != null)
+                {
+                    _playerStats.maxDashStamina += dashStaminaIncrease;
+                    Debug.Log($"DashStamina buff applied. New maxDashStamina: {_playerStats.maxDashStamina}");
+                }
+                break;
         }
     }
 
@@ -139,6 +150,7 @@ public class CraftingSystem : MonoBehaviour
             _playerStats.dashForce       = _baseDashForce;
             _playerStats.damage          = _baseDamage;
             _playerStats.knockbackForce  = _baseKnockback;
+            _playerStats.maxDashStamina  = _baseDashStamina;
             _playerStats.PushToDealers();
         }
     }

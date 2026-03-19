@@ -11,4 +11,7 @@ public class ItemData : ScriptableObject
     public Sprite icon;
     public ItemType itemType;
     public int goldValue;
+
+    [Header("Consumable (Potion)")]
+    public int healAmount; // only used when itemType == Consumable
 }

@@ -16,4 +16,8 @@ public class ShopItemData : ScriptableObject
     [Header("Unlock")]
     public bool isUnlock;
     public UnlockType unlockType;
+
+    [Header("Visibility")]
+    public bool requiresDashUnlock;
 }
+
