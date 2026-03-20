@@ -7,6 +7,8 @@ public class EnemyAnimator : MonoBehaviour
     private static readonly int SfAttackTrigger = Animator.StringToHash("SFAttackTrigger");
     private static readonly int IsWalking = Animator.StringToHash("isWalking");
     private static readonly int Die = Animator.StringToHash("Die");
+    private static readonly int DirX = Animator.StringToHash("DirX");
+    private static readonly int DirY = Animator.StringToHash("DirY");
 
     [SerializeField] private DamageDealer[] _hitboxes;
     private Animator _anim;
@@ -45,6 +47,10 @@ public class EnemyAnimator : MonoBehaviour
     {
         bool inHit = _skeletonFighter.CurrentState == SkeletonFighter.S.Hit;
         _anim.SetBool(IsWalking, !inHit && _skeletonFighter.IsWalking);
+
+        // Send directional params for blend tree (set up DirX/DirY in Animator editor)
+        _anim.SetFloat(DirX, _skeletonFighter.MoveDirection.x);
+        _anim.SetFloat(DirY, _skeletonFighter.MoveDirection.y);
 
         /* Delega o flip para o próprio SkeletonFighter */
         if (!_enemyDeathTriggered)

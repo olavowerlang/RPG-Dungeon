@@ -133,10 +133,7 @@ public class CraftingSystem : MonoBehaviour
 
             case BuffType.DashStamina:
                 if (_playerStats != null)
-                {
                     _playerStats.maxDashStamina += dashStaminaIncrease;
-                    Debug.Log($"DashStamina buff applied. New maxDashStamina: {_playerStats.maxDashStamina}");
-                }
                 break;
         }
     }

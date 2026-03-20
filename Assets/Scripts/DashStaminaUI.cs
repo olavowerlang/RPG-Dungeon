@@ -42,13 +42,7 @@ public class DashStaminaUI : MonoBehaviour
 
     private void UpdateBarWidth()
     {
-        if (_visualRect == null)
-        {
-            Debug.LogWarning("DashStaminaUI: _visualRect is null");
-            return;
-        }
-        float newWidth = _stats.maxDashStamina * widthPerStaminaUnit;
-        Debug.Log($"DashStaminaUI: setting width to {newWidth} (maxStamina={_stats.maxDashStamina})");
-        _visualRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, newWidth);
+        if (_visualRect == null) return;
+        _visualRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _stats.maxDashStamina * widthPerStaminaUnit);
     }
 }

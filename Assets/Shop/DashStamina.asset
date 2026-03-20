@@ -18,7 +18,7 @@ MonoBehaviour:
   price: 10
   itemData: {fileID: 0}
   isDirectBuff: 1
-  directBuffType: 0
+  directBuffType: 5
   isUnlock: 0
   unlockType: 0
   requiresDashUnlock: 1

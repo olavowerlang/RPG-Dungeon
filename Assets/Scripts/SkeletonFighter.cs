@@ -53,6 +53,7 @@ public class SkeletonFighter : MonoBehaviour
     private float _hitTimer;
 
     public bool IsWalking => Rb.velocity != Vector2.zero;
+    public Vector2 MoveDirection { get; private set; }
 
     private void Awake()
     {
@@ -99,18 +100,23 @@ public class SkeletonFighter : MonoBehaviour
                     PickNewPatrolTarget();
                     break;
                 }
-                Rb.velocity = toWaypoint.normalized * patrolSpeed + _hitEffect.KnockbackVelocity;
+                MoveDirection = toWaypoint.normalized;
+                Rb.velocity = MoveDirection * patrolSpeed + _hitEffect.KnockbackVelocity;
                 break;
 
             case S.Approach:
                 if (dist > orbitRadius)
-                    Rb.velocity = toPlayer.normalized * approachSpeed + _hitEffect.KnockbackVelocity;
+                {
+                    MoveDirection = toPlayer.normalized;
+                    Rb.velocity = MoveDirection * approachSpeed + _hitEffect.KnockbackVelocity;
+                }
                 else
                     EnterOrbit();
                 break;
 
             case S.Orbit:
-                Rb.velocity = new Vector2(-toPlayer.y, toPlayer.x).normalized * orbitSpeed + _hitEffect.KnockbackVelocity;
+                MoveDirection = new Vector2(-toPlayer.y, toPlayer.x).normalized;
+                Rb.velocity = MoveDirection * orbitSpeed + _hitEffect.KnockbackVelocity;
                 _guardTimer -= Time.fixedDeltaTime;
                 if (dist <= attackRange || _guardTimer <= 0f)
                     EnterDashPrep();
@@ -144,6 +150,7 @@ public class SkeletonFighter : MonoBehaviour
 
                     Vector2 toTarget = _dashTarget - currentPos;
                     Vector2 movement = toTarget.normalized * dashSpeed;
+                    MoveDirection = toTarget.normalized;
                     Vector2 futurePos = currentPos + movement * Time.fixedDeltaTime;
                     Rb.velocity = movement + _hitEffect.KnockbackVelocity;
 

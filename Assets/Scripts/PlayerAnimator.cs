@@ -8,8 +8,9 @@ public class PlayerAnimator : MonoBehaviour
     private static readonly int IsWalking = Animator.StringToHash("isWalking");
     private static readonly int LightAttackTrigger1 = Animator.StringToHash("LightAttackTrigger1");
     private static readonly int LightAttackTrigger2 = Animator.StringToHash("LightAttackTrigger2");
-
     private static readonly int Die = Animator.StringToHash("Die");
+    private static readonly int DirX = Animator.StringToHash("DirX");
+    private static readonly int DirY = Animator.StringToHash("DirY");
     //private static readonly int LightAttackTrigger3 = Animator.StringToHash("LightAttackTrigger3");
 
     private bool _lightAttackDone  = false; 
@@ -55,14 +56,18 @@ public class PlayerAnimator : MonoBehaviour
 
     private void DefineSpriteDirection()
     {
+        Vector2 dir = _playerController.LastMovementDirection;
+
+        // Send direction to Animator for blend trees (set up in Unity Animator editor)
+        _animator.SetFloat(DirX, dir.x);
+        _animator.SetFloat(DirY, dir.y);
+
+        // Flip sprite horizontally for left movement
+        // (only when there is horizontal input so vertical movement doesn't reset the flip)
         if (_playerController.InputDirection.x != 0)
         {
-            float dirX = _playerController.LastMovementDirection.x;
-
-            bool faceLeft = dirX < 0;
-            
             Vector3 scale = playerVisual.localScale;
-            scale.x = faceLeft ? -2f : 2f;
+            scale.x = dir.x < 0 ? -Mathf.Abs(scale.x) : Mathf.Abs(scale.x);
             playerVisual.localScale = scale;
         }
     }

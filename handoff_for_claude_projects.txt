@@ -1,0 +1,137 @@
+== RPG DUNGEON — UNITY HANDOFF ==
+
+This is a Unity 2D top-down RPG dungeon game (URP). All scripts are in Assets/Scripts/.
+I need help with two things: multidirectional animation setup and three new enemy prefab setups.
+
+---
+
+## 1. MULTIDIRECTIONAL ANIMATION (Player + SkeletonFighter)
+
+The C# code is already done. Both PlayerAnimator.cs and EnemyAnimator.cs already push
+DirX (float) and DirY (float) to the Animator every frame, and flip the sprite horizontally
+via localScale when moving left.
+
+What's missing is the Unity Animator Controller side:
+- Currently, walk/idle/attack states use single directional sprites (left/right only via flip).
+- I have sprite sheets with up, down, left, right directions.
+- I need to set up 2D Blend Trees (2D Simple Directional) for the Walk (and optionally Idle)
+  states, using DirX and DirY as the blend parameters, with one motion per direction.
+- The animator scripts already set DirX/DirY correctly — I just need guidance on how to build
+  the blend trees in the Unity Animator window, and how to structure the animation clips
+  (should each direction be its own clip? how do I slice them from the sprite sheet?).
+
+Affected Animator Controllers:
+- Player Animator Controller (used by PlayerAnimator.cs)
+- SkeletonFighter Animator Controller (used by EnemyAnimator.cs)
+
+The sprite flip for left/right is already handled in code via localScale, so I may only need
+up/down/side directions in the blend tree (3 directions, using flip for the 4th).
+
+---
+
+## 2. NEW ENEMY SETUP IN UNITY EDITOR
+
+Three new enemies have been fully coded. I need help setting up their prefabs, Animator
+Controllers, and Inspector wiring. All three follow the same pattern as the existing
+SkeletonFighter enemy.
+
+### Prefab hierarchy pattern (same for all three):
+Root GameObject:
+  - Rigidbody2D (Collision Detection: Continuous, Freeze Z rotation)
+  - Collider2D (CapsuleCollider2D or CircleCollider2D — body trigger OFF, physics ON)
+  - Health component
+  - GenericEnemyHitEffect component (handles knockback + blink on hit, implements IDamageable)
+  - EnemyContactDamage component (deals damage to player on body contact)
+  - [Enemy-specific AI script]
+
+  Child "Visual" (holds sprites + Animator):
+  - SpriteRenderer
+  - Animator
+  - [Enemy-specific Animator script]
+
+---
+
+### ENEMY A: SLIME
+Scripts: SlimeAI.cs (on root), SlimeAnimator.cs (on Visual child)
+Behavior: patrols, hops toward player when detected, splits into 2 MiniSlimes on death.
+MiniSlime is a separate smaller prefab with MiniSlimeAI.cs + MiniSlimeAnimator.cs.
+
+Animator parameters needed:
+  - isMoving (Bool)
+  - Die (Trigger)
+  - DirX (Float), DirY (Float) — for blend trees if multidirectional sprites exist
+
+SlimeAnimator Inspector fields to wire:
+  - slimeVisual: the Visual child Transform
+  - lootTable, itemDropPrefab, goldDropPrefab: same drop prefabs used by other enemies
+
+SlimeAI Inspector fields:
+  - miniSlimePrefab: drag the MiniSlime prefab here
+
+---
+
+### ENEMY B: BOMBSHROOM
+Scripts: BombshroomAI.cs (on root), BombshroomAnimator.cs (on Visual child)
+Behavior: approaches player, stops and releases a toxic gas cloud, then cools down.
+On death, spawns a larger death gas cloud.
+
+Extra prefabs needed:
+  - Gas Cloud prefab: GameObject with ToxicGasCloud.cs + CircleCollider2D (IsTrigger=true)
+    + particle effect. Wire playerLayer in Inspector.
+  - Death Gas Cloud prefab: same but larger radius/longer lifetime.
+
+Animator parameters needed:
+  - isMoving (Bool)
+  - Die (Trigger)
+  - WindUp (Trigger) — plays a puff-up / charge animation
+  - Release (Trigger) — plays the gas burst animation
+  - DirX (Float), DirY (Float)
+
+BombshroomAI Inspector:
+  - gasCloudPrefab: the Gas Cloud prefab
+  - deathGasCloudPrefab: the Death Gas Cloud prefab
+  - bombshroomAnimator: drag the Visual child (which has BombshroomAnimator) here
+
+---
+
+### ENEMY C: SKELETON ARCHER
+Scripts: SkeletonArcherAI.cs (on root), SkeletonArcherAnimator.cs (on Visual child)
+Behavior: keeps distance from player, strafes sideways, fires arrows on a timed interval.
+Always faces the player in combat (handled in code already).
+
+Extra prefab needed:
+  - Arrow prefab: GameObject with ArrowProjectile.cs + Rigidbody2D (Kinematic) +
+    CapsuleCollider2D (IsTrigger=true) + SpriteRenderer (arrow sprite).
+    Wire playerLayer and obstacleLayer in Inspector.
+
+Add a ShootPoint child transform on the root (or Visual) — this is where arrows spawn from.
+
+Animator parameters needed:
+  - isMoving (Bool)
+  - Die (Trigger)
+  - Shoot (Trigger) — plays draw/release animation
+  - DirX (Float), DirY (Float)
+
+SkeletonArcherAI Inspector:
+  - arrowPrefab: the Arrow prefab
+  - shootPoint: the ShootPoint Transform
+  - archerAnimator: drag the Visual child (which has SkeletonArcherAnimator) here
+
+SkeletonArcherAnimator Inspector:
+  - archerVisual: the Visual child Transform
+
+---
+
+## GENERAL NOTES
+
+- Health component is shared by player and enemies. Enemies die when Health.IsDead == true.
+  The AI scripts subscribe to Health.OnDeath for their own death logic.
+- IDamageable interface is how hits land. GenericEnemyHitEffect implements it for all new enemies.
+- Gold drops use GoldDrop prefab (already exists). Item drops use ItemDrop prefab (already exists).
+  Just drag those into the Inspector fields on the Animator scripts.
+- LootTable is a ScriptableObject (create via Assets menu > Inventory > Loot Table).
+- EnemyContactDamage needs the Player layer set in its playerLayer LayerMask.
+- GenericEnemyHitEffect needs a SpriteRenderer somewhere in the children for the blink effect.
+
+The goal is to get all three enemies into the scene and working visually.
+Ask me for any specific script contents if needed.
