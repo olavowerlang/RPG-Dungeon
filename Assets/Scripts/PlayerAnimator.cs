@@ -79,11 +79,13 @@ public class PlayerAnimator : MonoBehaviour
        
         if (!_lightAttackDone && !_lightAttack2Done)
         {
+            DisableAllHitboxes();
             _animator.SetTrigger(LightAttackTrigger1);
         }
-        
+
         else if (_lightAttackDone && !_lightAttack2Done)
         {
+            DisableAllHitboxes();
             _animator.SetTrigger(LightAttackTrigger2);
         }
        
@@ -132,14 +134,22 @@ public class PlayerAnimator : MonoBehaviour
     public void LightAttack1Ended()
     {
         _lightAttackDone  = false;
-        _lightAttack2Done = false; // segurança
+        _lightAttack2Done = false;
+        DisableAllHitboxes();
     }
 
     // Golpe 2 terminou sem combo
     public void LightAttack2Ended()
     {
         _lightAttackDone  = false;
-        _lightAttack2Done = false; // obrigatório
+        _lightAttack2Done = false;
+        DisableAllHitboxes();
+    }
+
+    private void DisableAllHitboxes()
+    {
+        foreach (var h in _hitboxes)
+            h.EndSwing();
     }
 
     // // Janela para emendar golpe 3
