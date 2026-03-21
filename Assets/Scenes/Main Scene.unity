@@ -2281,17 +2281,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 219739583}
   m_CullTransparentMesh: 1
---- !u!114 &221878777 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 269910103720412481, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
-  m_PrefabInstance: {fileID: 2346138464916295633}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de1edcb23afe7c74fa1c2cb5fda99a32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &242258995
 GameObject:
   m_ObjectHideFlags: 0
@@ -7134,10 +7123,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1609348216}
     m_Modifications:
-    - target: {fileID: 172044002124794142, guid: 37d5d7c4736c1ab42b63e73f1273f76b, type: 3}
-      propertyPath: m_SortingOrder
-      value: 10871
-      objectReference: {fileID: 0}
     - target: {fileID: 5790837967793881655, guid: 37d5d7c4736c1ab42b63e73f1273f76b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.4828262
@@ -13022,17 +13007,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 79.97102, y: 89.96307}
   m_EdgeRadius: 0
---- !u!114 &1549032064 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3684956290753258210, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
-  m_PrefabInstance: {fileID: 2346138464916295633}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de1edcb23afe7c74fa1c2cb5fda99a32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1555191175
 GameObject:
   m_ObjectHideFlags: 0
@@ -15600,84 +15574,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1811341524}
   m_CullTransparentMesh: 1
---- !u!1 &1817076899 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 126661216880809921, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
-  m_PrefabInstance: {fileID: 2346138464916295633}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1817076909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1817076899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6dfc03a0c58e9f34c944bab68b55fc70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1817076919
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1817076899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 791c058bf16fb3c4da85325990334e6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  level: 1
-  xpStorage: 0
 --- !u!4 &1817076928 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9182031184127701325, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
   m_PrefabInstance: {fileID: 2346138464916295633}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1817076929
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1817076899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3645e08047947d64cb04ce49989fca2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1817076937
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1817076899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7987dd48aa186134ab78d44819748d83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hasSword: 0
-  hasDash: 0
-  speed: 59
-  dashForce: 40
-  damage: 11
-  knockbackForce: 0
-  maxDashStamina: 3
-  dashStaminaCost: 1
-  dashStaminaRegenTime: 3
-  attackPushForce: 6
-  damageDealers:
-  - {fileID: 221878777}
-  - {fileID: 1549032064}
-  receivedKnockForce: 3
-  invulnTime: 1
-  blinkFreq: 0.06
-  startingXPLimit: 10
-  damagePerLevel: 1
 --- !u!1 &1827028596
 GameObject:
   m_ObjectHideFlags: 0
@@ -163853,10 +163754,6 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 2344077595519012848, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
-      propertyPath: healthImageList.Array.size
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2344077595519012848, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: healthImageList.Array.data[0]
       value: 
       objectReference: {fileID: 657593790}
@@ -163896,54 +163793,10 @@ PrefabInstance:
       propertyPath: healthImageList.Array.data[9]
       value: 
       objectReference: {fileID: 1787403884}
-    - target: {fileID: 2909277444362362750, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
-      propertyPath: speed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 3939633173304301534, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
-      propertyPath: maxHP
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3939633173304301534, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
-      propertyPath: currentHp
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6476758847589735046, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
-      propertyPath: onDeathAnimEnd.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6476758847589735046, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
-      propertyPath: onDeathAnimEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6476758847589735046, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: onDeathAnimEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1753045830}
-    - target: {fileID: 6476758847589735046, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
-      propertyPath: onDeathAnimEnd.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6476758847589735046, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
-      propertyPath: onDeathAnimEnd.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ShowRestartButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 6476758847589735046, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
-      propertyPath: onDeathAnimEnd.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: UIManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 6476758847589735046, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
-      propertyPath: onDeathAnimEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 8114433782510834575, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
-      propertyPath: m_SortingOrder
-      value: 9937
-      objectReference: {fileID: 0}
-    - target: {fileID: 8912322760274998256, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
-      propertyPath: m_Mass
-      value: 50
-      objectReference: {fileID: 0}
     - target: {fileID: 9182031184127701325, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.09
@@ -163984,23 +163837,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5674117071904424811, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 126661216880809921, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1817076909}
-    - targetCorrespondingSourceObject: {fileID: 126661216880809921, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1817076919}
-    - targetCorrespondingSourceObject: {fileID: 126661216880809921, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1817076929}
-    - targetCorrespondingSourceObject: {fileID: 126661216880809921, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1817076937}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
 --- !u!1001 &2807504656111239822
 PrefabInstance:

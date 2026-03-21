@@ -58,8 +58,8 @@ public class PlayerAnimator : MonoBehaviour
     {
         Vector2 dir = _playerController.LastMovementDirection;
 
-        // Send direction to Animator for blend trees (set up in Unity Animator editor)
-        _animator.SetFloat(DirX, dir.x);
+        // Abs(DirX) because flip handles left/right — blend tree only needs side vs up/down
+        _animator.SetFloat(DirX, Mathf.Abs(dir.x));
         _animator.SetFloat(DirY, dir.y);
 
         // Flip sprite horizontally for left movement

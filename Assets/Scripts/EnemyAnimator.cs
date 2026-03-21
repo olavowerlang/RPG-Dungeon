@@ -48,9 +48,9 @@ public class EnemyAnimator : MonoBehaviour
         bool inHit = _skeletonFighter.CurrentState == SkeletonFighter.S.Hit;
         _anim.SetBool(IsWalking, !inHit && _skeletonFighter.IsWalking);
 
-        // Send directional params for blend tree (set up DirX/DirY in Animator editor)
-        _anim.SetFloat(DirX, _skeletonFighter.MoveDirection.x);
-        _anim.SetFloat(DirY, _skeletonFighter.MoveDirection.y);
+        // Abs(DirX) because the flip handles left/right — blend tree only needs to know side vs up/down
+        _anim.SetFloat(DirX, Mathf.Abs(_skeletonFighter.LastDirection.x));
+        _anim.SetFloat(DirY, _skeletonFighter.LastDirection.y);
 
         /* Delega o flip para o próprio SkeletonFighter */
         if (!_enemyDeathTriggered)

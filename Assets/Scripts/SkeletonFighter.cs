@@ -54,6 +54,7 @@ public class SkeletonFighter : MonoBehaviour
 
     public bool IsWalking => Rb.velocity != Vector2.zero;
     public Vector2 MoveDirection { get; private set; }
+    public Vector2 LastDirection { get; private set; } = Vector2.right;
 
     private void Awake()
     {
@@ -78,6 +79,10 @@ public class SkeletonFighter : MonoBehaviour
     {
         Vector2 toPlayer = _player.position - transform.position;
         float dist = toPlayer.magnitude;
+
+        // Always track player direction except when locked in attack
+        if (_state != S.Hit)
+            UpdateFacing(toPlayer.normalized);
 
         switch (_state)
         {
@@ -226,6 +231,7 @@ public class SkeletonFighter : MonoBehaviour
         if (enemyAnim == null || (_health != null && _health.IsDead)) return;
         _state = S.Hit;
         _hitTimer = 0f;
+        UpdateFacing((_player.position - transform.position).normalized);
         enemyAnim.PlaySfAttack();
     }
 
@@ -244,6 +250,12 @@ public class SkeletonFighter : MonoBehaviour
     private void ResetGuardTimer() =>
         _guardTimer = Random.Range(guardTimeRange.x, guardTimeRange.y);
 
+    private void UpdateFacing(Vector2 dir)
+    {
+        if (dir == Vector2.zero) return;
+        LastDirection = dir;
+    }
+
     public void OnAttackAnimationEnd()
     {
         if (_state == S.Hit)
@@ -253,14 +265,13 @@ public class SkeletonFighter : MonoBehaviour
     //Precisa ser modularizado
     public void DefineSfSpriteDirection()
     {
-        bool faceLeft;
-        if (_state == S.Patrol)
-            faceLeft = Rb.velocity.x < 0f;
-        else
-            faceLeft = _player.position.x < transform.position.x;
+        if (_state == S.Hit) return; // keep locked during attack
+
+        float dx = _player.position.x - transform.position.x;
+        if (Mathf.Abs(dx) < 0.05f) return; // nearly directly above/below
 
         var sc = sfVisual.localScale;
-        sc.x = faceLeft ? -1.75f : 1.75f;
+        sc.x = dx < 0f ? -1.75f : 1.75f;
         sfVisual.localScale = sc;
     }
 }
