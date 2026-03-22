@@ -113,6 +113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAmbush: 0
   detectionRadius: 10
+  ambushDetectionRadius: 6
   gasRange: 6
   moveSpeed: 10
   patrolRadius: 20
@@ -151,8 +152,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   knockForce: 5
   impulseDecayRate: 8
-  blinkDuration: 0.3
-  blinkFrequency: 0.05
+  blinkDuration: 0.2
+  blinkFrequency: 0.1
 --- !u!1 &7180001067389527911
 GameObject:
   m_ObjectHideFlags: 0

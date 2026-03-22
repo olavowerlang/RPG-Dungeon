@@ -23,11 +23,9 @@ public class GenericEnemyHitEffect : MonoBehaviour, IDamageable
     private Vector2 _impulseVel;
     private float _invulTimer;
 
-    /// <summary>AI scripts add this to their velocity each FixedUpdate.</summary>
     public Vector2 KnockbackVelocity => _impulseVel;
     public bool IsInvulnerable => _invulTimer > 0f;
 
-    /// <summary>Fired after damage is applied (and entity is still alive).</summary>
     public event Action OnHitTaken;
 
     private void Awake()

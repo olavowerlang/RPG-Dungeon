@@ -412,9 +412,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   knockForce: 15
   impulseDecayRate: 10
-  blinkDur: 0.1
+  blinkDur: 0.2
   blinkFreq: 0.1
-  stunTime: 0.15
+  stunTime: 0.2
 --- !u!1 &8065701890287727960
 GameObject:
   m_ObjectHideFlags: 0

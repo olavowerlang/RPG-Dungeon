@@ -121,7 +121,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slimeVisual: {fileID: 7335288555390318673}
   defaultScale: 1
-  deathAnimDuration: 0.8
   goldDropPrefab: {fileID: 0}
   minGold: 1
   maxGold: 4
@@ -220,8 +219,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   knockForce: 5
   impulseDecayRate: 8
-  blinkDuration: 0.3
-  blinkFrequency: 0.05
+  blinkDuration: 0.2
+  blinkFrequency: 0.1
 --- !u!114 &8785988155125414927
 MonoBehaviour:
   m_ObjectHideFlags: 0

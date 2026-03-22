@@ -16,7 +16,7 @@ public class SkeletonHitEffect : MonoBehaviour, IDamageable
     private SpriteRenderer _sr;
     private SkeletonFighter _ai;
     private EnemyAnimator _enemyAnim;
-    private Animator _anim; //tive que pegar o ANIM, talvez de pra puxar o takehit direto no enemyanimator?
+    private Animator _anim;
     private Rigidbody2D _rb;
 
     private Vector2 _impulseVel;
@@ -26,8 +26,8 @@ public class SkeletonHitEffect : MonoBehaviour, IDamageable
         _hp        = GetComponent<Health>();
         _sr        = GetComponentInChildren<SpriteRenderer>(true);
         _ai        = GetComponent<SkeletonFighter>();
-        _enemyAnim = GetComponent<EnemyAnimator>();          
-        _anim      = GetComponentInChildren<Animator>(true);  
+        _enemyAnim = GetComponent<EnemyAnimator>();
+        _anim      = GetComponentInChildren<Animator>(true);
         _rb        = GetComponent<Rigidbody2D>();
     }
 
@@ -37,20 +37,18 @@ public class SkeletonHitEffect : MonoBehaviour, IDamageable
     {
         if (_impulseVel == Vector2.zero) return;
 
-        // When AI is disabled (stunned), apply directly — nobody else is setting velocity
         if (!_ai.enabled)
             _rb.velocity = _impulseVel;
 
         _impulseVel = Vector2.Lerp(_impulseVel, Vector2.zero,
                                    Time.fixedDeltaTime * impulseDecayRate);
     }
-    
+
     private void OnDisable()
     {
         StopAllCoroutines();
         if (_sr != null) _sr.enabled = true;
     }
-
 
     public void TakeHit(int dmg, Vector2 dir, float knockback = 0f)
     {
@@ -58,7 +56,7 @@ public class SkeletonHitEffect : MonoBehaviour, IDamageable
 
         _impulseVel += dir.normalized * (knockForce + knockback);
         _hp.TakeDamage(dmg);
-        
+
         if (_hp.IsDead) return;
 
         StartCoroutine(Blink());
@@ -80,12 +78,10 @@ public class SkeletonHitEffect : MonoBehaviour, IDamageable
 
     private IEnumerator Stun()
     {
-        // don't interrupt the skeleton mid-attack — let it finish its swing
         if (_ai.CurrentState == SkeletonFighter.S.Hit) yield break;
 
         _ai.enabled = false;
 
-        /* --- congela animação em Idle --- */
         if (_anim)
         {
             _anim.Play("SkeletonFighter_Idle", 0, 0f);
