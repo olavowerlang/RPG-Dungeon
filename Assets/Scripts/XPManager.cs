@@ -8,10 +8,12 @@ public class XPManager : MonoBehaviour
 
     private int _xpLimit;
     private PlayerStats _stats;
+    private Health _health;
 
     private void Awake()
     {
         _stats = GetComponent<PlayerStats>();
+        _health = GetComponent<Health>();
         _xpLimit = _stats.startingXPLimit;
     }
 
@@ -24,10 +26,7 @@ public class XPManager : MonoBehaviour
     public void GainXP(float amount)
     {
         xpStorage += amount;
-        
         LevelUpCheck();
-        
-        UpdateUI();
     }
 
     private void LevelUpCheck()
@@ -39,6 +38,7 @@ public class XPManager : MonoBehaviour
             _xpLimit *= 2;
 
             _stats.AddDamage(_stats.damagePerLevel);
+            _health?.HealFull();
 
             if(UIManager.Instance != null)
                 UIManager.Instance.ShowLevelUpMessage(level);

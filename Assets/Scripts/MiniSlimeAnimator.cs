@@ -16,9 +16,6 @@ public class MiniSlimeAnimator : MonoBehaviour
     [SerializeField] private Transform slimeVisual;
     [SerializeField] private float defaultScale = 1f;
 
-    [Header("Death Animation")]
-    [SerializeField] private float deathAnimDuration = 0.8f;
-
     [Header("Gold")]
     [SerializeField] private GameObject goldDropPrefab;
     [SerializeField] private int minGold = 1;
@@ -30,6 +27,8 @@ public class MiniSlimeAnimator : MonoBehaviour
     private Animator _anim;
     private MiniSlimeAI _ai;
     private Health _health;
+    private Rigidbody2D _rb;
+    private GenericEnemyHitEffect _hitEffect;
     private bool _deathTriggered;
 
     private void Awake()
@@ -37,6 +36,8 @@ public class MiniSlimeAnimator : MonoBehaviour
         _anim = GetComponent<Animator>();
         _ai = GetComponentInParent<MiniSlimeAI>();
         _health = GetComponentInParent<Health>();
+        _rb = GetComponentInParent<Rigidbody2D>();
+        _hitEffect = GetComponentInParent<GenericEnemyHitEffect>();
     }
 
     private void Update()
@@ -50,7 +51,9 @@ public class MiniSlimeAnimator : MonoBehaviour
         {
             _deathTriggered = true;
             _anim.SetTrigger(DieTrigger);
+            if (_hitEffect != null) _rb.velocity = _hitEffect.KnockbackVelocity;
             _ai.enabled = false;
+            StartCoroutine(FreezeAfterDeath());
             StartCoroutine(WaitForDeathAnim());
         }
     }
@@ -69,9 +72,24 @@ public class MiniSlimeAnimator : MonoBehaviour
         }
     }
 
+    private IEnumerator FreezeAfterDeath()
+    {
+        yield return new WaitForFixedUpdate();
+        yield return new WaitForSeconds(0.25f);
+
+        foreach (var col in _ai.GetComponentsInChildren<Collider2D>())
+            col.enabled = false;
+
+        _rb.simulated = false;
+    }
+
     private IEnumerator WaitForDeathAnim()
     {
-        yield return new WaitForSeconds(deathAnimDuration);
+        yield return new WaitUntil(() =>
+            _anim.GetCurrentAnimatorStateInfo(0).IsName("Slime_Death"));
+
+        yield return new WaitUntil(() =>
+            _anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
 
         XPManager xp = FindObjectOfType<XPManager>();
         if (xp != null) xp.GainXP(xpReward);

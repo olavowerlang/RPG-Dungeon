@@ -21,9 +21,11 @@ public class GenericEnemyHitEffect : MonoBehaviour, IDamageable
     private SpriteRenderer _sr;
 
     private Vector2 _impulseVel;
+    private float _invulTimer;
 
     /// <summary>AI scripts add this to their velocity each FixedUpdate.</summary>
     public Vector2 KnockbackVelocity => _impulseVel;
+    public bool IsInvulnerable => _invulTimer > 0f;
 
     /// <summary>Fired after damage is applied (and entity is still alive).</summary>
     public event Action OnHitTaken;
@@ -36,9 +38,15 @@ public class GenericEnemyHitEffect : MonoBehaviour, IDamageable
 
     private void FixedUpdate()
     {
+        if (_invulTimer > 0f) _invulTimer -= Time.fixedDeltaTime;
         if (_impulseVel == Vector2.zero) return;
         _impulseVel = Vector2.Lerp(_impulseVel, Vector2.zero,
             Time.fixedDeltaTime * impulseDecayRate);
+    }
+
+    public void GrantInvulnerability(float duration)
+    {
+        _invulTimer = duration;
     }
 
     private void OnDisable()
@@ -50,6 +58,7 @@ public class GenericEnemyHitEffect : MonoBehaviour, IDamageable
     public void TakeHit(int dmg, Vector2 dir, float knockback = 0f)
     {
         if (_hp.IsDead) return;
+        if (_invulTimer > 0f) return;
 
         _impulseVel += dir.normalized * (knockForce + knockback);
         _hp.TakeDamage(dmg);

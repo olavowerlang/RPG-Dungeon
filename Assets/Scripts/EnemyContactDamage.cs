@@ -10,11 +10,14 @@ public class EnemyContactDamage : MonoBehaviour
     [SerializeField] private float knockback = 3f;
     [SerializeField] private float hitCooldown = 1f;
     [SerializeField] private LayerMask playerLayer;
+    [SerializeField] private bool useCollision = false;
 
     private float _nextHitTime;
 
-    private void OnTriggerEnter2D(Collider2D other) => TryDamage(other);
-    private void OnTriggerStay2D(Collider2D other) => TryDamage(other);
+    private void OnTriggerEnter2D(Collider2D other) { if (!useCollision) TryDamage(other); }
+    private void OnTriggerStay2D(Collider2D other)  { if (!useCollision) TryDamage(other); }
+    private void OnCollisionEnter2D(Collision2D col) { if (useCollision) TryDamage(col.collider); }
+    private void OnCollisionStay2D(Collision2D col)  { if (useCollision) TryDamage(col.collider); }
 
     private void TryDamage(Collider2D other)
     {

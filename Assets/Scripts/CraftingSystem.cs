@@ -98,7 +98,10 @@ public class CraftingSystem : MonoBehaviour
         {
             _playerStats = FindObjectOfType<PlayerStats>();
             if (_playerStats != null)
+            {
                 _damageDealers = _playerStats.GetDamageDealers();
+                _playerHealth  = _playerStats.GetComponent<Health>();
+            }
         }
 
         switch (buffType)

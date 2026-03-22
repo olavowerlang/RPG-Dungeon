@@ -8,12 +8,16 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class BombshroomAI : MonoBehaviour
 {
-    public enum S { Patrol, Approach, WindUp, Release, Cooldown }
+    public enum S { Disguised, PopOut, Patrol, Approach, WindUp, Cooldown }
     private S _state = S.Patrol;
     public S CurrentState => _state;
 
+    [Header("Ambush")]
+    public bool isAmbush = false;
+
     [Header("Detection")]
     [SerializeField] private float detectionRadius = 10f;
+    [SerializeField] private float ambushDetectionRadius = 3f;
     [SerializeField] private float gasRange = 4f;
 
     [Header("Movement")]
@@ -24,8 +28,6 @@ public class BombshroomAI : MonoBehaviour
     [SerializeField] private float patrolWaitTime = 2f;
 
     [Header("Gas Attack")]
-    [SerializeField] private float windUpTime = 1.2f;
-    [SerializeField] private float releaseHoldTime = 0.4f;
     [SerializeField] private float cooldownTime = 4f;
     [SerializeField] private GameObject gasCloudPrefab;
 
@@ -43,6 +45,7 @@ public class BombshroomAI : MonoBehaviour
     private Vector2 _spawnPoint;
     private Vector2 _patrolTarget;
     private float _patrolWaitTimer;
+    private float _patrolMoveTimer;
     private float _timer;
     private bool _isDead;
 
@@ -57,6 +60,7 @@ public class BombshroomAI : MonoBehaviour
         _player = GameObject.FindWithTag("Player")?.transform;
         _spawnPoint = transform.position;
         PickNewPatrolTarget();
+        if (isAmbush) _state = S.Disguised;
     }
 
     private void OnEnable()
@@ -73,11 +77,25 @@ public class BombshroomAI : MonoBehaviour
     {
         if (_isDead || _player == null) return;
 
+        MoveDirection = Vector2.zero;
         float dist = Vector2.Distance(transform.position, _player.position);
         Vector2 knockback = _hitEffect != null ? _hitEffect.KnockbackVelocity : Vector2.zero;
 
         switch (_state)
         {
+            case S.Disguised:
+                _rb.velocity = Vector2.zero;
+                if (dist <= ambushDetectionRadius)
+                {
+                    _state = S.PopOut;
+                    bombshroomAnimator?.PlayPopOut();
+                }
+                break;
+
+            case S.PopOut:
+                _rb.velocity = Vector2.zero;
+                break;
+
             case S.Patrol:
                 if (dist <= detectionRadius) { _state = S.Approach; break; }
                 UpdatePatrol(knockback);
@@ -93,14 +111,6 @@ public class BombshroomAI : MonoBehaviour
 
             case S.WindUp:
                 _rb.velocity = knockback;
-                _timer -= Time.fixedDeltaTime;
-                if (_timer <= 0f) EnterRelease();
-                break;
-
-            case S.Release:
-                _rb.velocity = knockback;
-                _timer -= Time.fixedDeltaTime;
-                if (_timer <= 0f) EnterCooldown();
                 break;
 
             case S.Cooldown:
@@ -122,7 +132,9 @@ public class BombshroomAI : MonoBehaviour
         }
 
         Vector2 toWaypoint = _patrolTarget - (Vector2)transform.position;
-        if (toWaypoint.magnitude <= waypointThreshold)
+        _patrolMoveTimer += Time.fixedDeltaTime;
+
+        if (toWaypoint.magnitude <= waypointThreshold || _patrolMoveTimer >= 3f)
         {
             _patrolWaitTimer = patrolWaitTime;
             PickNewPatrolTarget();
@@ -133,27 +145,27 @@ public class BombshroomAI : MonoBehaviour
         _rb.velocity = MoveDirection * patrolSpeed + knockback;
     }
 
+    public void OnPopOutComplete()
+    {
+        _state = S.Approach;
+    }
+
     private void EnterWindUp()
     {
         _state = S.WindUp;
-        _timer = windUpTime;
         _rb.velocity = Vector2.zero;
         bombshroomAnimator?.PlayWindUp();
     }
 
-    private void EnterRelease()
+    // Called by animation event at end of WindUp animation
+    public void OnWindUpComplete()
     {
-        _state = S.Release;
-        _timer = releaseHoldTime;
-
         if (gasCloudPrefab != null)
-            Instantiate(gasCloudPrefab, transform.position, Quaternion.identity);
+        {
+            Vector2 spawnPos = ((Vector2)transform.position + (Vector2)_player.position) * 0.5f;
+            Instantiate(gasCloudPrefab, spawnPos, Quaternion.identity);
+        }
 
-        bombshroomAnimator?.PlayRelease();
-    }
-
-    private void EnterCooldown()
-    {
         _state = S.Cooldown;
         _timer = cooldownTime;
     }
@@ -162,7 +174,10 @@ public class BombshroomAI : MonoBehaviour
     {
         if (_isDead) return;
         _isDead = true;
+    }
 
+    public void SpawnDeathGas()
+    {
         if (deathGasCloudPrefab != null)
             Instantiate(deathGasCloudPrefab, transform.position, Quaternion.identity);
     }
@@ -170,5 +185,6 @@ public class BombshroomAI : MonoBehaviour
     private void PickNewPatrolTarget()
     {
         _patrolTarget = _spawnPoint + Random.insideUnitCircle * patrolRadius;
+        _patrolMoveTimer = 0f;
     }
 }

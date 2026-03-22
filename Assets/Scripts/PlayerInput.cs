@@ -23,6 +23,7 @@ public class PlayerInput : MonoBehaviour
     
     private void OnEnable()
     {
+        if (_playerInputActions == null) _playerInputActions = new PlayerInputActions();
         _playerInputActions.Player.Enable();
         
         _playerInputActions.Player.LightAttack.performed += OnLightAttack;

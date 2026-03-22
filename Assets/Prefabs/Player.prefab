@@ -155,8 +155,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f124d36075e77364ca5c5d3bf844acc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 3
-  currentHp: 3
+  maxHP: 100
+  currentHp: 100
 --- !u!114 &2344077595519012848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,11 +230,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7987dd48aa186134ab78d44819748d83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasSword: 0
+  hasSword: 1
   hasDash: 0
-  speed: 59
+  speed: 20
   dashForce: 40
-  damage: 11
+  damage: 1
   knockbackForce: 0
   maxDashStamina: 3
   dashStaminaCost: 1
@@ -242,7 +242,11 @@ MonoBehaviour:
   attackPushForce: 6
   damageDealers:
   - {fileID: 269910103720412481}
+  - {fileID: 8020791933456249186}
+  - {fileID: 3587748931084824593}
   - {fileID: 3684956290753258210}
+  - {fileID: 8832670325567890062}
+  - {fileID: 7940233324591537163}
   receivedKnockForce: 3
   invulnTime: 1
   blinkFreq: 0.06
@@ -366,7 +370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1edcb23afe7c74fa1c2cb5fda99a32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 11
+  damage: 1
   knockbackForce: 0
   hitLayers:
     serializedVersion: 2
@@ -591,7 +595,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -709,7 +713,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -828,7 +832,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -940,7 +944,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -1099,7 +1103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1edcb23afe7c74fa1c2cb5fda99a32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 11
+  damage: 1
   knockbackForce: 0
   hitLayers:
     serializedVersion: 2

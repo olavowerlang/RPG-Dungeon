@@ -3,7 +3,7 @@ using UnityEngine;
 
 /// <summary>
 /// Spawned by Bombshroom. Lingers on the ground and deals DoT to the player.
-/// Attach to a trigger-collider GameObject. Set lifetime and tick damage in Inspector.
+/// Checks every child CircleCollider2D so ring-shaped death clouds work correctly.
 /// </summary>
 public class ToxicGasCloud : MonoBehaviour
 {
@@ -13,11 +13,12 @@ public class ToxicGasCloud : MonoBehaviour
     [SerializeField] private LayerMask playerLayer;
 
     private float _tickTimer;
-    private readonly List<IDamageable> _targetsInCloud = new();
+    private CircleCollider2D[] _cols;
 
     private void Start()
     {
-        _tickTimer = tickInterval;
+        _cols = GetComponentsInChildren<CircleCollider2D>();
+        _tickTimer = 0f;
         Destroy(gameObject, lifetime);
     }
 
@@ -33,20 +34,19 @@ public class ToxicGasCloud : MonoBehaviour
 
     private void DamageTargets()
     {
-        foreach (var target in _targetsInCloud)
+        var damaged = new HashSet<IDamageable>();
+        foreach (var col in _cols)
+        {
+            if (col == null) continue;
+            float worldRadius = col.radius * col.transform.lossyScale.x;
+            var hits = Physics2D.OverlapCircleAll(col.transform.position, worldRadius, playerLayer);
+            foreach (var hit in hits)
+            {
+                if (hit.TryGetComponent<IDamageable>(out var target))
+                    damaged.Add(target);
+            }
+        }
+        foreach (var target in damaged)
             target.TakeHit(damagePerTick, Vector2.zero, 0f);
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if ((playerLayer.value & (1 << other.gameObject.layer)) == 0) return;
-        if (other.TryGetComponent<IDamageable>(out var dmg))
-            _targetsInCloud.Add(dmg);
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.TryGetComponent<IDamageable>(out var dmg))
-            _targetsInCloud.Remove(dmg);
     }
 }

@@ -17,6 +17,7 @@ public class MiniSlimeAI : MonoBehaviour
     private GenericEnemyHitEffect _hitEffect;
 
     private float _hopTimer;
+    private float _spawnWait = 0.5f;
     private bool _isDead;
 
     public bool IsMoving => _rb.velocity.magnitude > 0.3f;
@@ -29,6 +30,7 @@ public class MiniSlimeAI : MonoBehaviour
         _hitEffect = GetComponent<GenericEnemyHitEffect>();
         _player = GameObject.FindWithTag("Player")?.transform;
         _hopTimer = Random.Range(0f, 0.3f); // stagger so twins don't sync
+        _hitEffect?.GrantInvulnerability(0.5f);
     }
 
     private void OnEnable()
@@ -47,6 +49,13 @@ public class MiniSlimeAI : MonoBehaviour
 
         Vector2 knockback = _hitEffect != null ? _hitEffect.KnockbackVelocity : Vector2.zero;
         float dist = Vector2.Distance(transform.position, _player.position);
+
+        if (_spawnWait > 0f)
+        {
+            _spawnWait -= Time.fixedDeltaTime;
+            _rb.velocity = knockback;
+            return;
+        }
 
         if (dist > detectionRadius)
         {

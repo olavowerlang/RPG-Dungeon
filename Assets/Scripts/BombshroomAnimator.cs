@@ -8,18 +8,17 @@ using UnityEngine;
 public class BombshroomAnimator : MonoBehaviour
 {
     private static readonly int IsMoving = Animator.StringToHash("isMoving");
+    private static readonly int IsDisguised = Animator.StringToHash("isDisguised");
     private static readonly int DieTrigger = Animator.StringToHash("Die");
     private static readonly int WindUpTrigger = Animator.StringToHash("WindUp");
     private static readonly int ReleaseTrigger = Animator.StringToHash("Release");
+    private static readonly int PopOutTrigger = Animator.StringToHash("PopOut");
     private static readonly int DirX = Animator.StringToHash("DirX");
     private static readonly int DirY = Animator.StringToHash("DirY");
 
     [Header("Visual")]
     [SerializeField] private Transform shroomVisual;
     [SerializeField] private float defaultScale = 1.5f;
-
-    [Header("Death Animation")]
-    [SerializeField] private float deathAnimDuration = 1.2f;
 
     [Header("Loot")]
     [SerializeField] private LootTable lootTable;
@@ -34,57 +33,121 @@ public class BombshroomAnimator : MonoBehaviour
     private Animator _anim;
     private BombshroomAI _ai;
     private Health _health;
+    private Rigidbody2D _rb;
+    private GenericEnemyHitEffect _hitEffect;
     private bool _deathTriggered;
+    private Vector2 _lastDir = Vector2.down;
 
     private void Awake()
     {
         _anim = GetComponent<Animator>();
         _ai = GetComponentInParent<BombshroomAI>();
         _health = GetComponentInParent<Health>();
+        _rb = GetComponentInParent<Rigidbody2D>();
+        _hitEffect = GetComponentInParent<GenericEnemyHitEffect>();
+    }
+
+    private void Start()
+    {
+        if (_ai.isAmbush)
+        {
+            _anim.SetBool(IsDisguised, true);
+            _anim.Play("Disguised");
+        }
     }
 
     private void Update()
     {
         if (_deathTriggered) return;
 
-        _anim.SetBool(IsMoving, _ai.IsMoving);
+        _anim.SetBool(IsMoving, _ai.MoveDirection.magnitude > 0.01f);
         UpdateDirection();
+        CheckAnimationCompletion();
 
         if (_health.IsDead)
         {
             _deathTriggered = true;
             _anim.SetTrigger(DieTrigger);
+            if (_hitEffect != null) _rb.velocity = _hitEffect.KnockbackVelocity;
             _ai.enabled = false;
+            StartCoroutine(FreezeAfterDeath());
             StartCoroutine(WaitForDeathAnim());
+        }
+    }
+
+    private void CheckAnimationCompletion()
+    {
+        var info = _anim.GetCurrentAnimatorStateInfo(0);
+        if (_ai.CurrentState == BombshroomAI.S.WindUp &&
+            info.IsName("WindUp") && info.normalizedTime >= 1f)
+        {
+            OnWindUpComplete();
+        }
+        else if (_ai.CurrentState == BombshroomAI.S.PopOut &&
+                 (info.IsName("PopOut") && info.normalizedTime >= 1f || info.IsName("Idle")))
+        {
+            OnPopOutComplete();
         }
     }
 
     private void UpdateDirection()
     {
         Vector2 dir = _ai.MoveDirection;
-        _anim.SetFloat(DirX, dir.x);
-        _anim.SetFloat(DirY, dir.y);
+
+        if (dir.magnitude > 0.01f)
+            _lastDir = dir;
+
+        if (Mathf.Abs(_lastDir.x) >= Mathf.Abs(_lastDir.y))
+        {
+            _anim.SetFloat(DirX, 1f);
+            _anim.SetFloat(DirY, 0f);
+        }
+        else
+        {
+            _anim.SetFloat(DirX, 0f);
+            _anim.SetFloat(DirY, _lastDir.y > 0f ? 1f : -1f);
+        }
 
         if (shroomVisual != null && Mathf.Abs(dir.x) > 0.01f)
         {
             Vector3 sc = shroomVisual.localScale;
-            sc.x = dir.x < 0 ? -Mathf.Abs(defaultScale) : Mathf.Abs(defaultScale);
+            sc.x = dir.x < 0 ? -Mathf.Abs(sc.x) : Mathf.Abs(sc.x);
             shroomVisual.localScale = sc;
         }
     }
 
-    public void PlayWindUp() => _anim.SetTrigger(WindUpTrigger);
-    public void PlayRelease() => _anim.SetTrigger(ReleaseTrigger);
+    public void PlayWindUp() => _anim.Play("WindUp");
+    public void PlayPopOut()
+    {
+        _anim.SetBool(IsDisguised, false);
+        _anim.Play("PopOut");
+    }
+
+    public void OnPopOutComplete() => _ai.OnPopOutComplete();
+    public void OnWindUpComplete() => _ai.OnWindUpComplete();
+
+    private IEnumerator FreezeAfterDeath()
+    {
+        yield return new WaitForFixedUpdate();
+        yield return new WaitForSeconds(0.25f);
+        foreach (var col in _ai.GetComponentsInChildren<Collider2D>())
+            col.enabled = false;
+        _rb.simulated = false;
+    }
 
     private IEnumerator WaitForDeathAnim()
     {
-        yield return new WaitForSeconds(deathAnimDuration);
+        yield return new WaitUntil(() =>
+            _anim.GetCurrentAnimatorStateInfo(0).IsName("Death"));
+        yield return new WaitUntil(() =>
+            _anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
 
         XPManager xp = FindObjectOfType<XPManager>();
         if (xp != null) xp.GainXP(xpReward);
 
         SpawnLoot();
         SpawnGold();
+        _ai.SpawnDeathGas();
 
         Destroy(_ai.gameObject);
     }
