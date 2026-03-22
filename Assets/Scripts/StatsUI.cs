@@ -12,7 +12,20 @@ public class StatsUI : MonoBehaviour
     private static string Format(float value) =>
         value == Mathf.Floor(value) ? ((int)value).ToString() : $"{value:F1}";
 
-    private void OnEnable() => Refresh();
+    private void OnEnable()
+    {
+        Refresh();
+        if (CraftingSystem.Instance != null)
+            CraftingSystem.Instance.OnFuseSuccess += OnFuseSuccess;
+    }
+
+    private void OnDisable()
+    {
+        if (CraftingSystem.Instance != null)
+            CraftingSystem.Instance.OnFuseSuccess -= OnFuseSuccess;
+    }
+
+    private void OnFuseSuccess(string _) => Refresh();
 
     private void Refresh()
     {
