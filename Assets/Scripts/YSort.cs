@@ -1,18 +1,18 @@
 using UnityEngine;
 
 /// <summary>
-/// Attach to any moving sprite (player, enemies, NPCs, item drops) so their
-/// sorting order updates as they move up/down the screen.
+/// Attach to the root of any moving object (player, enemies, item drops).
+/// Finds the SpriteRenderer in children — do NOT add this to the visual child directly.
 /// </summary>
-[RequireComponent(typeof(SpriteRenderer))]
 public class YSort : MonoBehaviour
 {
-    SpriteRenderer sr;
+    SpriteRenderer _sr;
 
-    void Awake() => sr = GetComponent<SpriteRenderer>();
+    void Awake() => _sr = GetComponentInChildren<SpriteRenderer>(true);
 
     void LateUpdate()
     {
-        sr.sortingOrder = 10000 + Mathf.RoundToInt(-transform.position.y * 100);
+        if (_sr != null)
+            _sr.sortingOrder = Mathf.RoundToInt(-transform.position.y * 100);
     }
 }

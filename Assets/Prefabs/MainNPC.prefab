@@ -83,8 +83,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf44ed163ca766a4bb9f721b810b0c64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueData: {fileID: 11400000, guid: 45401e0fc725eac468036a2804d9365a, type: 2}
+  mainDialogue: {fileID: 0}
+  repeatDialogue: {fileID: 0}
   interactionPrompt: {fileID: 1566982400747739545}
+  unlockSwordOnComplete: 0
+  swordItem: {fileID: 0}
 --- !u!70 &1091187757469749241
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -192,7 +195,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: -330711141, guid: 0d47530f809898c4c8d603803577d780, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
