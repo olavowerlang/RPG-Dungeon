@@ -24,7 +24,6 @@ public class CloneAnimator : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _hitboxes = GetComponentsInChildren<DamageDealer>(true);
-        DisableAllHitboxes();
     }
 
     // ── Called by CloneAI ────────────────────────────────────────────────────
