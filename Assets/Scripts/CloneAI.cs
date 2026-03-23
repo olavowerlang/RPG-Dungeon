@@ -27,18 +27,16 @@ public class CloneAI : MonoBehaviour
     // ── Tuning ───────────────────────────────────────────────────────────────
 
     [Header("Distances")]
-    [SerializeField] private float attackRange   = 1.5f;
+    [SerializeField] private float attackRange   = 2.5f;
     [SerializeField] private float farDistance   = 6f;
     [SerializeField] private float wallThreshold = 1.5f;
 
     [Header("Mirror Stance")]
-    [SerializeField] private float retreatDuration    = 1f;
-    [SerializeField] private float shuffleIntervalMin = 3f;
-    [SerializeField] private float shuffleIntervalMax = 5f;
+    [SerializeField] private float retreatDuration = 1f;
 
     [Header("Patience (seconds before attacking)")]
-    [SerializeField] private float patienceMin       = 4f;
-    [SerializeField] private float patienceMax       = 6f;
+    [SerializeField] private float patienceMin       = 1f;
+    [SerializeField] private float patienceMax       = 2.5f;
     [SerializeField] private float phase2PatienceMin = 2f;
     [SerializeField] private float phase2PatienceMax = 4f;
 
@@ -87,11 +85,9 @@ public class CloneAI : MonoBehaviour
     private float _timer;
 
     // MirrorStance
-    private float   _patienceTimer;
-    private float   _retreatTimer;
-    private float   _shuffleTimer;
-    private Vector2 _shuffleDir;
-    private bool    _isRetreating;
+    private float _patienceTimer;
+    private float _retreatTimer;
+    private bool  _isRetreating;
 
     // Dodge cooldown
     private float _dodgeCooldownTimer;
@@ -114,24 +110,34 @@ public class CloneAI : MonoBehaviour
         _health    = GetComponent<Health>();
         _hitEffect = GetComponent<GenericEnemyHitEffect>();
 
-        _player         = GameObject.FindWithTag("Player").transform;
-        _playerRb       = _player.GetComponent<Rigidbody2D>();
-        _playerAnimator = _player.GetComponentInChildren<Animator>();
+        // Direct velocity control — drag fights us every frame, interpolation prevents visual stutter
+        _rb.drag          = 0f;
+        _rb.interpolation = RigidbodyInterpolation2D.Interpolate;
 
-        // Clone movement stats from player
-        var ps         = PlayerStats.Instance;
-        _approachSpeed  = ps.speed;
-        _dashForce      = ps.dashForce;
-        _attackPushForce = ps.attackPushForce;
+        // Boss deals damage through attack hitboxes only, not body contact
+        var contact = GetComponent<EnemyContactDamage>();
+        if (contact != null) contact.enabled = false;
 
-        _shuffleTimer = Random.Range(shuffleIntervalMin, shuffleIntervalMax);
-        _shuffleDir   = Vector2.right;
+
     }
 
     private void Start()
     {
+        var playerObj = GameObject.FindWithTag("Player");
+        if (playerObj == null) { Debug.LogError("CloneAI: No GameObject tagged 'Player' found!"); return; }
+        _player         = playerObj.transform;
+        _playerRb       = _player.GetComponent<Rigidbody2D>();
+        _playerAnimator = _player.GetComponentInChildren<Animator>();
+
+        // Clone movement stats from player
+        var ps           = PlayerStats.Instance;
+        _approachSpeed   = ps.speed;
+        _dashForce       = ps.dashForce;
+        _attackPushForce = ps.attackPushForce;
+
         _health.OnDeath += OnDeath;
     }
+
 
     private void OnDestroy()
     {
@@ -149,6 +155,7 @@ public class CloneAI : MonoBehaviour
             EnterPhase2Talk();
             return;
         }
+
 
         // Wall escape — interrupts most states
         if (_state != State.Swinging  && _state != State.Dodge &&
@@ -198,61 +205,37 @@ public class CloneAI : MonoBehaviour
             return;
         }
 
-        // Dodge opportunity
         if (ShouldDodge(dist))
         {
             EnterDodge();
             return;
         }
 
-        // Shuffle direction tick
-        _shuffleTimer -= Time.fixedDeltaTime;
-        if (_shuffleTimer <= 0f)
+        // Read player rush — retreat briefly then commit
+        float rushDot = Vector2.Dot(_playerRb.velocity.normalized, -toPlayer.normalized);
+        if (rushDot > 0.5f && !_isRetreating)
         {
-            Vector2 lateral = new Vector2(-toPlayer.normalized.y, toPlayer.normalized.x);
-            _shuffleDir   = Random.value > 0.5f ? lateral : -lateral;
-            _shuffleTimer = Random.Range(shuffleIntervalMin, shuffleIntervalMax);
+            _isRetreating = true;
+            _retreatTimer = retreatDuration;
         }
 
         Vector2 velocity;
+        _faceDir = toPlayer.normalized;
 
-        if (dist > farDistance)
+        if (_isRetreating)
         {
-            // Far: slow approach
-            _faceDir = toPlayer.normalized;
-            velocity = toPlayer.normalized * (_approachSpeed * 0.5f);
+            _retreatTimer -= Time.fixedDeltaTime;
+            if (_retreatTimer <= 0f)
+            {
+                _isRetreating = false;
+                ChooseAttack(toPlayer);
+                return;
+            }
+            velocity = -toPlayer.normalized * (_approachSpeed * 0.55f);
         }
         else
         {
-            // Mid-range: read player rush
-            float rushDot = Vector2.Dot(_playerRb.velocity.normalized, -toPlayer.normalized);
-
-            if (rushDot > 0.5f && !_isRetreating)
-            {
-                _isRetreating = true;
-                _retreatTimer = retreatDuration;
-            }
-
-            if (_isRetreating)
-            {
-                _retreatTimer -= Time.fixedDeltaTime;
-                if (_retreatTimer <= 0f)
-                {
-                    _isRetreating = false;
-                    ChooseAttack(toPlayer);
-                    return;
-                }
-
-                Vector2 back = -toPlayer.normalized;
-                _faceDir = toPlayer.normalized; // still face player while retreating
-                velocity = back * (_approachSpeed * 0.55f) + _shuffleDir * (_approachSpeed * 0.25f);
-            }
-            else
-            {
-                // Lateral shuffle
-                _faceDir = toPlayer.normalized;
-                velocity = _shuffleDir * (_approachSpeed * 0.4f);
-            }
+            velocity = toPlayer.normalized * (_approachSpeed * 0.5f);
         }
 
         _rb.velocity = velocity + _impulseVelocity;
@@ -428,6 +411,12 @@ public class CloneAI : MonoBehaviour
         _state           = State.Dead;
         _rb.velocity     = Vector2.zero;
         _impulseVelocity = Vector2.zero;
+
+        // Prevent dead body from dealing contact damage or blocking movement
+        var contact = GetComponent<EnemyContactDamage>();
+        if (contact != null) contact.enabled = false;
+        GetComponent<Collider2D>().enabled = false;
+
         cloneAnimator.TriggerDeath();
 
         if (BossHealthBarUI.Instance != null)
@@ -481,6 +470,12 @@ public class CloneAI : MonoBehaviour
 
     // ── Helpers ──────────────────────────────────────────────────────────────
 
+    // Only tilemap geometry counts as a wall
+    private static bool IsWall(RaycastHit2D hit) =>
+        hit.collider != null &&
+        (hit.collider.GetComponent<UnityEngine.Tilemaps.TilemapCollider2D>() != null ||
+         hit.collider.GetComponent<CompositeCollider2D>() != null);
+
     private bool IsNearWall()
     {
         Vector2[] dirs =
@@ -490,7 +485,7 @@ public class CloneAI : MonoBehaviour
             new Vector2( 1, -1).normalized, new Vector2(-1, -1).normalized
         };
         foreach (var d in dirs)
-            if (Physics2D.Raycast(transform.position, d, wallThreshold, wallLayer).collider != null)
+            if (IsWall(Physics2D.Raycast(transform.position, d, wallThreshold, wallLayer)))
                 return true;
         return false;
     }
@@ -507,14 +502,13 @@ public class CloneAI : MonoBehaviour
         float   maxDist = 0f;
         foreach (var d in dirs)
         {
-            var hit  = Physics2D.Raycast(transform.position, d, 10f, wallLayer);
-            float dist = hit.collider != null ? hit.distance : 10f;
+            var hit = Physics2D.Raycast(transform.position, d, 10f, wallLayer);
+            float dist = IsWall(hit) ? hit.distance : 10f;
             if (dist > maxDist) { maxDist = dist; best = d; }
         }
         return best;
     }
 
-    /// Returns the diagonal direction most open AND away from the player.
     private Vector2 GetBestDodgeDiagonal()
     {
         Vector2 toPlayer = ((Vector2)_player.position - (Vector2)transform.position).normalized;
@@ -527,10 +521,10 @@ public class CloneAI : MonoBehaviour
         float   bestScore = float.MinValue;
         foreach (var d in diags)
         {
-            var hit  = Physics2D.Raycast(transform.position, d, 10f, wallLayer);
-            float clearance = hit.collider != null ? hit.distance : 10f;
-            float awayDot   = Vector2.Dot(d, -toPlayer); // positive = away from player
-            float score     = clearance + awayDot * 3f;  // weight "away" heavily
+            var hit       = Physics2D.Raycast(transform.position, d, 10f, wallLayer);
+            float clearance = IsWall(hit) ? hit.distance : 10f;
+            float awayDot   = Vector2.Dot(d, -toPlayer);
+            float score     = clearance + awayDot * 3f;
             if (score > bestScore) { bestScore = score; best = d; }
         }
         return best;
@@ -540,7 +534,12 @@ public class CloneAI : MonoBehaviour
 
     private void UpdateAnimator()
     {
-        cloneAnimator.SetWalking(_rb.velocity.magnitude > 0.4f);
+        bool moving = _state == State.MirrorStance  ||
+                      _state == State.ComboApproach ||
+                      _state == State.DashStrike    ||
+                      _state == State.WallEscape    ||
+                      _state == State.Dodge;
+        cloneAnimator.SetWalking(moving);
         if (_faceDir != Vector2.zero)
             cloneAnimator.SetDirection(_faceDir);
     }
