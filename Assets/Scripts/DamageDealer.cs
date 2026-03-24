@@ -9,12 +9,13 @@ public class DamageDealer : MonoBehaviour
     [Tooltip("Selecione apenas as layers que este hit-box deve atingir (ex.: Player)")]
     [SerializeField] private LayerMask hitLayers;
 
-    // Public property so CraftingSystem can modify damage
     public int Damage
     {
         get => damage;
         set => damage = value;
     }
+
+    public void AddHitLayer(int layer) => hitLayers |= 1 << layer;
 
     /* ← agora guarda a interface, não o Health */
     private readonly HashSet<IDamageable> _hitSet = new();
@@ -45,7 +46,8 @@ public class DamageDealer : MonoBehaviour
         int layer = other.gameObject.layer;
         if ((hitLayers.value & (1 << layer)) == 0) return;
 
-        if (!other.TryGetComponent<IDamageable>(out var target)) return;
+        var target = other.GetComponent<IDamageable>() ?? other.GetComponentInParent<IDamageable>();
+        if (target == null) return;
 
         //garante um único hit por swing
         if (!_hitSet.Add(target)) return;

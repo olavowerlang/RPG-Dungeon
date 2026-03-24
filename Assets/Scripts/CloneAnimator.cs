@@ -25,6 +25,17 @@ public class CloneAnimator : MonoBehaviour
         _animator = GetComponent<Animator>();
         _hitboxes = GetComponentsInChildren<DamageDealer>(true);
         DisableAllHitboxes();
+
+        // Hitboxes inherit Player layer from the clone visual, but Player-vs-Player
+        // triggers are disabled in the physics matrix. Set them to Enemy layer so
+        // they can actually trigger against the player collider.
+        int enemyLayer  = LayerMask.NameToLayer("Enemy");
+        int playerLayer = LayerMask.NameToLayer("Player");
+        foreach (var dd in _hitboxes)
+        {
+            if (enemyLayer != -1)  dd.gameObject.layer = enemyLayer;
+            if (playerLayer != -1) dd.AddHitLayer(playerLayer);
+        }
     }
 
     // ── Called by CloneAI ────────────────────────────────────────────────────

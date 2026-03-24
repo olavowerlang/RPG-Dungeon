@@ -649,8 +649,6 @@ MonoBehaviour:
   farDistance: 6
   wallThreshold: 1.5
   retreatDuration: 1
-  shuffleIntervalMin: 3
-  shuffleIntervalMax: 5
   patienceMin: 4
   patienceMax: 6
   phase2PatienceMin: 2
@@ -681,7 +679,7 @@ GameObject:
   - component: {fileID: 6599511942298948827}
   - component: {fileID: 4724653520490355005}
   - component: {fileID: 5728896038882801649}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: CloneVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}

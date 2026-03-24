@@ -21,6 +21,7 @@ public class EnemyContactDamage : MonoBehaviour
 
     private void TryDamage(Collider2D other)
     {
+        if (GetComponent<CloneAI>() != null) return;
         if (Time.time < _nextHitTime) return;
         if ((playerLayer.value & (1 << other.gameObject.layer)) == 0) return;
         if (!other.TryGetComponent<IDamageable>(out var target)) return;

@@ -32,7 +32,9 @@ public class CloneAI : MonoBehaviour
     [SerializeField] private float wallThreshold = 1.5f;
 
     [Header("Mirror Stance")]
-    [SerializeField] private float retreatDuration = 1f;
+    [SerializeField] private float retreatDuration    = 0.6f;
+    [SerializeField] private float preferredDistance  = 3.5f; // ideal gap to maintain
+    [SerializeField] private float rushSpeedThreshold = 2.5f; // player must move this fast to trigger retreat
 
     [Header("Patience (seconds before attacking)")]
     [SerializeField] private float patienceMin       = 1f;
@@ -89,8 +91,17 @@ public class CloneAI : MonoBehaviour
     private float _retreatTimer;
     private bool  _isRetreating;
 
+    // MirrorStance strafe
+    private Vector2 _strafeDir;
+    private float   _strafeFlipTimer;
+
     // Dodge cooldown
     private float _dodgeCooldownTimer;
+
+    // Feint / approach style
+    private bool  _isFeinting;
+    private float _feintStopDist;
+    private bool  _curvedApproach;
 
     // Swinging
     private bool _attack2Triggered;
@@ -188,8 +199,10 @@ public class CloneAI : MonoBehaviour
             case State.WallEscape:   UpdateWallEscape();                 break;
         }
 
-        // Push knockback from hit effect into final velocity
-        _rb.velocity += _hitEffect.KnockbackVelocity;
+        // Push knockback from hit effect — clamped so the boss doesn't fly across the arena
+        Vector2 knock = _hitEffect.KnockbackVelocity;
+        if (knock.magnitude > 6f) knock = knock.normalized * 6f;
+        _rb.velocity += knock;
 
         UpdateAnimator();
     }
@@ -198,6 +211,13 @@ public class CloneAI : MonoBehaviour
 
     private void UpdateMirrorStance(Vector2 toPlayer, float dist)
     {
+        // If player is in attack range, don't wait — commit immediately
+        if (dist <= attackRange)
+        {
+            ChooseAttack(toPlayer);
+            return;
+        }
+
         _patienceTimer -= Time.fixedDeltaTime;
         if (_patienceTimer <= 0f)
         {
@@ -211,16 +231,22 @@ public class CloneAI : MonoBehaviour
             return;
         }
 
-        // Read player rush — retreat briefly then commit
-        float rushDot = Vector2.Dot(_playerRb.velocity.normalized, -toPlayer.normalized);
-        if (rushDot > 0.5f && !_isRetreating)
+        _faceDir = toPlayer.normalized;
+
+        // Only retreat if player is actually rushing (speed check prevents slow-walk triggering it)
+        // and clone isn't already far away
+        if (!_isRetreating && _playerRb != null)
         {
-            _isRetreating = true;
-            _retreatTimer = retreatDuration;
+            float playerSpeed = _playerRb.velocity.magnitude;
+            float rushDot     = Vector2.Dot(_playerRb.velocity.normalized, toPlayer.normalized);
+            if (playerSpeed > rushSpeedThreshold && rushDot > 0.5f && dist < preferredDistance * 1.5f)
+            {
+                _isRetreating = true;
+                _retreatTimer = retreatDuration;
+            }
         }
 
         Vector2 velocity;
-        _faceDir = toPlayer.normalized;
 
         if (_isRetreating)
         {
@@ -231,11 +257,34 @@ public class CloneAI : MonoBehaviour
                 ChooseAttack(toPlayer);
                 return;
             }
-            velocity = -toPlayer.normalized * (_approachSpeed * 0.55f);
+            velocity = -toPlayer.normalized * (_approachSpeed * 0.45f);
         }
         else
         {
-            velocity = toPlayer.normalized * (_approachSpeed * 0.5f);
+            // Distance management: approach if too far, back off if too close, strafe in between
+            float inner = preferredDistance * 0.7f;
+            float outer = preferredDistance * 1.4f;
+
+            if (dist > outer)
+            {
+                velocity = toPlayer.normalized * (_approachSpeed * 0.6f);
+            }
+            else if (dist < inner)
+            {
+                velocity = -toPlayer.normalized * (_approachSpeed * 0.4f);
+            }
+            else
+            {
+                // Lateral strafe — flip direction occasionally
+                _strafeFlipTimer -= Time.fixedDeltaTime;
+                if (_strafeFlipTimer <= 0f)
+                {
+                    Vector2 perp = new Vector2(-toPlayer.normalized.y, toPlayer.normalized.x);
+                    _strafeDir       = Random.value > 0.5f ? perp : -perp;
+                    _strafeFlipTimer = Random.Range(1.2f, 2.5f);
+                }
+                velocity = _strafeDir * (_approachSpeed * 0.45f);
+            }
         }
 
         _rb.velocity = velocity + _impulseVelocity;
@@ -243,14 +292,33 @@ public class CloneAI : MonoBehaviour
 
     private void UpdateComboApproach(Vector2 toPlayer, float dist)
     {
-        if (dist <= attackRange)
+        if (_isFeinting && dist <= _feintStopDist)
+        {
+            // Feint complete — disengage back to stance without attacking
+            _isFeinting = false;
+            EnterMirrorStance();
+            return;
+        }
+
+        if (!_isFeinting && dist <= attackRange)
         {
             EnterSwinging(toPlayer);
             return;
         }
 
+        Vector2 dir;
+        if (_curvedApproach)
+        {
+            Vector2 perp = new Vector2(-toPlayer.normalized.y, toPlayer.normalized.x) * (_strafeDir.x >= 0 ? 1f : -1f);
+            dir = (toPlayer.normalized + perp * 0.35f).normalized;
+        }
+        else
+        {
+            dir = toPlayer.normalized;
+        }
+
         _faceDir     = toPlayer.normalized;
-        _rb.velocity = toPlayer.normalized * _approachSpeed + _impulseVelocity;
+        _rb.velocity = dir * _approachSpeed + _impulseVelocity;
     }
 
     private void UpdateDashStrike(Vector2 toPlayer, float dist)
@@ -301,7 +369,10 @@ public class CloneAI : MonoBehaviour
 
     private void UpdateCooldown()
     {
-        _rb.velocity = _impulseVelocity;
+        // Slowly back away from player during cooldown instead of standing still
+        Vector2 toPlayer = (Vector2)_player.position - (Vector2)transform.position;
+        _rb.velocity = -toPlayer.normalized * (_approachSpeed * 0.25f) + _impulseVelocity;
+        _faceDir     = toPlayer.normalized;
         _timer -= Time.fixedDeltaTime;
         if (_timer <= 0f)
             EnterMirrorStance();
@@ -333,7 +404,10 @@ public class CloneAI : MonoBehaviour
 
     private void EnterComboApproach()
     {
-        _state = State.ComboApproach;
+        _state         = State.ComboApproach;
+        _curvedApproach = Random.value < 0.5f;
+        _isFeinting     = !_isPhase2 && Random.value < 0.25f;
+        _feintStopDist  = attackRange + Random.Range(0.8f, 1.6f);
     }
 
     private void EnterDashStrike(Vector2 toPlayer)
@@ -538,7 +612,8 @@ public class CloneAI : MonoBehaviour
                       _state == State.ComboApproach ||
                       _state == State.DashStrike    ||
                       _state == State.WallEscape    ||
-                      _state == State.Dodge;
+                      _state == State.Dodge         ||
+                      _state == State.Cooldown;
         cloneAnimator.SetWalking(moving);
         if (_faceDir != Vector2.zero)
             cloneAnimator.SetDirection(_faceDir);
