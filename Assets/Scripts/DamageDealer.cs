@@ -24,14 +24,23 @@ public class DamageDealer : MonoBehaviour
 
     private void Awake() => _col = GetComponent<Collider2D>();
 
+    private Collider2D Col
+    {
+        get
+        {
+            if (_col == null) _col = GetComponent<Collider2D>();
+            return _col;
+        }
+    }
+
     /* limpa a lista e liga o collider */
     public void BeginSwing()
     {
         _hitSet.Clear();
-        _col.enabled = true;
+        if (Col != null) Col.enabled = true;
     }
 
-    public void EndSwing() => _col.enabled = false;
+    public void EndSwing() { if (Col != null) Col.enabled = false; }
 
     private void OnTriggerEnter2D(Collider2D col) => TryHit(col);
 

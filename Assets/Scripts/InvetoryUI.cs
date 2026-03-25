@@ -183,8 +183,8 @@ public class InventoryUI : MonoBehaviour
     {
         if (_selectedIngredient == null) return;
         CraftingSystem.Instance?.TryFuse(_selectedIngredient);
-        _selectedIngredient = null;
-        ClearFusionPreview();
+        // Keep _selectedIngredient so player can keep fusing without re-clicking
+        // RefreshAll (fired by OnInventoryChanged) will disable the button if item runs out
     }
 
     private void ShowFeedback(string message)

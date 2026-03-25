@@ -85,7 +85,7 @@ public class EnemyAnimator : MonoBehaviour
         if (playerXP != null)
             playerXP.GainXP(xpReward);
 
-        // Drop loot and gold
+        GenericEnemyHitEffect.SpawnDeathParticlesAt(_skeletonFighter.transform.position);
         SpawnLoot();
         SpawnGold();
 
@@ -99,13 +99,10 @@ public class EnemyAnimator : MonoBehaviour
         ItemData drop = lootTable.Roll();
         if (drop == null) return;
 
-        // Spawn slightly offset so it's visible
         Vector3 spawnPos = _skeletonFighter.transform.position + new Vector3(0.5f, 0f, 0f);
         GameObject dropGO = Instantiate(itemDropPrefab, spawnPos, Quaternion.identity);
-
-        ItemDrop itemDrop = dropGO.GetComponent<ItemDrop>();
-        if (itemDrop != null)
-            itemDrop.Init(drop);
+        dropGO.GetComponent<ItemDrop>()?.Init(drop);
+        dropGO.AddComponent<DelayedReveal>().Reveal(0.05f);
     }
 
     private void SpawnGold()
@@ -115,6 +112,7 @@ public class EnemyAnimator : MonoBehaviour
         Vector3 pos = _skeletonFighter.transform.position + new Vector3(-0.5f, 0.3f, 0f);
         GameObject go = Instantiate(goldDropPrefab, pos, Quaternion.identity);
         go.GetComponent<GoldDrop>()?.Init(amount);
+        go.AddComponent<DelayedReveal>().Reveal(0.05f);
     }
 
     private IEnumerator FreezeAfterDeath()

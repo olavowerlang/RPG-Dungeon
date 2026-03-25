@@ -9,12 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05f697432cd1d5245a1a4181332e4775, type: 3}
-  m_Name: Recipe_HerbForge
+  m_Script: {fileID: 11500000, guid: 4df0014cb02a0cf4bbbc7addabd2224a, type: 3}
+  m_Name: Zone6BlockDialogue
   m_EditorClassIdentifier: 
-  recipeName: Flower Forge
-  resultDescription: +Speed
-  ingredient: {fileID: 11400000, guid: be7e82b0701f1b6439d29ad84a32b1cd, type: 2}
-  quantity: 1
-  buffType: 3
-  buffValue: 2
+  lines:
+  - speakerName: 
+    text: Hmmm, seems like you might be missing some FUCKING MUSHROOMS.

@@ -31,7 +31,7 @@ public class MiniSlimeAI : MonoBehaviour
         _hitEffect = GetComponent<GenericEnemyHitEffect>();
         _player = GameObject.FindWithTag("Player")?.transform;
         _hopTimer = Random.Range(0f, 0.3f); // stagger so twins don't sync
-        _hitEffect?.GrantInvulnerability(0.5f);
+        _hitEffect?.GrantInvulnerability(0.25f);
     }
 
     private void OnEnable()

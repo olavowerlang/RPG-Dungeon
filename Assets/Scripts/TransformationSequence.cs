@@ -25,6 +25,7 @@ public class TransformationSequence : MonoBehaviour
 
     [Header("Particles")]
     [SerializeField] private ParticleSystem transformParticles; // auto-created if null
+    [SerializeField] private Material       particleMaterial;   // assign URP Particles/Unlit material
 
     [Header("Screen Flash")]
     [SerializeField] private Image screenFlashImage; // full-screen white Image, alpha 0 at start; auto-created if null
@@ -58,6 +59,9 @@ public class TransformationSequence : MonoBehaviour
 
     private IEnumerator TransformRoutine()
     {
+        // Detach particles from this object so disabling the pig mid-sequence doesn't kill them
+        transformParticles.transform.SetParent(null);
+
         // Position particles at pig
         if (pigObject != null)
             transformParticles.transform.position = pigObject.transform.position;
@@ -158,8 +162,10 @@ public class TransformationSequence : MonoBehaviour
         var go = new GameObject("TransformParticles");
         go.transform.SetParent(transform);
         transformParticles = go.AddComponent<ParticleSystem>();
+        transformParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 
         var main           = transformParticles.main;
+        main.playOnAwake   = false;
         main.duration      = 1.2f;
         main.loop          = false;
         main.startLifetime = new ParticleSystem.MinMaxCurve(0.6f, 1.0f);
@@ -188,6 +194,18 @@ public class TransformationSequence : MonoBehaviour
             new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(0f, 1f) }
         );
         col.color = new ParticleSystem.MinMaxGradient(grad);
+
+        var rend = transformParticles.GetComponent<ParticleSystemRenderer>();
+        rend.sortingLayerName = "Default";
+        rend.sortingOrder     = 32767;
+
+        Material mat = particleMaterial;
+        if (mat == null)
+        {
+            Shader s = Shader.Find("Universal Render Pipeline/Particles/Unlit");
+            if (s != null) mat = new Material(s);
+        }
+        if (mat != null) rend.material = mat;
 
         transformParticles.Stop();
     }

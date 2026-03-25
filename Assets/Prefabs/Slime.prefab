@@ -205,8 +205,8 @@ MonoBehaviour:
   itemDropPrefab: {fileID: 6502097253406911691, guid: 69c06d2c3c5692c4a937952e1da7849d, type: 3}
   xpReward: 1
   goldDropPrefab: {fileID: 6010953109853743787, guid: 41a564709ca0fb14db9ba8b376eb5d91, type: 3}
-  minGold: 1
-  maxGold: 1
+  minGold: 2
+  maxGold: 2
 --- !u!1 &8673990453643987641
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,8 +259,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 20
-  m_LinearDrag: 1
+  m_Mass: 40
+  m_LinearDrag: 10
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -318,23 +318,24 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.5829239, y: 0.20521021}
-      - {x: 0.42515945, y: 0.24665117}
-      - {x: 0.3672142, y: 0.3473885}
-      - {x: 0.21305847, y: 0.39854836}
-      - {x: 0.18692398, y: 0.45298672}
-      - {x: -0.30374908, y: 0.47117472}
-      - {x: -0.5220146, y: 0.35431242}
-      - {x: -0.53796387, y: 0.34369612}
-      - {x: -0.76436806, y: 0.15804875}
-      - {x: -0.7851753, y: 0.06963849}
-      - {x: -0.82302195, y: 0.020938903}
-      - {x: -0.8645477, y: -0.3130623}
-      - {x: -0.34457344, y: -0.65093994}
-      - {x: 0.44908297, y: -0.6536578}
-      - {x: 0.6522293, y: -0.46603107}
-      - {x: 0.65965843, y: -0.3721099}
-      - {x: 0.68568134, y: -0.07645112}
+    - - {x: 0.38581336, y: 0.049164414}
+      - {x: 0.30196536, y: 0.107031226}
+      - {x: 0.21938121, y: 0.16670385}
+      - {x: 0.10629022, y: 0.22607669}
+      - {x: -0.16623211, y: 0.30515385}
+      - {x: -0.35302663, y: 0.29870304}
+      - {x: -0.43167233, y: 0.27218306}
+      - {x: -0.57081556, y: 0.19586325}
+      - {x: -0.6411741, y: 0.05949354}
+      - {x: -0.66198134, y: 0.020360887}
+      - {x: -0.70804054, y: -0.0283387}
+      - {x: -0.71671486, y: -0.29663634}
+      - {x: -0.16388863, y: -0.51953304}
+      - {x: 0.2683984, y: -0.5304638}
+      - {x: 0.50439644, y: -0.5070958}
+      - {x: 0.6103809, y: -0.35568404}
+      - {x: 0.6156652, y: -0.29267803}
+      - {x: 0.5460613, y: -0.1175158}
   m_UseDelaunayMesh: 0
 --- !u!114 &8988714323974438561
 MonoBehaviour:
@@ -386,6 +387,9 @@ MonoBehaviour:
   impulseDecayRate: 8
   blinkDuration: 0.2
   blinkFrequency: 0.1
+  deathParticleCount: 28
+  deathParticleSpeed: 5
+  deathParticleMaterial: {fileID: 2100000, guid: 6518cf33536e1d54bb21871fd5e0d0b2, type: 2}
 --- !u!114 &8785988155125414927
 MonoBehaviour:
   m_ObjectHideFlags: 0

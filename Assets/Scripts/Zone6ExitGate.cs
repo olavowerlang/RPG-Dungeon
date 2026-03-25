@@ -11,11 +11,15 @@ public class Zone6ExitGate : MonoBehaviour
     [SerializeField] private int         requiredCount  = 15;
     [SerializeField] private DialogueData blockedDialogue; // "you need 15 mushrooms to pass"
 
+    [Header("Debug")]
+    [SerializeField] private bool debugBypass = false;
+
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (!other.gameObject.CompareTag("Player")) return;
 
-        bool canPass = MushroomQuestPig.QuestDone ||
+        bool canPass = debugBypass ||
+                       MushroomQuestPig.QuestDone ||
                        (InventoryManager.Instance != null &&
                         InventoryManager.Instance.HasIngredient(mushroomItem, requiredCount));
 

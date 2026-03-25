@@ -177,8 +177,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 20
-  m_LinearDrag: 0
+  m_Mass: 30
+  m_LinearDrag: 10
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -204,8 +204,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f124d36075e77364ca5c5d3bf844acc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 2
-  currentHp: 2
+  maxHP: 3
+  currentHp: 3
 --- !u!114 &1883417459154618460
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,6 +222,9 @@ MonoBehaviour:
   impulseDecayRate: 8
   blinkDuration: 0.2
   blinkFrequency: 0.1
+  deathParticleCount: 28
+  deathParticleSpeed: 5
+  deathParticleMaterial: {fileID: 0}
 --- !u!114 &8785988155125414927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,21 +288,26 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.29685274, y: 0.22914663}
-      - {x: 0.2523952, y: 0.24844745}
-      - {x: 0.21329907, y: 0.2716952}
-      - {x: 0.005007148, y: 0.3411628}
-      - {x: -0.2591214, y: 0.32978624}
-      - {x: -0.5132498, y: 0.1138508}
-      - {x: -0.57085854, y: -0.06298408}
-      - {x: -0.56164634, y: -0.2670938}
-      - {x: -0.4378069, y: -0.34389305}
-      - {x: -0.34282377, y: -0.38788214}
-      - {x: -0.2075367, y: -0.44188055}
-      - {x: 0.345213, y: -0.4156564}
-      - {x: 0.42582497, y: -0.30932295}
-      - {x: 0.47599247, y: -0.056176096}
-      - {x: 0.38068366, y: 0.09266877}
+    - - {x: 0.23652938, y: 0.052816838}
+      - {x: 0.14566928, y: 0.06283714}
+      - {x: 0.074091405, y: 0.109286174}
+      - {x: 0.03223355, y: 0.14801238}
+      - {x: -0.05067593, y: 0.1741135}
+      - {x: -0.18487725, y: 0.16737722}
+      - {x: -0.2525174, y: 0.16355142}
+      - {x: -0.38796285, y: 0.081369}
+      - {x: -0.41773, y: -0.08618537}
+      - {x: -0.41577584, y: -0.15805213}
+      - {x: -0.38995683, y: -0.16964836}
+      - {x: -0.30787972, y: -0.20932561}
+      - {x: -0.21289662, y: -0.24867442}
+      - {x: -0.13329256, y: -0.29803255}
+      - {x: 0.123170376, y: -0.3153695}
+      - {x: 0.23384672, y: -0.32285124}
+      - {x: 0.28661737, y: -0.25363982}
+      - {x: 0.38782766, y: -0.09793842}
+      - {x: 0.36804998, y: -0.060120337}
+      - {x: 0.32500052, y: -0.014057159}
   m_UseDelaunayMesh: 0
 --- !u!114 &7699603486258861022
 MonoBehaviour:

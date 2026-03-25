@@ -23,6 +23,10 @@ public class PigShopkeeper : MonoBehaviour
     [Header("Gates (evaluated in order — first uncleared blocks the store)")]
     [SerializeField] private ShopGate[] gates;
 
+    // Set to true once the player completes the intro dialogue.
+    // Used externally (e.g. cave gate) to know the pig has been spoken to.
+    public static bool MainDialogueDone { get; private set; }
+
     private bool _playerInRange;
     private bool _mainDone;
 
@@ -30,7 +34,7 @@ public class PigShopkeeper : MonoBehaviour
     {
         if (StoreManager.Instance != null && StoreManager.Instance.IsStoreOpen) return;
 
-        bool canInteract = _playerInRange && !DialogueManager.Instance.IsInDialogue;
+        bool canInteract = _playerInRange && (DialogueManager.Instance == null || !DialogueManager.Instance.IsInDialogue);
 
         if (interactionPrompt != null)
             interactionPrompt.SetActive(canInteract);
@@ -103,13 +107,27 @@ public class PigShopkeeper : MonoBehaviour
             return;
         }
 
-        if (StoreManager.Instance == null)
+        bool ng = NGPlusManager.Instance != null && NGPlusManager.Instance.GameCleared;
+
+        // Must complete intro dialogue before store ever opens
+        if (!_mainDone)
         {
-            Debug.LogError("StoreManager instance is null!");
+            if (DialogueManager.Instance == null) return;
+            DialogueData d = ng && ngPlusMainDialogue != null ? ngPlusMainDialogue : mainDialogue;
+            if (d == null) { Debug.LogWarning("PigShopkeeper: mainDialogue not assigned!"); return; }
+
+            DialogueManager.Instance.StartDialogue(d, () =>
+            {
+                _mainDone = true;
+                MainDialogueDone = true;
+                if (StoreManager.Instance != null) StoreManager.Instance.OpenStore();
+            });
             return;
         }
 
-        StoreManager.Instance.OpenStore();
+        // Intro done — subsequent clicks open shop directly
+        if (StoreManager.Instance != null)
+            StoreManager.Instance.OpenStore();
     }
 
     private void OnTriggerEnter2D(Collider2D other)

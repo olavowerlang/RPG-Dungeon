@@ -96,6 +96,7 @@ public class SlimeAnimator : MonoBehaviour
         XPManager xp = FindObjectOfType<XPManager>();
         if (xp != null) xp.GainXP(xpReward);
 
+        GenericEnemyHitEffect.SpawnDeathParticlesAt(_ai.transform.position);
         SpawnLoot();
         SpawnGold();
 
@@ -109,6 +110,7 @@ public class SlimeAnimator : MonoBehaviour
         if (drop == null) return;
         var go = Instantiate(itemDropPrefab, _ai.transform.position + Vector3.right * 0.5f, Quaternion.identity);
         go.GetComponent<ItemDrop>()?.Init(drop);
+        go.AddComponent<DelayedReveal>().Reveal(0.05f);
     }
 
     private void SpawnGold()
@@ -117,5 +119,6 @@ public class SlimeAnimator : MonoBehaviour
         int amount = Random.Range(minGold, maxGold + 1);
         var go = Instantiate(goldDropPrefab, _ai.transform.position + Vector3.left * 0.5f, Quaternion.identity);
         go.GetComponent<GoldDrop>()?.Init(amount);
+        go.AddComponent<DelayedReveal>().Reveal(0.05f);
     }
 }

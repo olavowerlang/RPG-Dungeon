@@ -385,8 +385,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f124d36075e77364ca5c5d3bf844acc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 6
-  currentHp: 6
+  maxHP: 10
+  currentHp: 10
 --- !u!114 &-1579834184393299920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -670,7 +670,7 @@ MonoBehaviour:
   skullFighter: {fileID: 7643694029778453593}
   lootTable: {fileID: 11400000, guid: d41ec8def443ae94f941b887f4651549, type: 2}
   itemDropPrefab: {fileID: 6502097253406911691, guid: 69c06d2c3c5692c4a937952e1da7849d, type: 3}
-  xpReward: 2
+  xpReward: 3
   goldDropPrefab: {fileID: 6010953109853743787, guid: 41a564709ca0fb14db9ba8b376eb5d91, type: 3}
-  minGold: 1
-  maxGold: 1
+  minGold: 2
+  maxGold: 2

@@ -20,7 +20,7 @@ public class BossHealthBarUI : MonoBehaviour
 
     [Header("Bar")]
     [SerializeField] private Image fillImage;         // Fill Method: Horizontal, Fill Origin: Left
-    [SerializeField] private float revealDuration = 1.6f;
+    [SerializeField] private float revealDuration = 3.1f; // bar fill duration in seconds
 
     [Header("Letters — Y O U")]
     [SerializeField] private TextMeshProUGUI letterY;

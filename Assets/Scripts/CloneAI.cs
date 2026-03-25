@@ -551,7 +551,9 @@ public class CloneAI : MonoBehaviour
 
         // Death animation plays AFTER the last dialogue line is dismissed
         cloneAnimator.TriggerDeath();
-        yield return new WaitForSeconds(deathAnimDuration);
+        // Wait for death anim to actually finish (not loop) — fall back to timer if state name doesn't match
+        yield return new WaitUntil(() => cloneAnimator.IsDeathAnimDone());
+        yield return new WaitForSeconds(0.1f);
 
         if (EndingSequence.Instance != null)
             EndingSequence.Instance.StartEnding();

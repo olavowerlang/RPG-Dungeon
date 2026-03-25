@@ -35,6 +35,7 @@ public class CavePigNPC : MonoBehaviour
     private PigState _state = PigState.Sleeping;
 
     private Transform _player;
+    private bool _canCheckWake;
 
     // ── Unity ─────────────────────────────────────────────────────────────────
 
@@ -43,10 +44,16 @@ public class CavePigNPC : MonoBehaviour
         GetComponent<Collider2D>().isTrigger = true;
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
         var playerGO = GameObject.FindWithTag("Player");
         if (playerGO != null) _player = playerGO.transform;
+
+        // Wait two frames so the scene settles. Without this, if the player
+        // spawns within wakeUpRange the pig skips the Sleep state entirely.
+        yield return null;
+        yield return null;
+        _canCheckWake = true;
     }
 
     private void Update()
@@ -67,7 +74,7 @@ public class CavePigNPC : MonoBehaviour
 
     private void CheckWakeDistance()
     {
-        if (_player == null) return;
+        if (!_canCheckWake || _player == null) return;
         float dist = Vector2.Distance(transform.position, _player.position);
         if (dist <= wakeUpRange)
             StartCoroutine(WakeUpRoutine());
@@ -81,14 +88,22 @@ public class CavePigNPC : MonoBehaviour
         {
             pigAnimator.SetTrigger(wakeUpTrigger);
 
-            // Wait for WakeUp animation to start
+            // Give the animator two frames to process the trigger and start transitioning
             yield return null;
-            yield return new WaitUntil(() =>
-                pigAnimator.GetCurrentAnimatorStateInfo(0).IsName(wakeUpStateName));
+            yield return null;
 
-            // Wait for it to finish
+            // Wait for WakeUp state to begin (in case transition takes a bit longer)
+            float waitTimeout = 1f;
+            while (!pigAnimator.GetCurrentAnimatorStateInfo(0).IsName(wakeUpStateName) && waitTimeout > 0f)
+            {
+                waitTimeout -= Time.deltaTime;
+                yield return null;
+            }
+
+            // Wait for the WakeUp animation to finish
             yield return new WaitUntil(() =>
-                pigAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
+                pigAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f
+                || !pigAnimator.GetCurrentAnimatorStateInfo(0).IsName(wakeUpStateName));
         }
 
         _state = PigState.Idle;

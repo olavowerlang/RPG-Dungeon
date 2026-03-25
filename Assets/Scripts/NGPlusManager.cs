@@ -27,11 +27,38 @@ public class NGPlusManager : MonoBehaviour
     public int   CarriedMaxHP          { get; private set; }
     public int   CarriedGold           { get; private set; }
 
+    private bool _hasTransitionSnapshot;
+
     private void Awake()
     {
         if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    /// <summary>
+    /// Call before any scene transition to snapshot current player stats so they survive the load.
+    /// </summary>
+    public void SnapshotForTransition()
+    {
+        var ps = PlayerStats.Instance;
+        if (ps == null) return;
+
+        CarriedSpeed          = ps.speed;
+        CarriedDashForce      = ps.dashForce;
+        CarriedDamage         = ps.damage;
+        CarriedKnockback      = ps.knockbackForce;
+        CarriedHasSword       = ps.hasSword;
+        CarriedHasDash        = ps.hasDash;
+        CarriedMaxDashStamina = ps.maxDashStamina;
+
+        var health = ps.GetComponent<Health>();
+        CarriedMaxHP = health != null ? health.MaxHP : 3;
+
+        if (GoldManager.Instance != null)
+            CarriedGold = GoldManager.Instance.Gold;
+
+        _hasTransitionSnapshot = true;
     }
 
     /// <summary>
@@ -74,7 +101,8 @@ public class NGPlusManager : MonoBehaviour
     /// </summary>
     public void ApplyCarryOver(PlayerStats ps)
     {
-        if (!IsNGPlus || ps == null) return;
+        if ((!IsNGPlus && !_hasTransitionSnapshot) || ps == null) return;
+        _hasTransitionSnapshot = false;
 
         ps.speed          = CarriedSpeed;
         ps.dashForce      = CarriedDashForce;

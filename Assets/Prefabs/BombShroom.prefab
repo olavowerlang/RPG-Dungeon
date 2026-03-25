@@ -101,8 +101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f124d36075e77364ca5c5d3bf844acc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 10
-  currentHp: 10
+  maxHP: 12
+  currentHp: 12
 --- !u!114 &3212453222629200239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,6 +119,9 @@ MonoBehaviour:
   impulseDecayRate: 8
   blinkDuration: 0.2
   blinkFrequency: 0.1
+  deathParticleCount: 28
+  deathParticleSpeed: 5
+  deathParticleMaterial: {fileID: 2100000, guid: 6518cf33536e1d54bb21871fd5e0d0b2, type: 2}
 --- !u!58 &5997737190535345236
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -277,7 +280,8 @@ MonoBehaviour:
   defaultScale: 1.5
   lootTable: {fileID: 11400000, guid: d41ec8def443ae94f941b887f4651549, type: 2}
   itemDropPrefab: {fileID: 6502097253406911691, guid: 69c06d2c3c5692c4a937952e1da7849d, type: 3}
-  xpReward: 4
+  guaranteedDrop: {fileID: 11400000, guid: 34abe41b0ed49c14498248f8ecea9513, type: 2}
+  xpReward: 5
   goldDropPrefab: {fileID: 6010953109853743787, guid: 41a564709ca0fb14db9ba8b376eb5d91, type: 3}
-  minGold: 1
-  maxGold: 1
+  minGold: 2
+  maxGold: 2

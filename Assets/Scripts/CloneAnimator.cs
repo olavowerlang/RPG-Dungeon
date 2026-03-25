@@ -72,6 +72,12 @@ public class CloneAnimator : MonoBehaviour
 
     public void TriggerDeath() => _animator.SetTrigger(DieHash);
 
+    public bool IsDeathAnimDone()
+    {
+        var info = _animator.GetCurrentAnimatorStateInfo(0);
+        return info.IsName("Player_Death") && info.normalizedTime >= 0.95f;
+    }
+
     public void ResetComboFinished() => ComboFinished = false;
 
     // ── Animation Events (fired by the Animator Controller) ──────────────────

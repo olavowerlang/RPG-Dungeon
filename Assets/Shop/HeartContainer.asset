@@ -15,9 +15,10 @@ MonoBehaviour:
   displayName: Heart Container
   description: An extra life.
   icon: {fileID: 21300000, guid: bb6c0900e0a96a64e8b1d59657ddba95, type: 3}
-  price: 10
+  price: 5
   itemData: {fileID: 0}
   isDirectBuff: 1
   directBuffType: 4
   isUnlock: 0
   unlockType: 0
+  requiresDashUnlock: 0

@@ -1,0 +1,132 @@
+================================================================================
+RPG DUNGEON — SESSION SUMMARY FOR TOMORROW
+================================================================================
+
+WHERE WE ARE
+------------
+Core gameplay loop is complete. Main dungeon → cave transition works. Boss fight
+(pig→clone transformation) is coded. NG+ system exists. Mushroom quest exists.
+Particle death effects on all enemies. Item drop delays tuned per enemy.
+Menus and sound are the final stretch — but the list below must be cleared first.
+
+TODAY'S FINAL TUNING STATE
+---------------------------
+- Slime / Skeleton : particles instant, items reveal at 0.05s
+- Bombshroom       : particles at 0.4s (ShroomParticleRunner), items at 0.45s
+- All three use DelayedReveal.cs and ShroomParticleRunner.cs (both in Assets/Scripts)
+
+================================================================================
+ISSUE LIST — C = CODE PROBLEM (your responsibility)
+================================================================================
+
+[ ] Zone 6 mushroom range & placement
+    NOT C. Editor/design issue. Two bombshroooms near the trees aren't detecting
+    the player (likely placed outside their AI detection radius or blocked by
+    geometry). Also their item drops land in unreachable spots after death.
+    Fix in editor: reposition those shroomms and/or increase their detection range.
+
+[C] Bombshroom items drop too close together
+    Code. SpawnLoot drops guaranteed item at +Vector3.up*0.4f, random at
+    +Vector3.right*0.5f, gold at +Vector3.left*0.5f. These are too tight.
+    Fix: increase offsets and/or add a small random scatter radius.
+
+[C] Item drop positions should have some randomness
+    Code. Currently hardcoded: guaranteed always up, random always right, gold
+    always left. Should randomize which offset slot each drop gets so it doesn't
+    look mechanical. Easy fix: shuffle a small array of offset vectors and assign
+    one per drop.
+
+[ ] Bigger dialogue box for pig & Humberto
+    NOT C (probably). UI scaling in the Canvas — resize the dialogue panel
+    RectTransform. Will need more detail from user tomorrow on which pig/NPC
+    and what "bigger" means exactly.
+
+[C] Player cannot move during transformation particle sequence
+    Code. During the full TransformRoutine (particles → flash → clone reveal),
+    the player should not be able to move.
+    Fix: PlayerController.enabled = false at the start of TransformRoutine,
+    re-enable after postSwapDelay completes (end of the routine).
+    Do NOT use Time.timeScale=0 — breaks coroutine WaitForSeconds.
+
+[C] Player + clone frozen during boss health bar reveal (YOU animation)
+    Code. When RevealBar() is called, BOTH player and clone must be frozen.
+    Clone re-enables only AFTER the last letter of YOU finishes punching in.
+    Fix: at start of RevealRoutine — PlayerController.enabled = false,
+    CloneAI.enabled = false. At end of RevealRoutine (after RevealLetter(letterU))
+    — re-enable both. Simple enabled = false/true calls, nothing complex.
+
+[C] Clone AI jittery movement + health bar not showing at correct speed
+    TWO separate issues:
+    1. JITTER: Every FixedUpdate does `_rb.velocity += knock` even when
+       KnockbackVelocity is near-zero. Tiny floating point additions accumulate
+       and fight with _impulseVelocity decay. Fix: only add knockback if
+       knock.magnitude > 0.05f threshold.
+    2. BAR SPEED: revealDuration is a [SerializeField] — Unity saves the old
+       value (1.6) in the scene even after changing code default to 3.1. User
+       must manually type 3.1 in the Inspector field on the BossHealthBarUI
+       component and hit Enter. If that still doesn't work, force it in Awake:
+       add `if (revealDuration < 2f) revealDuration = 3.1f;` as a safety guard.
+
+[C] PigShopkeeper (instance 3) click does nothing
+    Code. Has been attempted multiple times. Most likely root cause: mainDialogue
+    field is NULL in the inspector — the guard `if (d == null) { return; }` fires
+    silently. Check the console for the warning "PigShopkeeper: mainDialogue not
+    assigned!". If that's not it, second suspect: _playerInRange is never set to
+    true because the pig's trigger collider isn't sized to reach the player, OR
+    the pig's collider layer is wrong so OnTriggerEnter2D never fires.
+    Debug steps: add a Debug.Log in OnTriggerEnter2D to confirm it fires, and
+    confirm mainDialogue is assigned.
+
+[C] Cave pig not sleeping / wake animation not firing
+    Code + Editor. Two separate problems:
+    1. EDITOR: Pig Animator Controller must have "Sleep" as the DEFAULT state
+       (right-click → Set as Layer Default State), a Trigger parameter named
+       "WakeUp", transition Sleep→WakeUp (no exit time, condition: WakeUp),
+       transition WakeUp→Idle (exit time 1.0). Also pigAnimator field on
+       CavePigNPC must be assigned in inspector.
+    2. CODE: _canCheckWake waits 2 frames before allowing wake check. If player
+       spawns right next to pig, this may not be enough. Consider increasing to
+       a 0.5s WaitForSeconds instead of 2 frames.
+
+================================================================================
+WORRISOME — INVESTIGATE FIRST TOMORROW
+================================================================================
+
+[C] Enemies not taking damage + clone quip lines not appearing + jittery movement
+    THREE things bundled, likely appeared together after the DamageDealer lazy
+    init change (added to fix CloneAnimator.Awake NullRef).
+
+    1. DAMAGE BUG — Suspect: DamageDealer.BeginSwing() now does
+       `if (Col != null) Col.enabled = true`. If Col returns null (GetComponent
+       finds no Collider2D on the hitbox child), the hitbox silently never enables.
+       Previously this would have thrown a NullRef loudly. Check: does the player's
+       hitbox child still have a Collider2D component? If it was accidentally
+       removed, re-add it. If Col is fine, the bug might be elsewhere.
+       Quick test: add Debug.Log("BeginSwing col=" + Col) to confirm.
+
+    2. QUIP LINES NOT APPEARING — CRUCIAL. These lines are a core part of the
+       boss fight personality and must work. CloneFightingLines is NOT a Canvas
+       UI element. It's a world-space TextMeshPro auto-created at runtime as a
+       child of the Clone root. The component must be added to the Clone root
+       GameObject in the editor. CloneAI.Start() does
+       GetComponent<CloneFightingLines>() — if the component isn't on the same
+       GameObject, _fightingLines is null and StartLines() is never called.
+       Nothing to build in Canvas. Fix: add CloneFightingLines component to the
+       Clone root in the inspector. Lines fire every 6-13s once StartFight() is
+       called. The label auto-creates itself above the clone's head at runtime.
+
+    3. JITTER ON NORMAL ENEMIES — same root cause as clone jitter above
+       (knockback accumulation in FixedUpdate). Fix is the same threshold check.
+
+================================================================================
+FINAL GOAL FOR TOMORROW
+================================================================================
+Clear all C items above, then move to:
+- Main menu (start, quit, settings)
+- Sound (BGM per zone, SFX for hits, death, dialogue, shop, transformation)
+
+User wants ALL of this done tomorrow. Prioritize damage bug first since it
+breaks core gameplay. Quip lines second — crucial for boss fight personality.
+Then freeze fixes, then pig/clone issues, then polish.
+
+================================================================================

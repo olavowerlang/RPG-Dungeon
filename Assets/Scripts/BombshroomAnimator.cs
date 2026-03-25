@@ -23,6 +23,7 @@ public class BombshroomAnimator : MonoBehaviour
     [Header("Loot")]
     [SerializeField] private LootTable lootTable;
     [SerializeField] private GameObject itemDropPrefab;
+    [SerializeField] private ItemData guaranteedDrop; // always drops (e.g. Mushroom)
 
     [Header("XP & Gold")]
     [SerializeField] private float xpReward = 2f;
@@ -148,17 +149,37 @@ public class BombshroomAnimator : MonoBehaviour
         SpawnLoot();
         SpawnGold();
         _ai.SpawnDeathGas();
+        var runner = new GameObject("ShroomParticleRunner").AddComponent<ShroomParticleRunner>();
+        runner.Run(_ai.transform.position);
 
         Destroy(_ai.gameObject);
     }
 
     private void SpawnLoot()
     {
-        if (lootTable == null || itemDropPrefab == null) return;
-        ItemData drop = lootTable.Roll();
-        if (drop == null) return;
-        var go = Instantiate(itemDropPrefab, _ai.transform.position + Vector3.right * 0.5f, Quaternion.identity);
-        go.GetComponent<ItemDrop>()?.Init(drop);
+        if (itemDropPrefab == null) return;
+
+        // Guaranteed drop (e.g. Mushroom)
+        if (guaranteedDrop != null)
+        {
+            var go = Instantiate(itemDropPrefab, _ai.transform.position + Vector3.up * 0.4f, Quaternion.identity);
+            go.transform.localScale = Vector3.one * 1.5f;
+            go.GetComponent<ItemDrop>()?.Init(guaranteedDrop);
+            go.AddComponent<DelayedReveal>().Reveal(0.45f);
+        }
+
+        // Random drop from loot table
+        if (lootTable != null)
+        {
+            ItemData drop = lootTable.Roll();
+            if (drop != null)
+            {
+                var go = Instantiate(itemDropPrefab, _ai.transform.position + Vector3.right * 0.5f, Quaternion.identity);
+                go.transform.localScale = Vector3.one * 1.5f;
+                go.GetComponent<ItemDrop>()?.Init(drop);
+                go.AddComponent<DelayedReveal>().Reveal(0.45f);
+            }
+        }
     }
 
     private void SpawnGold()
@@ -167,5 +188,7 @@ public class BombshroomAnimator : MonoBehaviour
         int amount = Random.Range(minGold, maxGold + 1);
         var go = Instantiate(goldDropPrefab, _ai.transform.position + Vector3.left * 0.5f, Quaternion.identity);
         go.GetComponent<GoldDrop>()?.Init(amount);
+        go.AddComponent<DelayedReveal>().Reveal(0.45f);
     }
+
 }
