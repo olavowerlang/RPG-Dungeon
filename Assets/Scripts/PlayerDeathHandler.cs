@@ -25,6 +25,9 @@ public class PlayerDeathHandler : MonoBehaviour
 
     private void HandleDeath()
     {
+        // If dying in NG+, kick player back to a normal run
+        NGPlusManager.Instance?.ExitNGPlus();
+
         if (InventoryManager.Instance != null)
             InventoryManager.Instance.ClearInventory();
 

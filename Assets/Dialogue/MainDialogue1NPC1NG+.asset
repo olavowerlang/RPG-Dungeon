@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4df0014cb02a0cf4bbbc7addabd2224a, type: 3}
+  m_Name: MainDialogue1NPC1NG+
+  m_EditorClassIdentifier: 
+  lines:
+  - speakerName: Pig
+    text: Wassup homie, you seem lost.
+  - speakerName: Pig
+    text: And...weak, honestly.
+  - speakerName: Pig
+    text: What? Don't give me that face homie, do you even know where you are?
+  - speakerName: Pig
+    text: "Bro, you don't even have a\u2014what the fuck? How...the hell do you have
+      that sword? Wait a sec, where is...how...? Well,shit. I don't have the slightest
+      clue what's going on, but this saves me some time anyway.     "
+  - speakerName: Pig
+    text: Since you have that sword, you certainly know it is magical, right? It
+      absorbs certain components to make you stronger. Use it right and maybe you'll
+      stop being such a weakling. Now for your lack of wits...I'm afraid that's beyond
+      me.
+  - speakerName: Pig
+    text: Also, you definitely know you should keep an eye out for the purple orbs
+      enemies drop, they might come in handy.
+  - speakerName: Pig
+    text: Now, there are some slimes over there, weakly bastards but if you touch
+      'em won't feel nice. Go kill them and absorb their components!!! ("I" opens
+      your inventory and crafting table by the way).
+  - speakerName: Pig
+    text: Not that I know what this "I" means or anything I don't know why I said
+      that honestly.
+  - speakerName: Pig
+    text: Aight good luck!!!

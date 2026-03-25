@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6582277925897948904}
   - component: {fileID: 9007826219369476641}
   - component: {fileID: 1091187757469749241}
+  - component: {fileID: -612582617001728335}
   m_Layer: 0
   m_Name: MainNPC
   m_TagString: Untagged
@@ -123,6 +124,18 @@ CapsuleCollider2D:
   m_Offset: {x: -0.09255791, y: 0}
   m_Size: {x: 2.3775673, y: 2.4040108}
   m_Direction: 0
+--- !u!114 &-612582617001728335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 466364209364227321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3063707012f1b9e4f94e7a91b76522af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &505101743978882855
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,6 +146,7 @@ GameObject:
   m_Component:
   - component: {fileID: 265598031002094859}
   - component: {fileID: 1594307880137253101}
+  - component: {fileID: 3026466448190696032}
   m_Layer: 0
   m_Name: NPCVisual
   m_TagString: Untagged
@@ -207,6 +221,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &3026466448190696032
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 505101743978882855}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c81dbdf4538042e4bb1f28cfdefd9138, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1566982400747739545
 GameObject:
   m_ObjectHideFlags: 0

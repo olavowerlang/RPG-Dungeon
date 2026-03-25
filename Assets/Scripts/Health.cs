@@ -35,6 +35,13 @@ public class Health : MonoBehaviour
         currentHp = Mathf.Min(currentHp + amount, maxHP);
     }
 
+    /// <summary>Sets max HP to an exact value and refills current HP. Used by NGPlusEnemyScaler.</summary>
+    public void ScaleMaxHP(int newMax)
+    {
+        maxHP     = newMax;
+        currentHp = newMax;
+    }
+
     public void Die()
     {
         if (IsDead) return; // prevent double-firing

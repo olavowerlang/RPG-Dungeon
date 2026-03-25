@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4df0014cb02a0cf4bbbc7addabd2224a, type: 3}
+  m_Name: Phase2Dialogue
+  m_EditorClassIdentifier: 
+  lines:
+  - speakerName: Pig?
+    text: Okay...okay! Calm down a sec! *Huff...huff* turns out...being a pig for
+      years...can make you weak.
+  - speakerName: Pig?
+    text: Whew...*huff...huff* I thought...I was getting your stamina when I transformed...but
+      apparently that's not how this works.
+  - speakerName: Pig?
+    text: I...still feel like an old man. Or pig.
+  - speakerName: Humberto
+    text: My name is Humberto, by the way. Nice to meet you.
+  - speakerName: Humberto
+    text: Anyway, thanks for the break.
+  - speakerName: Humberto
+    text: Okay I'm good now, let's go.

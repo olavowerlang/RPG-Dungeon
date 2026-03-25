@@ -19,6 +19,13 @@ public class EnemyContactDamage : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D col) { if (useCollision) TryDamage(col.collider); }
     private void OnCollisionStay2D(Collision2D col)  { if (useCollision) TryDamage(col.collider); }
 
+    /// <summary>Scales damage and knockback by a multiplier. Used by NGPlusEnemyScaler.</summary>
+    public void ScaleDamage(float multiplier)
+    {
+        damage   = Mathf.RoundToInt(damage * multiplier);
+        knockback *= multiplier;
+    }
+
     private void TryDamage(Collider2D other)
     {
         if (GetComponent<CloneAI>() != null) return;

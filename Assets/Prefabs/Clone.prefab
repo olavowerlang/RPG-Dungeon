@@ -493,6 +493,8 @@ GameObject:
   - component: {fileID: 6716927578645877456}
   - component: {fileID: 1572747393361880495}
   - component: {fileID: 6217786152102391884}
+  - component: {fileID: 621693234268382134}
+  - component: {fileID: 6800055024725522923}
   m_Layer: 0
   m_Name: Clone
   m_TagString: Untagged
@@ -649,6 +651,8 @@ MonoBehaviour:
   farDistance: 6
   wallThreshold: 1.5
   retreatDuration: 1
+  preferredDistance: 3.5
+  rushSpeedThreshold: 2.5
   patienceMin: 4
   patienceMax: 6
   phase2PatienceMin: 2
@@ -666,7 +670,68 @@ MonoBehaviour:
   wallEscapeForce: 18
   wallEscapeDuration: 0.4
   phase2ExtraDashWeight: 0.2
-  phase2Dialogue: {fileID: 0}
+  phase2Dialogue: {fileID: 11400000, guid: 731c8975b7be1ad4a8658c0bf29afa54, type: 2}
+  deathDialogue: {fileID: 11400000, guid: e3cf698204678624ebf16d7ac9647cae, type: 2}
+  deathAnimDuration: 1.5
+--- !u!114 &621693234268382134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5459192905106744143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7827bb5d08036bd4ea210eac8d514de7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lines:
+  - text: Stop resisting, man! Please!
+    followUp: 
+    followUpDelay: 1
+  - text: Let me kill you and I'll give you some upgrades!
+    followUp: 
+    followUpDelay: 1
+  - text: This doesn't have to end like this!
+    followUp: Oh wait it does actually!
+    followUpDelay: 1
+  - text: Let's wrap this up, I'm getting hungry!
+    followUp: 
+    followUpDelay: 1
+  - text: Does that tent of yours have a bed?
+    followUp: 
+    followUpDelay: 1
+  - text: You're not that bad with that sword, I'm proud!
+    followUp: 
+    followUpDelay: 1
+  - text: Hey look, there's a monster behind you! Look there, trust me!
+    followUp: 
+    followUpDelay: 1
+  - text: I'm a wizard, why am I even using a sword?
+    followUp: 
+    followUpDelay: 1
+  - text: Whew! Sure feels good walking on two legs again!
+    followUp: 
+    followUpDelay: 1
+  minInterval: 6
+  maxInterval: 13
+  label: {fileID: 0}
+  yOffset: 1.4
+  fadeInTime: 0.25
+  holdTime: 2.8
+  fadeOutTime: 0.4
+--- !u!114 &6800055024725522923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5459192905106744143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3063707012f1b9e4f94e7a91b76522af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6041605021596723661
 GameObject:
   m_ObjectHideFlags: 0

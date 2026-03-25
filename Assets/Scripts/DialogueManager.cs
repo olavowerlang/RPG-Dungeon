@@ -8,6 +8,9 @@ public class DialogueManager : MonoBehaviour
 
     public bool IsInDialogue { get; private set; }
 
+    /// <summary>Fires every time a new line is shown. Passes the 0-based line index.</summary>
+    public static event Action<int> OnLineShown;
+
     [Header("UI")]
     [SerializeField] private GameObject dialoguePanel;
     [SerializeField] private TextMeshProUGUI speakerNameText;
@@ -70,6 +73,8 @@ public class DialogueManager : MonoBehaviour
 
         bool isLast = index == _lines.Length - 1;
         continuePrompt.text = isLast ? "[E / Space] Close" : "[E / Space] Continue";
+
+        OnLineShown?.Invoke(index);
     }
 
     private void EndDialogue()

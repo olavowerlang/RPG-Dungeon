@@ -32,8 +32,9 @@ MonoBehaviour:
     text: Also, keep an eye out for the purple orbs enemies drop, they might come
       in handy.
   - speakerName: Pig
-    text: Now, there are some mean skeletons over there, go kill them and absorb
-      their components!!! ("I" opens your inventory and crafting table by the way).
+    text: Now, there are some slimes over there, weakly bastards but if you touch
+      'em won't feel nice. Go kill them and absorb their components!!! ("I" opens
+      your inventory and crafting table by the way).
   - speakerName: Pig
     text: Not that I know what this "I" means or anything I don't know why I said
       that honestly.

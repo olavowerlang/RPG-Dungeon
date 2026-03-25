@@ -11,6 +11,7 @@ public class CloneAI : MonoBehaviour
     }
 
     private State _state = State.Idle;
+    public State CurrentState => _state;
 
     // ── References ───────────────────────────────────────────────────────────
 
@@ -65,6 +66,7 @@ public class CloneAI : MonoBehaviour
 
     [Header("Dialogue")]
     [SerializeField] private DialogueData phase2Dialogue;
+    [SerializeField] private DialogueData deathDialogue;
 
     // ── Private state ────────────────────────────────────────────────────────
 
@@ -132,6 +134,8 @@ public class CloneAI : MonoBehaviour
 
     }
 
+    private CloneFightingLines _fightingLines;
+
     private void Start()
     {
         var playerObj = GameObject.FindWithTag("Player");
@@ -140,13 +144,19 @@ public class CloneAI : MonoBehaviour
         _playerRb       = _player.GetComponent<Rigidbody2D>();
         _playerAnimator = _player.GetComponentInChildren<Animator>();
 
-        // Clone movement stats from player
+        _fightingLines = GetComponent<CloneFightingLines>();
+        _health.OnDeath += OnDeath;
+    }
+
+    // Called by TransformationSequence instead of StartFight directly,
+    // so stats are read after NGPlusCarryOver has applied them.
+    private void SnapshotPlayerStats()
+    {
         var ps           = PlayerStats.Instance;
+        if (ps == null) return;
         _approachSpeed   = ps.speed;
         _dashForce       = ps.dashForce;
         _attackPushForce = ps.attackPushForce;
-
-        _health.OnDeath += OnDeath;
     }
 
 
@@ -391,7 +401,12 @@ public class CloneAI : MonoBehaviour
 
     // ── Enter States ─────────────────────────────────────────────────────────
 
-    public void StartFight() => EnterMirrorStance();
+    public void StartFight()
+    {
+        SnapshotPlayerStats();
+        _fightingLines?.StartLines();
+        EnterMirrorStance();
+    }
 
     private void EnterMirrorStance()
     {
@@ -457,14 +472,24 @@ public class CloneAI : MonoBehaviour
 
     private void EnterPhase2Talk()
     {
-        _state       = State.Phase2Talk;
-        _rb.velocity = Vector2.zero;
+        _state           = State.Phase2Talk;
+        _rb.velocity     = Vector2.zero;
         _impulseVelocity = Vector2.zero;
+        _fightingLines?.StopLines();
         StartCoroutine(Phase2TalkRoutine());
     }
 
     private IEnumerator Phase2TalkRoutine()
     {
+        // Camera focuses on clone
+        bool cameraReady = false;
+        if (BossCameraFocus.Instance != null)
+            BossCameraFocus.Instance.Focus(() => cameraReady = true);
+        else
+            cameraReady = true;
+
+        yield return new WaitUntil(() => cameraReady);
+
         if (phase2Dialogue != null && DialogueManager.Instance != null)
         {
             bool done = false;
@@ -476,9 +501,22 @@ public class CloneAI : MonoBehaviour
             yield return new WaitForSeconds(3f);
         }
 
+        // Camera returns to player
+        bool cameraBack = false;
+        if (BossCameraFocus.Instance != null)
+            BossCameraFocus.Instance.Unfocus(() => cameraBack = true);
+        else
+            cameraBack = true;
+
+        yield return new WaitUntil(() => cameraBack);
+
         _isPhase2 = true;
+        _fightingLines?.StartLines();
         EnterMirrorStance();
     }
+
+    [Header("Death Animation")]
+    [SerializeField] private float deathAnimDuration = 1.5f; // how long the death anim plays before ending starts
 
     private void OnDeath()
     {
@@ -491,7 +529,7 @@ public class CloneAI : MonoBehaviour
         if (contact != null) contact.enabled = false;
         GetComponent<Collider2D>().enabled = false;
 
-        cloneAnimator.TriggerDeath();
+        _fightingLines?.StopLines();
 
         if (BossHealthBarUI.Instance != null)
             BossHealthBarUI.Instance.Hide();
@@ -501,9 +539,24 @@ public class CloneAI : MonoBehaviour
 
     private IEnumerator VictoryRoutine()
     {
-        // Wait for death animation to play out before showing victory
-        yield return new WaitForSeconds(2f);
-        UIManager.Instance.ShowVictory();
+        // Brief pause so clone just stands still before speaking
+        yield return new WaitForSeconds(1f);
+
+        if (deathDialogue != null && DialogueManager.Instance != null)
+        {
+            bool done = false;
+            DialogueManager.Instance.StartDialogue(deathDialogue, () => done = true);
+            yield return new WaitUntil(() => done);
+        }
+
+        // Death animation plays AFTER the last dialogue line is dismissed
+        cloneAnimator.TriggerDeath();
+        yield return new WaitForSeconds(deathAnimDuration);
+
+        if (EndingSequence.Instance != null)
+            EndingSequence.Instance.StartEnding();
+        else
+            UIManager.Instance.ShowVictory();
     }
 
     // ── Decision Logic ───────────────────────────────────────────────────────

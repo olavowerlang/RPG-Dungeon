@@ -26,6 +26,7 @@ public class MiniSlimeAI : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _rb.interpolation = RigidbodyInterpolation2D.Interpolate;
         _health = GetComponent<Health>();
         _hitEffect = GetComponent<GenericEnemyHitEffect>();
         _player = GameObject.FindWithTag("Player")?.transform;

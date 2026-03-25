@@ -4,12 +4,16 @@ public class NPCDialogue : MonoBehaviour
 {
     [SerializeField] private DialogueData mainDialogue;
     [SerializeField] private DialogueData repeatDialogue;
+    [SerializeField] private DialogueData ngPlusMainDialogue;    // shown instead of main in NG+
+    [SerializeField] private DialogueData ngPlusRepeatDialogue;  // shown instead of repeat in NG+
     [SerializeField] private GameObject interactionPrompt;
     [SerializeField] private bool unlockSwordOnComplete;
     [SerializeField] private ItemData swordItem;
 
     private bool _playerInRange;
     private bool _mainDone;
+
+    private bool IsNGPlus => NGPlusManager.Instance != null && NGPlusManager.Instance.GameCleared;
 
     private void Update()
     {
@@ -21,7 +25,9 @@ public class NPCDialogue : MonoBehaviour
         if (canInteract && Input.GetKeyDown(KeyCode.E))
         {
             if (!_mainDone)
-                DialogueManager.Instance.StartDialogue(mainDialogue, () =>
+            {
+                DialogueData d = IsNGPlus && ngPlusMainDialogue != null ? ngPlusMainDialogue : mainDialogue;
+                DialogueManager.Instance.StartDialogue(d, () =>
                 {
                     _mainDone = true;
                     if (unlockSwordOnComplete && PlayerStats.Instance != null)
@@ -31,8 +37,12 @@ public class NPCDialogue : MonoBehaviour
                             InventoryManager.Instance.EquipSword(swordItem);
                     }
                 });
+            }
             else
-                DialogueManager.Instance.StartDialogue(repeatDialogue);
+            {
+                DialogueData d = IsNGPlus && ngPlusRepeatDialogue != null ? ngPlusRepeatDialogue : repeatDialogue;
+                DialogueManager.Instance.StartDialogue(d);
+            }
         }
     }
 

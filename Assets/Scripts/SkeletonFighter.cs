@@ -59,6 +59,7 @@ public class SkeletonFighter : MonoBehaviour
     private void Awake()
     {
         Rb = GetComponent<Rigidbody2D>();
+        Rb.interpolation = RigidbodyInterpolation2D.Interpolate;
         _health = GetComponent<Health>();
         _hitEffect = GetComponent<SkeletonHitEffect>();
         _player = GameObject.FindWithTag("Player").transform;

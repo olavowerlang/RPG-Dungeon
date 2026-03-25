@@ -46,9 +46,9 @@ public class UIManager : MonoBehaviour
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
         if (levelUpPanel != null) levelUpPanel.SetActive(false);
 
-        healthImages.SetActive(false);
-        if (goldText != null) goldText.gameObject.SetActive(false);
-        if (goldIcon != null) goldIcon.gameObject.SetActive(false);
+        healthImages.SetActive(true);
+        if (goldText != null) goldText.gameObject.SetActive(true);
+        if (goldIcon != null) goldIcon.gameObject.SetActive(true);
 
         if (GoldManager.Instance != null)
         {

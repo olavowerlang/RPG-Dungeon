@@ -34,6 +34,13 @@ public class GoldManager : MonoBehaviour
         OnGoldChanged?.Invoke(Gold);
     }
 
+    /// <summary>Directly sets gold to a value. Used by NGPlusManager to restore carried gold.</summary>
+    public void SetGold(int amount)
+    {
+        Gold = amount;
+        OnGoldChanged?.Invoke(Gold);
+    }
+
     public bool SpendGold(int amount)
     {
         if (Gold < amount) return false;

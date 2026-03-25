@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ab493a543b946724ca198bf0f7733795, type: 3}
-  m_Name: Herb
+  m_Name: Mushroom
   m_EditorClassIdentifier: 
-  itemName: Herb
-  description: A medicinal herb. Increases movement speed.
-  icon: {fileID: 681820928, guid: 91c99c336ceaf0f409f4e0f58a883845, type: 3}
+  itemName: Mushroom
+  description: 
+  icon: {fileID: -1582738761, guid: 91c99c336ceaf0f409f4e0f58a883845, type: 3}
   itemType: 0
   goldValue: 0
+  healAmount: 0

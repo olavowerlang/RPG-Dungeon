@@ -14,6 +14,8 @@ public class PigShopkeeper : MonoBehaviour
     [Header("Dialogue")]
     [SerializeField] private DialogueData mainDialogue;
     [SerializeField] private DialogueData repeatDialogue;
+    [SerializeField] private DialogueData ngPlusMainDialogue;    // "oh, you already have a sword..."
+    [SerializeField] private DialogueData ngPlusDashDialogue;    // "huh, you already had that, how?"
 
     [Header("UI")]
     [SerializeField] private GameObject interactionPrompt;
@@ -42,10 +44,17 @@ public class PigShopkeeper : MonoBehaviour
                 ActivateFirstUnclearedGate();
             else if (PlayerStats.Instance != null && PlayerStats.Instance.hasDash)
             {
+                bool ng = NGPlusManager.Instance != null && NGPlusManager.Instance.GameCleared;
                 if (!_mainDone)
-                    DialogueManager.Instance.StartDialogue(mainDialogue, () => _mainDone = true);
+                {
+                    DialogueData d = ng && ngPlusMainDialogue != null ? ngPlusMainDialogue : mainDialogue;
+                    DialogueManager.Instance.StartDialogue(d, () => _mainDone = true);
+                }
                 else
-                    DialogueManager.Instance.StartDialogue(repeatDialogue);
+                {
+                    DialogueData d = ng && ngPlusDashDialogue != null ? ngPlusDashDialogue : repeatDialogue;
+                    DialogueManager.Instance.StartDialogue(d);
+                }
             }
             // gates cleared but dash not yet bought: E does nothing — go buy dash from store
             return;
