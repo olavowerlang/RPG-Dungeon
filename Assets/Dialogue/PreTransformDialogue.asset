@@ -23,6 +23,7 @@ MonoBehaviour:
     text: Any questions? Commentaries? Suggestions? Anything? Are you really gonna
       say nothing the whole game *AHEM* I mean the whole adventure?
   - speakerName: Pig
-    text: ...ok then, I guess. I'm just gonna drink this then.
+    text: ...ok then, I guess. I just finished up the potion, just gonna drink this
+      then.
   - speakerName: Pig
     text: Ooook here goes nothin'!

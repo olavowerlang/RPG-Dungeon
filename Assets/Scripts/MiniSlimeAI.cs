@@ -83,4 +83,11 @@ public class MiniSlimeAI : MonoBehaviour
     {
         _isDead = true;
     }
+
+    public void ScaleForNGPlus(float m)
+    {
+        detectionRadius *= m;
+        hopForce        *= m;
+        hopInterval     *= m;
+    }
 }

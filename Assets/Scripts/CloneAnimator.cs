@@ -13,7 +13,7 @@ public class CloneAnimator : MonoBehaviour
     private static readonly int DirXHash           = Animator.StringToHash("DirX");
     private static readonly int DirYHash           = Animator.StringToHash("DirY");
 
-    private Animator _animator;
+    [SerializeField] private Animator _animator;
     private DamageDealer[] _hitboxes;
 
     // Polled by CloneAI each frame
@@ -22,7 +22,12 @@ public class CloneAnimator : MonoBehaviour
 
     private void Awake()
     {
-        _animator = GetComponent<Animator>();
+        // Only search if Inspector didn't assign it (so [SerializeField] assignment is respected)
+        if (_animator == null) _animator = GetComponent<Animator>();
+        if (_animator == null) _animator = GetComponentInChildren<Animator>(true);
+        if (_animator == null) _animator = GetComponentInParent<Animator>(true);
+        if (_animator == null) _animator = transform.root.GetComponentInChildren<Animator>(true);
+
         _hitboxes = GetComponentsInChildren<DamageDealer>(true);
         DisableAllHitboxes();
 
@@ -40,11 +45,15 @@ public class CloneAnimator : MonoBehaviour
 
     // ── Called by CloneAI ────────────────────────────────────────────────────
 
-    public void SetWalking(bool walking) =>
+    public void SetWalking(bool walking)
+    {
+        if (_animator == null) return;
         _animator.SetBool(IsWalkingHash, walking);
+    }
 
     public void SetDirection(Vector2 dir)
     {
+        if (_animator == null) return;
         _animator.SetFloat(DirXHash, Mathf.Abs(dir.x));
         _animator.SetFloat(DirYHash, dir.y);
 
@@ -58,6 +67,7 @@ public class CloneAnimator : MonoBehaviour
 
     public void TriggerAttack1()
     {
+        if (_animator == null) return;
         Attack2WindowOpen = false;
         ComboFinished     = false;
         DisableAllHitboxes();
@@ -66,14 +76,20 @@ public class CloneAnimator : MonoBehaviour
 
     public void TriggerAttack2()
     {
+        if (_animator == null) return;
         DisableAllHitboxes();
         _animator.SetTrigger(LightAttack2Hash);
     }
 
-    public void TriggerDeath() => _animator.SetTrigger(DieHash);
+    public void TriggerDeath()
+    {
+        if (_animator == null) return;
+        _animator.SetTrigger(DieHash);
+    }
 
     public bool IsDeathAnimDone()
     {
+        if (_animator == null) return true; // no animator → don't hang forever
         var info = _animator.GetCurrentAnimatorStateInfo(0);
         return info.IsName("Player_Death") && info.normalizedTime >= 0.95f;
     }

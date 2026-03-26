@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4df0014cb02a0cf4bbbc7addabd2224a, type: 3}
-  m_Name: IntroShopDialogue
+  m_Name: IntroShopDialogue 1ng+
   m_EditorClassIdentifier: 
   lines:
   - speakerName: Pig
@@ -25,8 +25,8 @@ MonoBehaviour:
     text: 'You know, those same ones you use in crafting, and others that are exclusive
       to this store. '
   - speakerName: Pig
-    text: So, as a reward for not being completely useless, I'll let you grab a cool
-      new power with a discount.
+    text: "So, as a reward for not being completely useless, I'll let you grab a
+      cool new powe\u2014oh...you already have that also. Suspicious, I would say.
+      But im just a pig right? What do I know! Anyway."
   - speakerName: Pig
-    text: Use "E" to interact with me and open the shop! After you get your new power,
-      we'll talk more.
+    text: 'Use "E" to interact with me and open the shop! '

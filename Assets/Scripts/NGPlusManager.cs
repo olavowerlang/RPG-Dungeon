@@ -9,8 +9,8 @@ public class NGPlusManager : MonoBehaviour
 {
     public static NGPlusManager Instance { get; private set; }
 
-    [Header("NG+ Enemy Scaling")]
-    public float EnemyStatMultiplier = 2f;
+    // Always starts at 1 — doubled by SetGameCleared each run (NG+1=2x, NG+2=4x, etc.)
+    public float EnemyStatMultiplier { get; private set; } = 1f;
 
     // ── Flags ────────────────────────────────────────────────────────────────
     public bool GameCleared { get; private set; }
@@ -66,8 +66,9 @@ public class NGPlusManager : MonoBehaviour
     /// </summary>
     public void SetGameCleared()
     {
-        GameCleared = true;
-        IsNGPlus    = true;
+        GameCleared           = true;
+        IsNGPlus              = true;
+        EnemyStatMultiplier  *= 2f; // NG+1=2x, NG+2=4x, etc.
 
         var ps = PlayerStats.Instance;
         if (ps != null)

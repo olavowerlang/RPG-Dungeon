@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5704626534399522237}
   - component: {fileID: 3212453222629200239}
   - component: {fileID: 5997737190535345236}
+  - component: {fileID: 8232705235909877739}
   m_Layer: 7
   m_Name: BombShroom
   m_TagString: Untagged
@@ -157,6 +158,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.009961724}
   serializedVersion: 2
   m_Radius: 0.7689662
+--- !u!114 &8232705235909877739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2215439132552722463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3063707012f1b9e4f94e7a91b76522af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7180001067389527911
 GameObject:
   m_ObjectHideFlags: 0

@@ -66,15 +66,28 @@ public class InventoryUI : MonoBehaviour
     {
         if (Input.GetKeyDown(toggleKey))
             Toggle();
+
+        if (inventoryPanel.activeSelf && Input.GetKeyDown(KeyCode.Escape))
+            Close();
     }
+
+    public bool IsOpen => inventoryPanel.activeSelf;
 
     public void Toggle()
     {
+        if (StoreManager.Instance != null && StoreManager.Instance.IsStoreOpen) return;
         bool isOpen = !inventoryPanel.activeSelf;
         inventoryPanel.SetActive(isOpen);
         Time.timeScale = isOpen ? 0f : 1f;
 
         if (isOpen) RefreshAll();
+    }
+
+    /// <summary>Closes the inventory. Wire this to a close button's onClick.</summary>
+    public void Close()
+    {
+        if (inventoryPanel.activeSelf)
+            Toggle();
     }
 
     private void RefreshAll()

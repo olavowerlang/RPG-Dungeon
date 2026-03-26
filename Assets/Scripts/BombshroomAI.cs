@@ -188,4 +188,16 @@ public class BombshroomAI : MonoBehaviour
         _patrolTarget = _spawnPoint + Random.insideUnitCircle * patrolRadius;
         _patrolMoveTimer = 0f;
     }
+
+    public void ScaleForNGPlus(float m)
+    {
+        detectionRadius       *= m;
+        ambushDetectionRadius *= m;
+        gasRange              *= m;
+        moveSpeed             *= m;
+        patrolRadius          *= m;
+        patrolSpeed           *= m;
+        waypointThreshold     *= m;
+        // patrolWaitTime and cooldownTime intentionally excluded
+    }
 }

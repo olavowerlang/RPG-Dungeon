@@ -14,6 +14,12 @@ public class StoreManager : MonoBehaviour
         Instance = this;
     }
 
+    private void Update()
+    {
+        if (IsStoreOpen && Input.GetKeyDown(KeyCode.Escape))
+            CloseStore();
+    }
+
     public void OpenStore()
     {
         IsStoreOpen = true;

@@ -22,7 +22,10 @@ public class GameManager : MonoBehaviour
     private Camera _cam;
     
     public bool gameStarted = false;
+    public static bool HasStarted { get; private set; }
     
+    [SerializeField] private bool autoStart = false;
+
     private void Awake()
     {
         if (Instance != null)
@@ -30,9 +33,14 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        
-        Instance = this;
 
+        Instance = this;
+    }
+
+    private void Start()
+    {
+        if (autoStart && !HasStarted)
+            StartGame();
     }
 
     private void Update()
@@ -50,6 +58,7 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         gameStarted = true;
+        HasStarted  = true;
         spawningWave = true;
         //StartCoroutine(nameof(SpawnWave));
     }

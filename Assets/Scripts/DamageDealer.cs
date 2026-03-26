@@ -37,7 +37,10 @@ public class DamageDealer : MonoBehaviour
     public void BeginSwing()
     {
         _hitSet.Clear();
-        if (Col != null) Col.enabled = true;
+        if (Col != null)
+            Col.enabled = true;
+        else
+            Debug.LogError($"DamageDealer on '{gameObject.name}': no Collider2D found — hitbox cannot enable! Check the hitbox child has a Collider2D component.", this);
     }
 
     public void EndSwing() { if (Col != null) Col.enabled = false; }

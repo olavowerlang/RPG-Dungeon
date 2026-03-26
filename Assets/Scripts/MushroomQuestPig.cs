@@ -1,14 +1,15 @@
 using UnityEngine;
 
 /// <summary>
-/// Attach to pig instance 3 (zone 7).
-/// Player arrives with 15 mushrooms already (gate blocks entry otherwise).
-/// Takes mushrooms, gives gold, plays reward dialogue. Repeat dialogue after.
+/// NPC Instance 3.
+/// - First E press  → mushroom quest dialogue (hands in mushrooms, gives gold).
+/// - After that     → E shows [Talk][Buy] panel. Both always available.
+/// CaveExitGate checks TalkDone.
 /// </summary>
 public class MushroomQuestPig : MonoBehaviour
 {
-    // Gate reads this to know if quest is already done (e.g. player returns)
     public static bool QuestDone { get; private set; }
+    public static bool TalkDone  { get; private set; }
 
     [Header("Quest")]
     [SerializeField] private ItemData mushroomItem;
@@ -16,27 +17,32 @@ public class MushroomQuestPig : MonoBehaviour
     [SerializeField] private int      goldReward    = 10;
 
     [Header("Dialogue")]
-    [SerializeField] private DialogueData rewardDialogue;   // fires once — takes mushrooms, gives gold
-    [SerializeField] private DialogueData repeatDialogue;   // every talk after
+    [SerializeField] private DialogueData rewardDialogue;
+    [SerializeField] private DialogueData repeatDialogue;
 
     [Header("UI")]
-    [SerializeField] private GameObject interactionPrompt;
+    [SerializeField] private GameObject          interactionPrompt;
+    [SerializeField] private NPCInteractionPanel interactionPanel;
 
     [Header("Gold Pop")]
-    [SerializeField] private int goldLineIndex = 5; // 0-based index of the "here have this" line
+    [SerializeField] private int goldLineIndex = 5;
 
     private bool _playerInRange;
+    private bool _panelOpen;
     private bool _goldGiven;
 
-    // Reset on each scene load so NG+ runs start fresh
-    private void Awake() => QuestDone = false;
+    private void Awake()
+    {
+        QuestDone = false;
+        TalkDone  = false;
+    }
 
     private void OnEnable()  => DialogueManager.OnLineShown += OnLineShown;
     private void OnDisable() => DialogueManager.OnLineShown -= OnLineShown;
 
     private void OnLineShown(int index)
     {
-        if (_goldGiven || QuestDone == false) return;
+        if (_goldGiven || !QuestDone) return;
         if (index != goldLineIndex) return;
 
         _goldGiven = true;
@@ -52,34 +58,64 @@ public class MushroomQuestPig : MonoBehaviour
 
     private void Update()
     {
-        if (DialogueManager.Instance == null) return;
+        if (StoreManager.Instance != null && StoreManager.Instance.IsStoreOpen) return;
+        if (_panelOpen) return;
 
-        bool canInteract = _playerInRange && !DialogueManager.Instance.IsInDialogue;
+        bool dialogueActive = DialogueManager.Instance != null && DialogueManager.Instance.IsInDialogue;
+        bool canInteract = _playerInRange && !dialogueActive;
+
         if (interactionPrompt != null)
             interactionPrompt.SetActive(canInteract);
 
-        if (canInteract && Input.GetKeyDown(KeyCode.E))
-            Interact();
+        if (!canInteract) return;
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (!TalkDone)
+                FirstTalk();
+            else
+                OpenPanel();
+        }
     }
 
-    private void Interact()
+    private void FirstTalk()
     {
-        if (QuestDone)
-        {
-            if (repeatDialogue != null)
-                DialogueManager.Instance.StartDialogue(repeatDialogue);
-            return;
-        }
+        if (DialogueManager.Instance == null) return;
 
-        // Take mushrooms immediately
         if (InventoryManager.Instance != null)
             InventoryManager.Instance.RemoveItem(mushroomItem, requiredCount);
 
         QuestDone = true;
+        TalkDone  = true;
 
-        // Gold fires mid-dialogue via OnLineShown when the reward line appears
         if (rewardDialogue != null)
             DialogueManager.Instance.StartDialogue(rewardDialogue);
+    }
+
+    private void OpenPanel()
+    {
+        if (interactionPanel == null) return;
+        _panelOpen = true;
+        interactionPanel.Show(
+            new[] { "Talk", "Buy" },
+            new[] { true, true },
+            OnOptionSelected,
+            onCancel: () => _panelOpen = false
+        );
+    }
+
+    private void OnOptionSelected(int index)
+    {
+        _panelOpen = false;
+        if (index == 0) // Talk
+        {
+            if (DialogueManager.Instance != null && repeatDialogue != null)
+                DialogueManager.Instance.StartDialogue(repeatDialogue);
+        }
+        else if (index == 1) // Buy
+        {
+            StoreManager.Instance?.OpenStore();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -89,10 +125,15 @@ public class MushroomQuestPig : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (!other.CompareTag("Player")) return;
+        _playerInRange = false;
+
+        if (interactionPrompt != null) interactionPrompt.SetActive(false);
+
+        if (_panelOpen)
         {
-            _playerInRange = false;
-            if (interactionPrompt != null) interactionPrompt.SetActive(false);
+            interactionPanel?.Hide();
+            _panelOpen = false;
         }
     }
 }

@@ -40,12 +40,20 @@ public class TransformationSequence : MonoBehaviour
 
     // ── Unity ────────────────────────────────────────────────────────────────
 
+    private PlayerInput _playerInput;
+
     private void Awake()
     {
         BuildParticlesIfNeeded();
         BuildFlashIfNeeded();
 
         if (cloneObject != null) cloneObject.SetActive(false);
+    }
+
+    private void Start()
+    {
+        var playerGO = GameObject.FindWithTag("Player");
+        if (playerGO != null) _playerInput = playerGO.GetComponent<PlayerInput>();
     }
 
     // ── Public API ───────────────────────────────────────────────────────────
@@ -59,6 +67,9 @@ public class TransformationSequence : MonoBehaviour
 
     private IEnumerator TransformRoutine()
     {
+        // Freeze all player input (blocks movement, dash, and attack)
+        if (_playerInput != null) _playerInput.enabled = false;
+
         // Detach particles from this object so disabling the pig mid-sequence doesn't kill them
         transformParticles.transform.SetParent(null);
 
@@ -96,6 +107,9 @@ public class TransformationSequence : MonoBehaviour
         yield return StartCoroutine(FadeFlash(1f, 0f, flashFallDuration));
 
         yield return new WaitForSeconds(postSwapDelay);
+
+        // Unfreeze player — visual is done
+        if (_playerInput != null) _playerInput.enabled = true;
 
         // — Post-transform dialogue —
         if (postTransformDialogue != null && DialogueManager.Instance != null)

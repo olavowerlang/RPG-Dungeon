@@ -24,6 +24,7 @@ public class GenericEnemyHitEffect : MonoBehaviour, IDamageable
     private float _invulTimer;
 
     public Vector2 KnockbackVelocity => _impulseVel;
+    public Vector2 LastHitImpulse    { get; private set; }
     public bool IsInvulnerable => _invulTimer > 0f;
 
     public event Action OnHitTaken;
@@ -51,8 +52,13 @@ public class GenericEnemyHitEffect : MonoBehaviour, IDamageable
         SpawnDeathParticlesAt(transform.position);
     }
 
+    // Set to false to re-enable death particles for normal enemies
+    public static bool DeathParticlesEnabled = false;
+
     public static void SpawnDeathParticlesAt(Vector3 position, int sortingOrder = 32767)
     {
+        if (!DeathParticlesEnabled) return;
+
         var go  = new GameObject("DeathFX");
         go.transform.position = position;
         var ps  = go.AddComponent<ParticleSystem>();
@@ -135,7 +141,9 @@ public class GenericEnemyHitEffect : MonoBehaviour, IDamageable
         if (_hp.IsDead) return;
         if (_invulTimer > 0f) return;
 
-        _impulseVel += dir.normalized * (knockForce + knockback);
+        Vector2 imp  = dir.normalized * (knockForce + knockback);
+        LastHitImpulse = imp;
+        _impulseVel += imp;
         _hp.TakeDamage(dmg);
 
         OnHitTaken?.Invoke();

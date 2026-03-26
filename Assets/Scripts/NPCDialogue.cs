@@ -12,12 +12,21 @@ public class NPCDialogue : MonoBehaviour
 
     private bool _playerInRange;
     private bool _mainDone;
+    private bool _wasInDialogue;
+    private float _cooldown;
 
     private bool IsNGPlus => NGPlusManager.Instance != null && NGPlusManager.Instance.GameCleared;
 
     private void Update()
     {
-        bool canInteract = _playerInRange && !DialogueManager.Instance.IsInDialogue;
+        bool inDialogue = DialogueManager.Instance.IsInDialogue;
+
+        // Cooldown prevents same E press that closes dialogue from reopening it
+        if (_wasInDialogue && !inDialogue) _cooldown = 0.15f;
+        _wasInDialogue = inDialogue;
+        _cooldown -= Time.deltaTime;
+
+        bool canInteract = _playerInRange && !inDialogue && _cooldown <= 0f;
 
         if (interactionPrompt != null)
             interactionPrompt.SetActive(canInteract);

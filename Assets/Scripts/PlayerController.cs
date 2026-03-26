@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
         _input = GetComponent<PlayerInput>();
         _stats = GetComponent<PlayerStats>();
         _currentDashStamina = _stats.maxDashStamina;
+        _rb.interpolation = RigidbodyInterpolation2D.Interpolate;
     }
 
     private void Update()

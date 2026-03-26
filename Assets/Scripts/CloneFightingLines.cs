@@ -3,16 +3,16 @@ using UnityEngine;
 using TMPro;
 
 /// <summary>
-/// Fires random quip lines above the clone's head during the fight.
-/// Attach to the Clone root. Auto-creates a world-space text label if none assigned.
+/// Fires random quip lines on a World Space Canvas TMP element during the clone fight.
+/// Assign the Text (TMP) element from the QuipLabel canvas child in the Inspector.
 /// </summary>
 public class CloneFightingLines : MonoBehaviour
 {
     [System.Serializable]
-    private class FightLine
+    public class FightLine
     {
         [TextArea] public string text;
-        [TextArea] public string followUp;        // if set, fires followUpDelay seconds after
+        [TextArea] public string followUp;
         public float            followUpDelay = 1f;
     }
 
@@ -31,29 +31,26 @@ public class CloneFightingLines : MonoBehaviour
     };
 
     [Header("Timing")]
-    [SerializeField] private float minInterval  = 6f;
-    [SerializeField] private float maxInterval  = 13f;
+    [SerializeField] private float minInterval = 6f;
+    [SerializeField] private float maxInterval = 13f;
 
-    [Header("Display")]
-    [SerializeField] private TextMeshPro label;          // world-space TMP; auto-created if null
-    [SerializeField] private float       yOffset    = 1.4f;
-    [SerializeField] private float       fadeInTime = 0.25f;
-    [SerializeField] private float       holdTime   = 2.8f;
-    [SerializeField] private float       fadeOutTime = 0.4f;
+    [Header("Text Element")]
+    [SerializeField] private TextMeshProUGUI label;
+
+    [Header("Display Timing")]
+    [SerializeField] private float fadeInTime  = 0.25f;
+    [SerializeField] private float holdTime    = 2.8f;
+    [SerializeField] private float fadeOutTime = 0.4f;
 
     private CloneAI _ai;
     private bool    _running;
 
-    // ── Unity ────────────────────────────────────────────────────────────────
-
     private void Awake()
     {
         _ai = GetComponent<CloneAI>();
-        BuildLabelIfNeeded();
         SetLabelAlpha(0f);
     }
 
-    // Called by CloneAI once the fight starts
     public void StartLines()
     {
         if (_running) return;
@@ -68,11 +65,12 @@ public class CloneFightingLines : MonoBehaviour
         SetLabelAlpha(0f);
     }
 
-    // ── Loop ─────────────────────────────────────────────────────────────────
-
     private IEnumerator LineLoop()
     {
-        Shuffle(lines);
+        if (lines == null || lines.Length == 0) yield break;
+
+        var shuffled = (FightLine[])lines.Clone();
+        Shuffle(shuffled);
         int index = 0;
 
         while (_running)
@@ -81,23 +79,17 @@ public class CloneFightingLines : MonoBehaviour
 
             if (!_running) yield break;
 
-            // Skip lines while clone is in Phase2Talk or Dead
             if (_ai != null && (_ai.CurrentState == CloneAI.State.Dead ||
                                  _ai.CurrentState == CloneAI.State.Phase2Talk))
-            {
                 continue;
-            }
 
-            // All lines fired — reshuffle and start over
-            if (index >= lines.Length)
+            if (index >= shuffled.Length)
             {
-                Shuffle(lines);
+                Shuffle(shuffled);
                 index = 0;
             }
 
-            FightLine line = lines[index];
-            index++;
-
+            var line = shuffled[index++];
             yield return StartCoroutine(ShowLine(line.text));
 
             if (!string.IsNullOrEmpty(line.followUp))
@@ -110,9 +102,10 @@ public class CloneFightingLines : MonoBehaviour
 
     private IEnumerator ShowLine(string text)
     {
+        if (label == null) yield break;
+
         label.text = text;
 
-        // Fade in
         float t = 0f;
         while (t < fadeInTime)
         {
@@ -124,7 +117,6 @@ public class CloneFightingLines : MonoBehaviour
 
         yield return new WaitForSeconds(holdTime);
 
-        // Fade out
         t = 0f;
         while (t < fadeOutTime)
         {
@@ -135,32 +127,12 @@ public class CloneFightingLines : MonoBehaviour
         SetLabelAlpha(0f);
     }
 
-    // ── Helpers ──────────────────────────────────────────────────────────────
-
     private void SetLabelAlpha(float a)
     {
         if (label == null) return;
         Color c = label.color;
         c.a = a;
         label.color = c;
-    }
-
-    private void BuildLabelIfNeeded()
-    {
-        if (label != null) return;
-
-        var go = new GameObject("CloneQuipLabel");
-        go.transform.SetParent(transform);
-        go.transform.localPosition = new Vector3(0f, yOffset, 0f);
-
-        label                  = go.AddComponent<TextMeshPro>();
-        label.alignment        = TextAlignmentOptions.Center;
-        label.fontSize         = 3f;
-        label.color            = Color.white;
-        label.outlineWidth     = 0.2f;
-        label.outlineColor     = Color.black;
-        label.enableWordWrapping = true;
-        label.rectTransform.sizeDelta = new Vector2(5f, 2f);
     }
 
     private void Shuffle(FightLine[] arr)

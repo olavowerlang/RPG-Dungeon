@@ -14,6 +14,7 @@ public class EndingSequence : MonoBehaviour
     public static EndingSequence Instance { get; private set; }
 
     [Header("UI")]
+    [SerializeField] private GameObject       endingPanel;    // the panel to activate when ending starts (keep inactive during fight)
     [SerializeField] private Image            blackOverlay;   // full-screen black Image, alpha 0 at start
     [SerializeField] private TextMeshProUGUI  endingText;     // white text, alpha 0 at start
 
@@ -37,6 +38,10 @@ public class EndingSequence : MonoBehaviour
 
     private IEnumerator EndingRoutine()
     {
+        // Activate the panel now — it was kept inactive during the fight to avoid covering the screen.
+        // Awake already set blackOverlay alpha to 0, so this won't flash.
+        if (endingPanel != null) endingPanel.SetActive(true);
+
         // Snapshot stats and mark game cleared
         if (NGPlusManager.Instance == null)
             new GameObject("NGPlusManager").AddComponent<NGPlusManager>();
@@ -47,7 +52,7 @@ public class EndingSequence : MonoBehaviour
         float t = 0f;
         while (t < blackFadeTime)
         {
-            t += Time.deltaTime;
+            t += Time.unscaledDeltaTime;
             SetBlackAlpha(Mathf.SmoothStep(0f, 1f, t / blackFadeTime));
             yield return null;
         }
@@ -59,14 +64,14 @@ public class EndingSequence : MonoBehaviour
             t = 0f;
             while (t < textFadeInTime)
             {
-                t += Time.deltaTime;
+                t += Time.unscaledDeltaTime;
                 endingText.alpha = Mathf.Clamp01(t / textFadeInTime);
                 yield return null;
             }
             endingText.alpha = 1f;
         }
 
-        yield return new WaitForSeconds(displayTime);
+        yield return new WaitForSecondsRealtime(displayTime);
 
         SceneManager.LoadScene(mainSceneName);
     }

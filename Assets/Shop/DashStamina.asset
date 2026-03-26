@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: 
   description: Bigger stamina bar.
   icon: {fileID: 21300000, guid: a1f8b2690f57c054d95826c79d9d1b8b, type: 3}
-  price: 10
+  price: 5
   itemData: {fileID: 0}
   isDirectBuff: 1
   directBuffType: 5

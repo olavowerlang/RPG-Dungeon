@@ -20,8 +20,8 @@ MonoBehaviour:
   - speakerName: Pig
     text: What? Don't give me that face homie, do you even know where you are?
   - speakerName: Pig
-    text: "Bro, you don't even have a\u2014what the fuck? How...the hell do you have
-      that sword? Wait a sec, where is...how...? Well,shit. I don't have the slightest
+    text: "Bro, you don't even have a\u2014what the fuck? How the hell do you have
+      that sword? Wait a sec, where is...how...? Well, shit. I don't have the slightest
       clue what's going on, but this saves me some time anyway.     "
   - speakerName: Pig
     text: Since you have that sword, you certainly know it is magical, right? It
@@ -32,11 +32,13 @@ MonoBehaviour:
     text: Also, you definitely know you should keep an eye out for the purple orbs
       enemies drop, they might come in handy.
   - speakerName: Pig
-    text: Now, there are some slimes over there, weakly bastards but if you touch
-      'em won't feel nice. Go kill them and absorb their components!!! ("I" opens
-      your inventory and crafting table by the way).
+    text: 'Now, there are some slimes over there, weakly bastards but if you touch
+      ''em won''t feel nice. Go kill them and absorb their components!!! '
   - speakerName: Pig
-    text: Not that I know what this "I" means or anything I don't know why I said
-      that honestly.
+    text: 'By the way, "I" opens your inventory and crafting table, "J" uses the
+      sword, and mouse interacts with inventory and some other things. '
+  - speakerName: Pig
+    text: Not that I know what this "I", "J" or "mouse" mean or anything I don't
+      know why I said that honestly.
   - speakerName: Pig
     text: Aight good luck!!!

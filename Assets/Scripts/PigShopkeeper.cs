@@ -1,135 +1,150 @@
 using UnityEngine;
 
 /// <summary>
-/// Full NPC logic for the pig shopkeeper (MainNPCInstance2).
-///
-/// E key    → checks gates first; if all cleared plays repeat dialogue, otherwise activates gate
-/// Click    → same gate check; once all cleared opens the store
-///
-/// To add a future gate: add a ShopGate subclass component to this GameObject,
-/// then drag it into the Gates array in the correct position.
+/// NPC2 flow:
+///   1. First E → introDialogue. Sets IntroDone.
+///   2. E again → panel [Talk (greyed until dash)] [Buy]
+///   3. Talk first time (dash owned) → mainDialogue. Sets TalkDone → clears Zone3 gate.
+///   4. Talk after → repeatDialogue.
+/// NG+ variants replace each dialogue when NGPlusManager.GameCleared is true.
 /// </summary>
 public class PigShopkeeper : MonoBehaviour
 {
+    public enum NpcId { Instance2 = 2, Instance3 = 3 }
+
+    [Header("Identity")]
+    [SerializeField] private NpcId npcId = NpcId.Instance2;
+    [Tooltip("If true, Talk is greyed until the player owns the dash.")]
+    [SerializeField] private bool requireDashForTalk = false;
+
     [Header("Dialogue")]
+    [SerializeField] private DialogueData introDialogue;
     [SerializeField] private DialogueData mainDialogue;
     [SerializeField] private DialogueData repeatDialogue;
-    [SerializeField] private DialogueData ngPlusMainDialogue;    // "oh, you already have a sword..."
-    [SerializeField] private DialogueData ngPlusDashDialogue;    // "huh, you already had that, how?"
+
+    [Header("NG+ Dialogue (optional — overrides above when game is cleared)")]
+    [SerializeField] private DialogueData ngPlusIntroDialogue;
+    [SerializeField] private DialogueData ngPlusMainDialogue;
+    [SerializeField] private DialogueData ngPlusRepeatDialogue;
 
     [Header("UI")]
-    [SerializeField] private GameObject interactionPrompt;
+    [SerializeField] private GameObject          interactionPrompt;
+    [SerializeField] private NPCInteractionPanel interactionPanel;
 
-    [Header("Gates (evaluated in order — first uncleared blocks the store)")]
-    [SerializeField] private ShopGate[] gates;
+    // ── Static flags ───────────────────────────────────────────────────────────
+    public static bool Instance2IntroDone { get; private set; }
+    public static bool Instance2TalkDone  { get; private set; }
+    public static bool Instance3IntroDone { get; private set; }
+    public static bool Instance3TalkDone  { get; private set; }
 
-    // Set to true once the player completes the intro dialogue.
-    // Used externally (e.g. cave gate) to know the pig has been spoken to.
-    public static bool MainDialogueDone { get; private set; }
+    // Backwards-compatibility alias
+    public static bool MainDialogueDone => Instance2IntroDone;
 
+    // ── Helpers ────────────────────────────────────────────────────────────────
+    private bool IsNG => NGPlusManager.Instance != null && NGPlusManager.Instance.GameCleared;
+
+    private bool IntroDoneFlag
+    {
+        get => npcId == NpcId.Instance2 ? Instance2IntroDone : Instance3IntroDone;
+        set { if (npcId == NpcId.Instance2) Instance2IntroDone = value; else Instance3IntroDone = value; }
+    }
+
+    private bool TalkDoneFlag
+    {
+        get => npcId == NpcId.Instance2 ? Instance2TalkDone : Instance3TalkDone;
+        set { if (npcId == NpcId.Instance2) Instance2TalkDone = value; else Instance3TalkDone = value; }
+    }
+
+    private DialogueData PickIntro   => IsNG && ngPlusIntroDialogue  != null ? ngPlusIntroDialogue  : introDialogue;
+    private DialogueData PickMain    => IsNG && ngPlusMainDialogue    != null ? ngPlusMainDialogue   : mainDialogue;
+    private DialogueData PickRepeat  => IsNG && ngPlusRepeatDialogue  != null ? ngPlusRepeatDialogue : repeatDialogue;
+
+    // ── Instance state ─────────────────────────────────────────────────────────
     private bool _playerInRange;
-    private bool _mainDone;
+    private bool _panelOpen;
+    private bool _wasInDialogue;
+    private float _cooldown;
 
+    // ── Unity lifecycle ────────────────────────────────────────────────────────
     private void Update()
     {
         if (StoreManager.Instance != null && StoreManager.Instance.IsStoreOpen) return;
+        if (_panelOpen) return;
 
-        bool canInteract = _playerInRange && (DialogueManager.Instance == null || !DialogueManager.Instance.IsInDialogue);
+        bool inDialogue = DialogueManager.Instance != null && DialogueManager.Instance.IsInDialogue;
+        if (_wasInDialogue && !inDialogue) _cooldown = 0.15f;
+        _wasInDialogue = inDialogue;
+        _cooldown -= Time.deltaTime;
+
+        bool canInteract = _playerInRange && !inDialogue && _cooldown <= 0f;
 
         if (interactionPrompt != null)
             interactionPrompt.SetActive(canInteract);
 
         if (!canInteract) return;
 
-        // E key → gate check first, then repeat dialogue only after dash is unlocked
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (!AllGatesCleared())
-                ActivateFirstUnclearedGate();
-            else if (PlayerStats.Instance != null && PlayerStats.Instance.hasDash)
-            {
-                bool ng = NGPlusManager.Instance != null && NGPlusManager.Instance.GameCleared;
-                if (!_mainDone)
-                {
-                    DialogueData d = ng && ngPlusMainDialogue != null ? ngPlusMainDialogue : mainDialogue;
-                    DialogueManager.Instance.StartDialogue(d, () => _mainDone = true);
-                }
-                else
-                {
-                    DialogueData d = ng && ngPlusDashDialogue != null ? ngPlusDashDialogue : repeatDialogue;
-                    DialogueManager.Instance.StartDialogue(d);
-                }
-            }
-            // gates cleared but dash not yet bought: E does nothing — go buy dash from store
-            return;
-        }
-
-        // Left click on pig → gate check or store
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector2 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Collider2D[] hits = Physics2D.OverlapPointAll(mouseWorld);
-            foreach (var hit in hits)
-            {
-                if (hit.transform == transform || hit.transform.IsChildOf(transform))
-                {
-                    TryOpenStore();
-                    break;
-                }
-            }
+            if (!IntroDoneFlag)
+                PlayIntro();
+            else
+                OpenPanel();
         }
     }
 
-    private bool AllGatesCleared()
+    // ── Dialogue ───────────────────────────────────────────────────────────────
+    private void PlayIntro()
     {
-        foreach (var gate in gates)
-            if (gate != null && !gate.IsCleared) return false;
-        return true;
+        var d = PickIntro;
+        if (DialogueManager.Instance == null || d == null) return;
+        DialogueManager.Instance.StartDialogue(d, () => IntroDoneFlag = true);
     }
 
-    private void ActivateFirstUnclearedGate()
+    // ── Panel ──────────────────────────────────────────────────────────────────
+    private void OpenPanel()
     {
-        foreach (var gate in gates)
-        {
-            if (gate != null && !gate.IsCleared)
-            {
-                gate.Activate();
-                return;
-            }
-        }
+        if (interactionPanel == null) return;
+        _panelOpen = true;
+
+        bool talkEnabled = !requireDashForTalk
+            || (PlayerStats.Instance != null && PlayerStats.Instance.hasDash);
+
+        interactionPanel.Show(
+            new[] { "Talk", "Buy" },
+            new[] { talkEnabled, true },
+            OnOptionSelected,
+            onCancel: () => _panelOpen = false
+        );
     }
 
-    private void TryOpenStore()
+    private void OnOptionSelected(int index)
     {
-        if (!AllGatesCleared())
-        {
-            ActivateFirstUnclearedGate();
-            return;
-        }
+        _panelOpen = false;
 
-        bool ng = NGPlusManager.Instance != null && NGPlusManager.Instance.GameCleared;
-
-        // Must complete intro dialogue before store ever opens
-        if (!_mainDone)
+        if (index == 0) // Talk
         {
             if (DialogueManager.Instance == null) return;
-            DialogueData d = ng && ngPlusMainDialogue != null ? ngPlusMainDialogue : mainDialogue;
-            if (d == null) { Debug.LogWarning("PigShopkeeper: mainDialogue not assigned!"); return; }
 
-            DialogueManager.Instance.StartDialogue(d, () =>
+            if (!TalkDoneFlag)
             {
-                _mainDone = true;
-                MainDialogueDone = true;
-                if (StoreManager.Instance != null) StoreManager.Instance.OpenStore();
-            });
-            return;
+                var d = PickMain;
+                if (d == null) return;
+                DialogueManager.Instance.StartDialogue(d, () => TalkDoneFlag = true);
+            }
+            else
+            {
+                var d = PickRepeat;
+                if (d == null) return;
+                DialogueManager.Instance.StartDialogue(d);
+            }
         }
-
-        // Intro done — subsequent clicks open shop directly
-        if (StoreManager.Instance != null)
-            StoreManager.Instance.OpenStore();
+        else if (index == 1) // Buy
+        {
+            StoreManager.Instance?.OpenStore();
+        }
     }
 
+    // ── Trigger ────────────────────────────────────────────────────────────────
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player")) _playerInRange = true;
@@ -137,10 +152,15 @@ public class PigShopkeeper : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (!other.CompareTag("Player")) return;
+        _playerInRange = false;
+
+        if (interactionPrompt != null) interactionPrompt.SetActive(false);
+
+        if (_panelOpen)
         {
-            _playerInRange = false;
-            if (interactionPrompt != null) interactionPrompt.SetActive(false);
+            interactionPanel?.Hide();
+            _panelOpen = false;
         }
     }
 }

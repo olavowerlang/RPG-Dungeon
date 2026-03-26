@@ -47,13 +47,17 @@ public class CavePigNPC : MonoBehaviour
     private IEnumerator Start()
     {
         var playerGO = GameObject.FindWithTag("Player");
-        if (playerGO != null) _player = playerGO.transform;
+        if (playerGO != null)
+            _player = playerGO.transform;
+        else
+            Debug.LogError("CavePigNPC: No GameObject tagged 'Player' found!", this);
 
-        // Wait two frames so the scene settles. Without this, if the player
-        // spawns within wakeUpRange the pig skips the Sleep state entirely.
-        yield return null;
-        yield return null;
+        if (pigAnimator == null)
+            Debug.LogError("CavePigNPC: pigAnimator is not assigned in the Inspector!", this);
+
+        yield return new WaitForSeconds(0.5f);
         _canCheckWake = true;
+        Debug.Log("CavePigNPC: ready to check wake distance.");
     }
 
     private void Update()
@@ -77,20 +81,27 @@ public class CavePigNPC : MonoBehaviour
         if (!_canCheckWake || _player == null) return;
         float dist = Vector2.Distance(transform.position, _player.position);
         if (dist <= wakeUpRange)
+        {
+            Debug.Log($"CavePigNPC: player in range ({dist:F2}), starting WakeUpRoutine.");
             StartCoroutine(WakeUpRoutine());
+        }
     }
 
     private IEnumerator WakeUpRoutine()
     {
         _state = PigState.WakingUp;
+        Debug.Log("CavePigNPC: WakeUpRoutine started.");
 
         if (pigAnimator != null)
         {
+            Debug.Log($"CavePigNPC: firing trigger '{wakeUpTrigger}'. Current state: {pigAnimator.GetCurrentAnimatorStateInfo(0).fullPathHash}");
             pigAnimator.SetTrigger(wakeUpTrigger);
 
             // Give the animator two frames to process the trigger and start transitioning
             yield return null;
             yield return null;
+
+            Debug.Log($"CavePigNPC: after 2 frames, IsName('{wakeUpStateName}') = {pigAnimator.GetCurrentAnimatorStateInfo(0).IsName(wakeUpStateName)}");
 
             // Wait for WakeUp state to begin (in case transition takes a bit longer)
             float waitTimeout = 1f;
@@ -100,12 +111,18 @@ public class CavePigNPC : MonoBehaviour
                 yield return null;
             }
 
+            if (waitTimeout <= 0f)
+                Debug.LogWarning($"CavePigNPC: timed out waiting for '{wakeUpStateName}' state. Check the Animator Controller setup.");
+            else
+                Debug.Log("CavePigNPC: WakeUp state confirmed, waiting for animation to finish.");
+
             // Wait for the WakeUp animation to finish
             yield return new WaitUntil(() =>
                 pigAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f
                 || !pigAnimator.GetCurrentAnimatorStateInfo(0).IsName(wakeUpStateName));
         }
 
+        Debug.Log("CavePigNPC: now Idle.");
         _state = PigState.Idle;
     }
 

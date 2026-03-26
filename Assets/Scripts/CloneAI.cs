@@ -1,5 +1,7 @@
 using System.Collections;
+using Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Health), typeof(GenericEnemyHitEffect))]
 public class CloneAI : MonoBehaviour
@@ -38,21 +40,21 @@ public class CloneAI : MonoBehaviour
     [SerializeField] private float rushSpeedThreshold = 2.5f; // player must move this fast to trigger retreat
 
     [Header("Patience (seconds before attacking)")]
-    [SerializeField] private float patienceMin       = 1f;
-    [SerializeField] private float patienceMax       = 2.5f;
-    [SerializeField] private float phase2PatienceMin = 2f;
-    [SerializeField] private float phase2PatienceMax = 4f;
+    [SerializeField] private float patienceMin       = 0.8f;
+    [SerializeField] private float patienceMax       = 1.8f;
+    [SerializeField] private float phase2PatienceMin = 0.5f;
+    [SerializeField] private float phase2PatienceMax = 1.2f;
 
     [Header("Cooldown")]
-    [SerializeField] private float cooldownMin       = 0.8f;
-    [SerializeField] private float cooldownMax       = 1.2f;
-    [SerializeField] private float phase2CooldownMin = 0.5f;
-    [SerializeField] private float phase2CooldownMax = 0.7f;
+    [SerializeField] private float cooldownMin       = 0.6f;
+    [SerializeField] private float cooldownMax       = 1.0f;
+    [SerializeField] private float phase2CooldownMin = 0.3f;
+    [SerializeField] private float phase2CooldownMax = 0.55f;
 
     [Header("Dodge")]
-    [SerializeField] private float dodgeChance       = 0.28f;
-    [SerializeField] private float phase2DodgeChance = 0.45f;
-    [SerializeField] private float dodgeCooldown     = 4f;
+    [SerializeField] private float dodgeChance       = 0.35f;
+    [SerializeField] private float phase2DodgeChance = 0.55f;
+    [SerializeField] private float dodgeCooldown     = 2.5f;
     [SerializeField] private float dodgeRange        = 4f;
     [SerializeField] private float dodgeForce        = 14f;
     [SerializeField] private float dodgeDuration     = 0.35f;
@@ -62,7 +64,7 @@ public class CloneAI : MonoBehaviour
     [SerializeField] private float wallEscapeDuration = 0.4f;
 
     [Header("Phase 2")]
-    [SerializeField] private float phase2ExtraDashWeight = 0.2f;
+    [SerializeField] private float phase2ExtraDashWeight = 0.3f;
 
     [Header("Dialogue")]
     [SerializeField] private DialogueData phase2Dialogue;
@@ -94,11 +96,15 @@ public class CloneAI : MonoBehaviour
     private bool  _isRetreating;
 
     // MirrorStance strafe
-    private Vector2 _strafeDir;
+    private float   _strafeSide = 1f; // +1 or -1 — orbital direction, flipped on timer
     private float   _strafeFlipTimer;
+
 
     // Dodge cooldown
     private float _dodgeCooldownTimer;
+
+    // Wall escape cooldown — prevents rapid re-entry that causes jitter
+    private float _wallEscapeCooldown;
 
     // Feint / approach style
     private bool  _isFeinting;
@@ -123,15 +129,20 @@ public class CloneAI : MonoBehaviour
         _health    = GetComponent<Health>();
         _hitEffect = GetComponent<GenericEnemyHitEffect>();
 
-        // Direct velocity control — drag fights us every frame, interpolation prevents visual stutter
-        _rb.drag          = 0f;
-        _rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+        _rb.bodyType               = RigidbodyType2D.Dynamic;
+        _rb.drag                   = 0f;
+        _rb.gravityScale           = 0f;
+        _rb.interpolation          = RigidbodyInterpolation2D.Interpolate;
+        _rb.constraints            = RigidbodyConstraints2D.FreezeRotation;
+        _rb.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
 
         // Boss deals damage through attack hitboxes only, not body contact
         var contact = GetComponent<EnemyContactDamage>();
         if (contact != null) contact.enabled = false;
 
-
+        // Fallback: find CloneAnimator in children if Inspector reference is missing
+        if (cloneAnimator == null)
+            cloneAnimator = GetComponentInChildren<CloneAnimator>(true);
     }
 
     private CloneFightingLines _fightingLines;
@@ -146,6 +157,42 @@ public class CloneAI : MonoBehaviour
 
         _fightingLines = GetComponent<CloneFightingLines>();
         _health.OnDeath += OnDeath;
+        _hitEffect.OnHitTaken += OnCloneHit;
+
+        // NG+ health scaling (stats are mirrored from player so no AI tuning needed)
+        if (NGPlusManager.Instance != null && NGPlusManager.Instance.IsNGPlus)
+            _health.ScaleMaxHP(Mathf.RoundToInt(_health.MaxHP * NGPlusManager.Instance.EnemyStatMultiplier));
+
+        // Cinemachine SmartUpdate defaults to FixedUpdate for physics targets, making the
+        // camera jump at 50Hz while Rigidbody2D Interpolate renders at 60fps → clone jitters
+        // relative to camera. LateUpdate makes the camera read interpolated positions → smooth.
+        var brain = Camera.main != null ? Camera.main.GetComponent<CinemachineBrain>() : null;
+        if (brain != null) brain.m_UpdateMethod = CinemachineBrain.UpdateMethod.LateUpdate;
+
+        // Prevent the physics engine from generating separation impulses between clone
+        // and player bodies — that constant push/override cycle is the main jitter source.
+        IgnorePlayerColliders();
+    }
+
+    private void IgnorePlayerColliders()
+    {
+        // Use InChildren so child-object colliders are included on both sides
+        var myColliders = GetComponentsInChildren<Collider2D>(true);
+        if (myColliders.Length == 0) return;
+
+        var playerObj = GameObject.FindWithTag("Player");
+        if (playerObj == null) return;
+
+        var playerColliders = playerObj.GetComponentsInChildren<Collider2D>(true);
+        foreach (var pc in playerColliders)
+        {
+            if (pc.isTrigger) continue; // keep hitbox triggers working
+            foreach (var mc in myColliders)
+            {
+                if (mc.isTrigger) continue;
+                Physics2D.IgnoreCollision(mc, pc, true);
+            }
+        }
     }
 
     // Called by TransformationSequence instead of StartFight directly,
@@ -162,12 +209,20 @@ public class CloneAI : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (_health != null) _health.OnDeath -= OnDeath;
+        if (_health    != null) _health.OnDeath         -= OnDeath;
+        if (_hitEffect != null) _hitEffect.OnHitTaken   -= OnCloneHit;
+    }
+
+    private void OnCloneHit()
+    {
+        Vector2 imp = _hitEffect.LastHitImpulse;
+        if (imp.magnitude > 6f) imp = imp.normalized * 6f;
+        _impulseVelocity += imp;
     }
 
     private void FixedUpdate()
     {
-        if (_state == State.Dead) return;
+        if (_state == State.Dead || _state == State.Idle) return;
 
         // Phase 2 trigger
         if (!_phase2Triggered && _health.currentHp <= _health.MaxHP / 2)
@@ -178,8 +233,9 @@ public class CloneAI : MonoBehaviour
         }
 
 
-        // Wall escape — interrupts most states
-        if (_state != State.Swinging  && _state != State.Dodge &&
+        // Wall escape — interrupts most states, but not if recently escaped (prevents jitter loop)
+        if (_wallEscapeCooldown <= 0f &&
+            _state != State.Swinging  && _state != State.Dodge &&
             _state != State.Phase2Talk && _state != State.WallEscape &&
             _state != State.Idle)
         {
@@ -190,9 +246,11 @@ public class CloneAI : MonoBehaviour
             }
         }
 
-        // Decay impulse and dodge cooldown
-        _impulseVelocity    = Vector2.Lerp(_impulseVelocity, Vector2.zero, Time.fixedDeltaTime * ImpulseDecay);
-        _dodgeCooldownTimer = Mathf.Max(0f, _dodgeCooldownTimer - Time.fixedDeltaTime);
+        // Decay timers
+        _impulseVelocity = Vector2.Lerp(_impulseVelocity, Vector2.zero, Time.fixedDeltaTime * ImpulseDecay);
+        if (_impulseVelocity.magnitude < 0.05f) _impulseVelocity = Vector2.zero;
+        _dodgeCooldownTimer    = Mathf.Max(0f, _dodgeCooldownTimer    - Time.fixedDeltaTime);
+        _wallEscapeCooldown    = Mathf.Max(0f, _wallEscapeCooldown    - Time.fixedDeltaTime);
 
         Vector2 toPlayer = (Vector2)_player.position - (Vector2)transform.position;
         float   dist     = toPlayer.magnitude;
@@ -208,11 +266,6 @@ public class CloneAI : MonoBehaviour
             case State.Cooldown:     UpdateCooldown();                   break;
             case State.WallEscape:   UpdateWallEscape();                 break;
         }
-
-        // Push knockback from hit effect — clamped so the boss doesn't fly across the arena
-        Vector2 knock = _hitEffect.KnockbackVelocity;
-        if (knock.magnitude > 6f) knock = knock.normalized * 6f;
-        _rb.velocity += knock;
 
         UpdateAnimator();
     }
@@ -271,30 +324,21 @@ public class CloneAI : MonoBehaviour
         }
         else
         {
-            // Distance management: approach if too far, back off if too close, strafe in between
-            float inner = preferredDistance * 0.7f;
-            float outer = preferredDistance * 1.4f;
+            // Spring distance controller — no discrete zones, no boundary oscillation.
+            // Radial component smoothly pulls clone toward preferredDistance.
+            // Lateral component orbits the player. Combined: a stable spiral-to-orbit.
+            float distError   = dist - preferredDistance;
+            float radialSpeed = Mathf.Clamp(distError * 3f, -_approachSpeed * 0.65f, _approachSpeed * 0.65f);
 
-            if (dist > outer)
+            _strafeFlipTimer -= Time.fixedDeltaTime;
+            if (_strafeFlipTimer <= 0f)
             {
-                velocity = toPlayer.normalized * (_approachSpeed * 0.6f);
+                _strafeSide      = Random.value > 0.5f ? 1f : -1f;
+                _strafeFlipTimer = Random.Range(1.5f, 3f);
             }
-            else if (dist < inner)
-            {
-                velocity = -toPlayer.normalized * (_approachSpeed * 0.4f);
-            }
-            else
-            {
-                // Lateral strafe — flip direction occasionally
-                _strafeFlipTimer -= Time.fixedDeltaTime;
-                if (_strafeFlipTimer <= 0f)
-                {
-                    Vector2 perp = new Vector2(-toPlayer.normalized.y, toPlayer.normalized.x);
-                    _strafeDir       = Random.value > 0.5f ? perp : -perp;
-                    _strafeFlipTimer = Random.Range(1.2f, 2.5f);
-                }
-                velocity = _strafeDir * (_approachSpeed * 0.45f);
-            }
+            Vector2 perpDir = new Vector2(-toPlayer.normalized.y, toPlayer.normalized.x);
+            velocity = perpDir * (_strafeSide * _approachSpeed * 0.28f)
+                     + toPlayer.normalized * radialSpeed;
         }
 
         _rb.velocity = velocity + _impulseVelocity;
@@ -319,7 +363,7 @@ public class CloneAI : MonoBehaviour
         Vector2 dir;
         if (_curvedApproach)
         {
-            Vector2 perp = new Vector2(-toPlayer.normalized.y, toPlayer.normalized.x) * (_strafeDir.x >= 0 ? 1f : -1f);
+            Vector2 perp = new Vector2(-toPlayer.normalized.y, toPlayer.normalized.x) * _strafeSide;
             dir = (toPlayer.normalized + perp * 0.35f).normalized;
         }
         else
@@ -350,6 +394,8 @@ public class CloneAI : MonoBehaviour
     {
         _rb.velocity = _impulseVelocity;
 
+        if (cloneAnimator == null) { EnterCooldown(); return; }
+
         // Wait for animator to open the combo window, then fire attack 2
         if (!_attack2Triggered && cloneAnimator.Attack2WindowOpen)
         {
@@ -379,10 +425,9 @@ public class CloneAI : MonoBehaviour
 
     private void UpdateCooldown()
     {
-        // Slowly back away from player during cooldown instead of standing still
         Vector2 toPlayer = (Vector2)_player.position - (Vector2)transform.position;
-        _rb.velocity = -toPlayer.normalized * (_approachSpeed * 0.25f) + _impulseVelocity;
-        _faceDir     = toPlayer.normalized;
+        _rb.velocity     = -toPlayer.normalized * (_approachSpeed * 0.25f) + _impulseVelocity;
+        _faceDir         = toPlayer.normalized;
         _timer -= Time.fixedDeltaTime;
         if (_timer <= 0f)
             EnterMirrorStance();
@@ -410,10 +455,11 @@ public class CloneAI : MonoBehaviour
 
     private void EnterMirrorStance()
     {
-        _state        = State.MirrorStance;
-        _isRetreating = false;
-        float pMin    = _isPhase2 ? phase2PatienceMin : patienceMin;
-        float pMax    = _isPhase2 ? phase2PatienceMax : patienceMax;
+        _state           = State.MirrorStance;
+        _isRetreating    = false;
+        _strafeFlipTimer = 0f;
+        float pMin     = _isPhase2 ? phase2PatienceMin : patienceMin;
+        float pMax     = _isPhase2 ? phase2PatienceMax : patienceMax;
         _patienceTimer = Random.Range(pMin, pMax);
     }
 
@@ -421,7 +467,7 @@ public class CloneAI : MonoBehaviour
     {
         _state         = State.ComboApproach;
         _curvedApproach = Random.value < 0.5f;
-        _isFeinting     = !_isPhase2 && Random.value < 0.25f;
+        _isFeinting     = !_isPhase2 && Random.value < 0.12f;
         _feintStopDist  = attackRange + Random.Range(0.8f, 1.6f);
     }
 
@@ -438,24 +484,23 @@ public class CloneAI : MonoBehaviour
         _attack2Triggered = false;
         _faceDir          = toPlayer.normalized;
         _impulseVelocity  = toPlayer.normalized * _attackPushForce;
-        cloneAnimator.TriggerAttack1();
+        cloneAnimator?.TriggerAttack1();
     }
 
     private void EnterDodge()
     {
-        _state              = State.Dodge;
-        _timer              = dodgeDuration;
-        _dodgeCooldownTimer = dodgeCooldown;
+        _state               = State.Dodge;
+        _timer               = dodgeDuration;
+        _dodgeCooldownTimer  = dodgeCooldown;
 
-        Vector2 escDir   = GetBestDodgeDiagonal();
-        _faceDir         = -escDir; // still face player while dodging
+        Vector2 escDir       = GetBestDodgeDiagonal();
+        _faceDir         = -escDir;
         _impulseVelocity = escDir * dodgeForce;
     }
 
     private void EnterCooldown()
     {
-        _state       = State.Cooldown;
-        _rb.velocity = Vector2.zero;
+        _state = State.Cooldown;
         float cMin   = _isPhase2 ? phase2CooldownMin : cooldownMin;
         float cMax   = _isPhase2 ? phase2CooldownMax : cooldownMax;
         _timer       = Random.Range(cMin, cMax);
@@ -463,18 +508,19 @@ public class CloneAI : MonoBehaviour
 
     private void EnterWallEscape()
     {
-        _state           = State.WallEscape;
-        _timer           = wallEscapeDuration;
-        Vector2 open     = GetMostOpenDirection();
-        _faceDir         = open;
-        _impulseVelocity = open * wallEscapeForce;
+        _state               = State.WallEscape;
+        _timer               = wallEscapeDuration;
+        _wallEscapeCooldown  = 2f;
+        Vector2 open         = GetMostOpenDirection();
+        _faceDir             = open;
+        _impulseVelocity     = open * wallEscapeForce;
     }
 
     private void EnterPhase2Talk()
     {
-        _state           = State.Phase2Talk;
-        _rb.velocity     = Vector2.zero;
-        _impulseVelocity = Vector2.zero;
+        _state               = State.Phase2Talk;
+        _impulseVelocity     = Vector2.zero;
+        _rb.velocity         = Vector2.zero;
         _fightingLines?.StopLines();
         StartCoroutine(Phase2TalkRoutine());
     }
@@ -516,13 +562,16 @@ public class CloneAI : MonoBehaviour
     }
 
     [Header("Death Animation")]
-    [SerializeField] private float deathAnimDuration = 1.5f; // how long the death anim plays before ending starts
+    [SerializeField] private float  deathAnimDuration = 1.5f; // how long the death anim plays before ending starts
+    [SerializeField] private string mainSceneName     = "Main Scene"; // used only if EndingSequence is absent
 
     private void OnDeath()
     {
-        _state           = State.Dead;
-        _rb.velocity     = Vector2.zero;
-        _impulseVelocity = Vector2.zero;
+        _state               = State.Dead;
+        _impulseVelocity     = Vector2.zero;
+        _rb.velocity         = Vector2.zero;
+        _rb.bodyType         = RigidbodyType2D.Kinematic; // prevent physics from drifting corpse
+        cloneAnimator?.SetWalking(false);
 
         // Prevent dead body from dealing contact damage or blocking movement
         var contact = GetComponent<EnemyContactDamage>();
@@ -531,16 +580,24 @@ public class CloneAI : MonoBehaviour
 
         _fightingLines?.StopLines();
 
+        // Lock player movement for the death / ending sequence
+        var playerInput = _player?.GetComponent<PlayerInput>();
+        if (playerInput != null) playerInput.enabled = false;
+
+        // Clear any open dialogue so VictoryRoutine doesn't hang on WaitUntil
+        DialogueManager.Instance?.ForceEnd();
+
         if (BossHealthBarUI.Instance != null)
             BossHealthBarUI.Instance.Hide();
 
+        StopAllCoroutines(); // kills Phase2TalkRoutine if it's mid-dialogue so it can't call EnterMirrorStance
         StartCoroutine(VictoryRoutine());
     }
 
     private IEnumerator VictoryRoutine()
     {
         // Brief pause so clone just stands still before speaking
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
 
         if (deathDialogue != null && DialogueManager.Instance != null)
         {
@@ -550,15 +607,32 @@ public class CloneAI : MonoBehaviour
         }
 
         // Death animation plays AFTER the last dialogue line is dismissed
-        cloneAnimator.TriggerDeath();
-        // Wait for death anim to actually finish (not loop) — fall back to timer if state name doesn't match
-        yield return new WaitUntil(() => cloneAnimator.IsDeathAnimDone());
-        yield return new WaitForSeconds(0.1f);
+        cloneAnimator?.TriggerDeath();
+        // Wait for death anim to finish, with a hard timeout so it never hangs
+        // if the Animator state name doesn't match "Player_Death"
+        float deathWait = 0f;
+        float deathTimeout = deathAnimDuration + 2f;
+        while ((cloneAnimator == null || !cloneAnimator.IsDeathAnimDone()) && deathWait < deathTimeout)
+        {
+            deathWait += Time.unscaledDeltaTime;
+            yield return null;
+        }
+        yield return new WaitForSecondsRealtime(0.1f);
 
         if (EndingSequence.Instance != null)
+        {
             EndingSequence.Instance.StartEnding();
+        }
         else
-            UIManager.Instance.ShowVictory();
+        {
+            // Fallback: no EndingSequence in scene — mark cleared and load main dungeon directly
+            if (NGPlusManager.Instance != null)
+                NGPlusManager.Instance.SetGameCleared();
+            else
+                new GameObject("NGPlusManager").AddComponent<NGPlusManager>().SetGameCleared();
+
+            SceneManager.LoadScene(mainSceneName);
+        }
     }
 
     // ── Decision Logic ───────────────────────────────────────────────────────
@@ -663,6 +737,7 @@ public class CloneAI : MonoBehaviour
 
     private void UpdateAnimator()
     {
+        if (cloneAnimator == null) return;
         bool moving = _state == State.MirrorStance  ||
                       _state == State.ComboApproach ||
                       _state == State.DashStrike    ||

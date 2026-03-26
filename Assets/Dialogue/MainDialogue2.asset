@@ -32,10 +32,11 @@ MonoBehaviour:
       don't talk much.
   - speakerName: Pig
     text: Anyways, it turns out there is a mushroom here in this forest that could
-      help me turn back to my human form
+      help me turn back to my human form.
   - speakerName: Pig
-    text: There's just a little catch. There mushroom is actually alive and...not
-      friendly. And there may be other not friendly things lurking around. Sooo...
+    text: There's just a little catch. The mushroom is actually alive and...not friendly.
+      And I need 15 of them. Also, there may be other not-friendly things lurking
+      around. Sooo...
   - speakerName: Pig
     text: That's where you come in! Yay!
   - speakerName: Pig
@@ -48,3 +49,7 @@ MonoBehaviour:
   - speakerName: Pig
     text: Now go, my silent friend! Follow this path and you'll find the mean mushrooms.
       Good luck!
+  - speakerName: Pig
+    text: Oh, one last thing, "L" uses the dash.
+  - speakerName: Pig
+    text: I don't know what that means why do I keep saying things like that.

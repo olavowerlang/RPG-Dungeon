@@ -194,4 +194,18 @@ public class SkeletonArcherAI : MonoBehaviour
     {
         _patrolTarget = _spawnPoint + Random.insideUnitCircle * patrolRadius;
     }
+
+    public void ScaleForNGPlus(float m)
+    {
+        detectionRadius  *= m;
+        patrolRadius     *= m;
+        patrolSpeed      *= m;
+        waypointThreshold *= m;
+        preferredRange   *= m;
+        tooCloseRange    *= m;
+        repositionSpeed  *= m;
+        shootInterval    *= m;
+        shootWindUpTime  *= m;
+        // patrolWaitTime and cooldownTime intentionally excluded
+    }
 }

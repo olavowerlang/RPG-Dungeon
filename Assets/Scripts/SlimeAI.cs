@@ -148,4 +148,15 @@ public class SlimeAI : MonoBehaviour
     {
         _patrolTarget = _spawnPoint + Random.insideUnitCircle * patrolRadius;
     }
+
+    public void ScaleForNGPlus(float m)
+    {
+        detectionRadius   *= m;
+        patrolRadius      *= m;
+        patrolSpeed       *= m;
+        waypointThreshold *= m;
+        patrolWaitTime    *= m;
+        hopForce          *= m;
+        // hopInterval intentionally excluded
+    }
 }
