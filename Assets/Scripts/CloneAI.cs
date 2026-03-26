@@ -484,6 +484,7 @@ public class CloneAI : MonoBehaviour
         _attack2Triggered = false;
         _faceDir          = toPlayer.normalized;
         _impulseVelocity  = toPlayer.normalized * _attackPushForce;
+        AudioManager.Instance?.PlayBossPunch();
         cloneAnimator?.TriggerAttack1();
     }
 
@@ -590,6 +591,7 @@ public class CloneAI : MonoBehaviour
         if (BossHealthBarUI.Instance != null)
             BossHealthBarUI.Instance.Hide();
 
+        AudioManager.Instance?.PlayBossDeath();
         StopAllCoroutines(); // kills Phase2TalkRoutine if it's mid-dialogue so it can't call EnterMirrorStance
         StartCoroutine(VictoryRoutine());
     }

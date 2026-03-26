@@ -16,6 +16,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void LightAttack()
     {
+        AudioManager.Instance?.PlayPlayerAttack();
         playerAnimator.TriggerLightAttack();
 
         Vector2 attackDirection = _playerController.GetAttackDirection();

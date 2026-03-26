@@ -172,6 +172,7 @@ public class SkeletonArcherAI : MonoBehaviour
 
     private void FireArrow(Vector2 direction)
     {
+        AudioManager.Instance?.PlaySkeletonAttack();
         if (arrowPrefab == null) return;
         Vector3 spawnPos = shootPoint != null ? shootPoint.position : transform.position;
         var arrow = Instantiate(arrowPrefab, spawnPos, Quaternion.identity);

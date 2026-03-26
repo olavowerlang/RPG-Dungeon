@@ -148,6 +148,7 @@ public class BombshroomAI : MonoBehaviour
 
     public void OnPopOutComplete()
     {
+        AudioManager.Instance?.PlayShroomReveal();
         _state = S.Approach;
     }
 
@@ -161,6 +162,7 @@ public class BombshroomAI : MonoBehaviour
     // Called by animation event at end of WindUp animation
     public void OnWindUpComplete()
     {
+        AudioManager.Instance?.PlayShroomGas();
         if (gasCloudPrefab != null)
         {
             Vector2 spawnPos = ((Vector2)transform.position + (Vector2)_player.position) * 0.5f;

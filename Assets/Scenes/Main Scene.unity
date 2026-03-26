@@ -7425,7 +7425,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b830b7975480440a567f31ee9e0ada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyStatMultiplier: 1
 --- !u!4 &673570331
 Transform:
   m_ObjectHideFlags: 0
@@ -473088,6 +473087,97 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1992727322}
   m_CullTransparentMesh: 1
+--- !u!1 &1995294361
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1995294363}
+  - component: {fileID: 1995294362}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1995294362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1995294361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bafd3e5edf6246d418d98bbf73981409, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startAreaMusic: {fileID: 0}
+  startAreaVolume: 0.4
+  combatAreaMusic: {fileID: 0}
+  combatAreaVolume: 0.4
+  shopAreaMusic: {fileID: 0}
+  shopAreaVolume: 0.35
+  bossMusic: {fileID: 0}
+  bossMusicVolume: 0.5
+  musicFadeTime: 0.6
+  uiClickClip: {fileID: 0}
+  uiClickVolume: 0.7
+  fusionClip: {fileID: 0}
+  fusionVolume: 1
+  dialogueAdvanceClip: {fileID: 0}
+  dialogueAdvanceVolume: 0.5
+  playerAttackClip: {fileID: 0}
+  playerAttackVolume: 0.5
+  playerDashClip: {fileID: 0}
+  playerDashVolume: 0.6
+  grabItemClip: {fileID: 0}
+  grabItemVolume: 0.8
+  slimeJumpClip: {fileID: 0}
+  slimeJumpVolume: 0.7
+  slimeDeathClip: {fileID: 0}
+  slimeDeathVolume: 1
+  skeletonAttackClip: {fileID: 0}
+  skeletonAttackVolume: 1
+  skeletonDeathClip: {fileID: 0}
+  skeletonDeathVolume: 1
+  skeletonIdleClip: {fileID: 0}
+  skeletonIdleVolume: 0.35
+  shroomRevealClip: {fileID: 0}
+  shroomRevealVolume: 1
+  shroomGasClip: {fileID: 0}
+  shroomGasVolume: 1
+  shroomDeathClip: {fileID: 0}
+  shroomDeathVolume: 1
+  shroomIdleClip: {fileID: 0}
+  shroomIdleVolume: 0.35
+  bossTransformClip: {fileID: 0}
+  bossTransformVolume: 1
+  bossRevealClip: {fileID: 0}
+  bossRevealVolume: 1
+  bossPunchClip: {fileID: 0}
+  bossPunchVolume: 0.8
+  bossDeathClip: {fileID: 0}
+  bossDeathVolume: 1
+--- !u!4 &1995294363
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1995294361}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 356.65424, y: 203.28563, z: -0.5364598}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2003053513
 GameObject:
   m_ObjectHideFlags: 0
@@ -475926,3 +476016,4 @@ SceneRoots:
   - {fileID: 1642382242}
   - {fileID: 1243633289}
   - {fileID: 673570331}
+  - {fileID: 1995294363}

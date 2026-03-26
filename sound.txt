@@ -1,0 +1,120 @@
+SOUND SESSION - WHAT WAS DONE & WHAT'S LEFT
+============================================
+
+WHAT WAS BUILT
+--------------
+- AudioManager.cs (Assets/Scripts/)
+    - Singleton, persists across scenes (DontDestroyOnLoad)
+    - Creates its own AudioSources automatically — do NOT add AudioSource manually
+    - Every clip has a volume slider (Range 0-1) right below it in the Inspector
+    - Attack and dash use dedicated AudioSources with Play() so each new press cuts the previous sound
+    - Slime jump capped at 2 simultaneous sounds
+    - Auto-wires ALL buttons in ALL scenes to the UI click sound on scene load — no per-button setup needed
+
+- EnemyAmbientSound.cs (Assets/Scripts/)
+    - Add to enemy root (Skeleton, Shroom, Slime)
+    - Plays idle sounds on random interval when player is within range
+    - Globally capped at 2 simultaneous per enemy type so a room full of enemies doesn't become noise
+    - Types: Skeleton, Shroom, Slime
+    - Static counters reset on scene load (bug fix applied)
+    - Uses WaitForSecondsRealtime so counters release correctly even when game is paused (bug fix applied)
+    - OnDestroy releases slot if enemy is killed mid-sound (bug fix applied)
+
+- EnemyDeathSound.cs (Assets/Scripts/)
+    - Add to any enemy root, drag in a clip — hooks Health.OnDeath automatically
+
+- MusicZone.cs (Assets/Scripts/)
+    - Add to a trigger collider in scene to switch music when player enters
+    - Zone options: StartArea, Combat, Shop, Boss, Stop
+
+- UIClickSound.cs (Assets/Scripts/) — NOT NEEDED ANYMORE
+    - Kept for reference but AudioManager auto-wires all buttons now
+
+SOUNDS ALREADY HOOKED IN CODE (just need clips dragged in)
+-----------------------------------------------------------
+UI:
+  - UI Click          → all buttons auto-wired, no per-button setup needed
+  - Fusion            → plays on successful fuse (CraftingSystem)
+  - Dialogue Advance  → plays on every E/Space press to advance dialogue (DialogueManager)
+                        leave clip EMPTY if you decide it feels wrong after testing
+
+Player:
+  - Player Attack     → plays on LightAttack() (PlayerCombat), restarts on each press
+  - Player Dash       → plays on Dash() (PlayerController), restarts on each press
+  - Grab Item         → plays when item pickup collected (ItemDrop)
+
+Slime:
+  - Slime Jump        → plays on every hop in chase (SlimeAI) — capped at 2 simultaneous
+  - Slime Death       → via EnemyDeathSound component on prefab
+
+Skeleton Archer:
+  - Skeleton Attack   → plays on FireArrow() (SkeletonArcherAI)
+  - Skeleton Death    → via EnemyDeathSound component on prefab
+  - Skeleton Idle     → via EnemyAmbientSound component on prefab (type: Skeleton)
+
+Bombshroom:
+  - Shroom Reveal     → plays on OnPopOutComplete() (BombshroomAI)
+  - Shroom Gas        → plays on OnWindUpComplete() (BombshroomAI)
+  - Shroom Death      → via EnemyDeathSound component on prefab
+  - Shroom Idle       → via EnemyAmbientSound component on prefab (type: Shroom)
+
+Boss / Clone:
+  - Boss Transform    → plays at start of TransformationSequence
+  - Boss Music        → switches automatically when transformation starts (wired in TransformationSequence)
+  - Boss Reveal       → plays when clone becomes visible (post-flash)
+  - Boss Punch        → plays on every clone attack swing (CloneAI.EnterSwinging)
+  - Boss Death        → plays on clone death (CloneAI.OnDeath)
+
+Music:
+  - Start Area, Combat, Shop → via MusicZone trigger colliders placed in scene
+  - Boss music               → auto-triggered by TransformationSequence (no MusicZone needed for boss)
+
+WHAT NEEDS TO BE DONE TOMORROW
+-------------------------------
+1. Drop all audio clips into Unity project (Assets/Audio/ or wherever)
+2. Open AudioManager in Inspector and drag each clip to its field
+3. Add EnemyDeathSound + EnemyAmbientSound components to enemy prefabs
+   - Skeleton prefab: EnemyDeathSound (skeleton death clip) + EnemyAmbientSound (type: Skeleton)
+   - Shroom prefab:   EnemyDeathSound (shroom death clip)   + EnemyAmbientSound (type: Shroom)
+   - Slime prefab:    EnemyDeathSound (slime death clip)     + EnemyAmbientSound (type: Slime)
+4. Place MusicZone trigger objects in main scene for StartArea, Combat, Shop transitions
+5. Tell Claude the start/end trim times for any clips that need cutting,
+   and any special behavior (loop point, pitch variation, etc.)
+
+SOUNDS LIST (from design session)
+----------------------------------
+UI / Menus:
+  - Click sound
+  - Fusion sound
+  - Continue dialogue (advance) — optional, leave empty if it feels wrong
+
+Ambient / Music:
+  - Starting area — chill music
+  - Combat areas music
+  - Shop area music
+  - Boss music (auto-plays on transformation)
+
+Enemies:
+  Shroom:   gas attack, reveal (pop out), death, idle
+  Skeleton: attack (shoot), death, idle
+  Slime:    jump (also doubles as ambient idle), death
+
+Player:
+  - Attack (sword swing)
+  - Dash
+  - Grab item
+
+Boss:
+  - Transformation sequence sound
+  - Reveal (clone appears)
+  - Punch (attack swing)
+  - Death
+
+NOTES
+-----
+- Walk sound was decided against
+- Most volume tweaking done via sliders in AudioManager Inspector
+- Dialogue advance sound: leave clip empty to disable, kept as option
+- If a clip needs trimming, tell Claude: clip name + start time + end time
+- If combat gets muddy, lower volume sliders — no code changes needed
+- Slime jump is also the slime ambient/idle sound (same clip, same limiter)

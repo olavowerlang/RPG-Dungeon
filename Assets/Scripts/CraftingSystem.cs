@@ -85,6 +85,7 @@ public class CraftingSystem : MonoBehaviour
         InventoryManager.Instance.RemoveItem(ingredient, recipe.quantity);
         ApplyBuff(recipe.buffType);
 
+        AudioManager.Instance?.PlayFusion();
         OnFuseSuccess?.Invoke(recipe.resultDescription);
         Debug.Log($"Fused {ingredient.itemName} into sword — {recipe.resultDescription}");
         return true;

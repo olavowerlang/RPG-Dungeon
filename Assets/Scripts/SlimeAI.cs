@@ -124,6 +124,7 @@ public class SlimeAI : MonoBehaviour
             MoveDirection = hopDir;
             _rb.velocity = hopDir * hopForce + knockback;
             _hopTimer = hopInterval;
+            AudioManager.Instance?.PlaySlimeJump();
         }
         else
         {

@@ -36,6 +36,9 @@ public class ItemDrop : MonoBehaviour
 
         bool added = InventoryManager.Instance.AddItem(itemData, quantity);
         if (added)
+        {
+            AudioManager.Instance?.PlayGrabItem();
             Destroy(gameObject);
+        }
     }
 }

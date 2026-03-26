@@ -71,6 +71,7 @@ public class PlayerController : MonoBehaviour
     public void Dash()
     {
         if (!CanDash()) return;
+        AudioManager.Instance?.PlayPlayerDash();
         _currentDashStamina -= _stats.dashStaminaCost;
         _impulseVelocity += LastMovementDirection * _stats.dashForce;
     }

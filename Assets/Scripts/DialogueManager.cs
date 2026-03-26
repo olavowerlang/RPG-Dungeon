@@ -77,6 +77,7 @@ public class DialogueManager : MonoBehaviour
 
     private void AdvanceDialogue()
     {
+        AudioManager.Instance?.PlayDialogueAdvance();
         _currentLine++;
         if (_currentLine >= _lines.Length)
             EndDialogue();

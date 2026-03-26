@@ -70,6 +70,9 @@ public class TransformationSequence : MonoBehaviour
         // Freeze all player input (blocks movement, dash, and attack)
         if (_playerInput != null) _playerInput.enabled = false;
 
+        AudioManager.Instance?.PlayBossTransform();
+        AudioManager.Instance?.PlayBossMusic();
+
         // Detach particles from this object so disabling the pig mid-sequence doesn't kill them
         transformParticles.transform.SetParent(null);
 
@@ -110,6 +113,8 @@ public class TransformationSequence : MonoBehaviour
 
         // Unfreeze player — visual is done
         if (_playerInput != null) _playerInput.enabled = true;
+
+        AudioManager.Instance?.PlayBossReveal();
 
         // — Post-transform dialogue —
         if (postTransformDialogue != null && DialogueManager.Instance != null)
