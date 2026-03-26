@@ -135,7 +135,13 @@ public class EnemyAnimator : MonoBehaviour
 
     /* ---------- Animation Events ---------- */
 
-    public void EnableHitbox(int i) => _hitboxes[i].BeginSwing();
+    public void EnableHitbox(int i)  => _hitboxes[i].BeginSwing();
     public void DisableHitbox(int i) => _hitboxes[i].EndSwing();
     public void OnAttackAnimationEnd() => _skeletonFighter.OnAttackAnimationEnd();
+
+    // Place on the exact frame the skeleton's attack lands
+    public void OnAttackHitFrame() => AudioManager.Instance?.PlaySkeletonAttack();
+
+    // Place on the frame the skeleton death animation starts/peaks
+    public void OnDeathFrame() => AudioManager.Instance?.PlaySkeletonDeath();
 }

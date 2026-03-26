@@ -1,0 +1,22 @@
+AFTER FINISH — PRE ITCH.IO TODO
+================================
+
+1. BOSS DEATH DIALOGUE
+   - On player death during clone fight, clone says a line
+   - CloneAI detects Health.OnDeath, calls DialogueManager.StartDialogue()
+   - Need to delay game over screen so dialogue isn't cut off
+   - Pick a name: pig / pig? / humberto
+   - Create DialogueData asset with the line, drag into CloneAI
+
+2. UI DESIGN PASS
+   - Replace Unity premade UI elements with custom art
+   - Health bar, XP bar, inventory panel, store, dialogue box, game over, victory screen
+   - Goal: remove all default Unity UI look
+
+3. NG+ DIALOGUES
+   - NG+ variants already have fields in PigShopkeeper (ngPlusIntroDialogue, ngPlusMainDialogue, ngPlusRepeatDialogue)
+   - Need to write and create DialogueData assets for:
+     * NG+   — all NPC variants
+     * NG++  — all NPC variants
+     * NG+++ — all NPC variants
+   - NGPlusManager already handles the cleared state, just needs content

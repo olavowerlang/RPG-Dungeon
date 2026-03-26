@@ -35,6 +35,7 @@ public class FloatingText : MonoBehaviour
         _tmp.outlineColor     = Color.black;
         _tmp.enableWordWrapping = false;
         _tmp.rectTransform.sizeDelta = new Vector2(6f, 2f);
+        _tmp.sortingOrder = 100;
         StartCoroutine(Animate());
     }
 

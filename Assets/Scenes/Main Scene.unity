@@ -3113,6 +3113,63 @@ Transform:
   - {fileID: 906191226}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &214326755
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1976200964752312674, guid: 03a5022ba10e36c42b4c35a8510600be, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -30.268368
+      objectReference: {fileID: 0}
+    - target: {fileID: 1976200964752312674, guid: 03a5022ba10e36c42b4c35a8510600be, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 12.55531
+      objectReference: {fileID: 0}
+    - target: {fileID: 1976200964752312674, guid: 03a5022ba10e36c42b4c35a8510600be, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1976200964752312674, guid: 03a5022ba10e36c42b4c35a8510600be, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1976200964752312674, guid: 03a5022ba10e36c42b4c35a8510600be, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1976200964752312674, guid: 03a5022ba10e36c42b4c35a8510600be, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1976200964752312674, guid: 03a5022ba10e36c42b4c35a8510600be, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1976200964752312674, guid: 03a5022ba10e36c42b4c35a8510600be, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1976200964752312674, guid: 03a5022ba10e36c42b4c35a8510600be, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1976200964752312674, guid: 03a5022ba10e36c42b4c35a8510600be, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8673990453643987641, guid: 03a5022ba10e36c42b4c35a8510600be, type: 3}
+      propertyPath: m_Name
+      value: Slime
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 03a5022ba10e36c42b4c35a8510600be, type: 3}
 --- !u!1 &219739583
 GameObject:
   m_ObjectHideFlags: 0
@@ -16434,6 +16491,63 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1001 &1414744607
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2215439132552722463, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
+      propertyPath: m_Name
+      value: BombShroom
+      objectReference: {fileID: 0}
+    - target: {fileID: 6502342861609215101, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -35.08712
+      objectReference: {fileID: 0}
+    - target: {fileID: 6502342861609215101, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.632803
+      objectReference: {fileID: 0}
+    - target: {fileID: 6502342861609215101, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6502342861609215101, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6502342861609215101, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6502342861609215101, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6502342861609215101, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6502342861609215101, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6502342861609215101, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6502342861609215101, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
 --- !u!1 &1433217156
 GameObject:
   m_ObjectHideFlags: 0
@@ -473129,14 +473243,24 @@ MonoBehaviour:
   uiClickVolume: 0.7
   fusionClip: {fileID: 0}
   fusionVolume: 1
+  gameStartClip: {fileID: 0}
+  gameStartVolume: 1
+  dialogueOpenClip: {fileID: 0}
+  dialogueOpenVolume: 0.6
   dialogueAdvanceClip: {fileID: 0}
   dialogueAdvanceVolume: 0.5
+  shopBuyClip: {fileID: 0}
+  shopBuyVolume: 0.8
+  shopErrorClip: {fileID: 0}
+  shopErrorVolume: 0.8
   playerAttackClip: {fileID: 0}
   playerAttackVolume: 0.5
   playerDashClip: {fileID: 0}
   playerDashVolume: 0.6
   grabItemClip: {fileID: 0}
   grabItemVolume: 0.8
+  hitImpactClip: {fileID: 0}
+  hitImpactVolume: 0.8
   slimeJumpClip: {fileID: 0}
   slimeJumpVolume: 0.7
   slimeDeathClip: {fileID: 0}
@@ -473163,6 +473287,8 @@ MonoBehaviour:
   bossPunchVolume: 0.8
   bossDeathClip: {fileID: 0}
   bossDeathVolume: 1
+  startAreaAmbientClip: {fileID: 0}
+  startAreaAmbientVolume: 0.3
 --- !u!4 &1995294363
 Transform:
   m_ObjectHideFlags: 0
@@ -476017,3 +476143,5 @@ SceneRoots:
   - {fileID: 1243633289}
   - {fileID: 673570331}
   - {fileID: 1995294363}
+  - {fileID: 1414744607}
+  - {fileID: 214326755}

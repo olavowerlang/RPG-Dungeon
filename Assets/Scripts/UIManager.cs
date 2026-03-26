@@ -57,6 +57,22 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // Wire the Start button to this instead of HideMainMenu + StartGame separately
+    public void OnStartPressed()
+    {
+        var audio = AudioManager.Instance;
+        audio?.PlayGameStart();
+        HideMainMenu();
+        float delay = audio != null ? audio.GameStartClipLength : 0f;
+        StartCoroutine(DelayedStartGame(delay));
+    }
+
+    private IEnumerator DelayedStartGame(float delay)
+    {
+        if (delay > 0f) yield return new WaitForSeconds(delay);
+        _gameManager?.StartGame();
+    }
+
     // Chamado quando aperta "Start Game"
     public void HideMainMenu()
     {

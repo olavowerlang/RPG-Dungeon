@@ -140,6 +140,7 @@ public class InventoryUI : MonoBehaviour
         if (health == null) return;
         health.HealFull();
         InventoryManager.Instance.RemoveItem(item, 1);
+        AudioManager.Instance?.PlayConsumable();
     }
 
     // Called when player clicks an ingredient slot

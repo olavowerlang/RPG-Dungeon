@@ -48,6 +48,7 @@ public class MushroomQuestPig : MonoBehaviour
         _goldGiven = true;
         if (GoldManager.Instance != null)
             GoldManager.Instance.AddGold(goldReward);
+        AudioManager.Instance?.PlayCoinReward();
 
         var player = GameObject.FindWithTag("Player");
         Vector3 popPos = player != null

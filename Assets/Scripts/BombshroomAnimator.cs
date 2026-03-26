@@ -127,6 +127,18 @@ public class BombshroomAnimator : MonoBehaviour
     public void OnPopOutComplete() => _ai.OnPopOutComplete();
     public void OnWindUpComplete() => _ai.OnWindUpComplete();
 
+    // Animation event — place on the exact frame the shroom pops up visually
+    public void OnRevealFrame() => AudioManager.Instance?.PlayShroomReveal();
+
+    // Animation event — place on the frame the gas is released (attack anim)
+    public void OnGasFrame() => AudioManager.Instance?.PlayShroomGas();
+
+    // Animation event — place on the frame the death sound should hit
+    public void OnDeathFrame() => AudioManager.Instance?.PlayShroomDeath();
+
+    // Animation event — place at the end of death anim for the death gas burst
+    public void OnDeathGasFrame() => AudioManager.Instance?.PlayShroomGas();
+
     private IEnumerator FreezeAfterDeath()
     {
         yield return new WaitForFixedUpdate();

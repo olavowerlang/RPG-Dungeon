@@ -50,10 +50,16 @@ public class StoreSlot : MonoBehaviour
         bool success = _storeUI.OnPurchase(_item);
         if (!success)
         {
+            AudioManager.Instance?.PlayShopError();
             ShowFeedback("Not enough gold!");
         }
         else
         {
+            if (_item.isUnlock && _item.unlockType == UnlockType.Dash)
+                AudioManager.Instance?.PlayDashUnlock();
+            else
+                AudioManager.Instance?.PlayShopBuy();
+
             if (_item.isUnlock)
             {
                 StartCoroutine(FeedbackThenDestroy("Unlocked!"));

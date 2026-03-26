@@ -10,12 +10,16 @@ public class Health : MonoBehaviour
 
     // Fired when this entity dies — InventoryManager and CraftingSystem listen if it's the player
     public event Action OnDeath;
+    // Fired on any damage taken (before death check)
+    public event Action OnHit;
 
     private void Awake() => currentHp = maxHP;
 
     public void TakeDamage(int dmg)
     {
+        if (IsDead) return;
         currentHp -= dmg;
+        OnHit?.Invoke();
         if (currentHp <= 0) Die();
     }
 

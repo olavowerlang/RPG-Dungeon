@@ -67,5 +67,6 @@ public class DamageDealer : MonoBehaviour
         //calcula direção p/ knockback e dispara TakeHit
         Vector2 dir = (other.transform.position - transform.position).normalized;
         target.TakeHit(damage, dir, knockbackForce);
+        AudioManager.Instance?.PlayHitImpact();
     }
 }

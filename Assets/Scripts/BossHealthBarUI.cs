@@ -97,6 +97,7 @@ public class BossHealthBarUI : MonoBehaviour
         if (cloneAI != null) cloneAI.enabled = false;
 
         yield return StartCoroutine(FadeGroup(rootGroup, 0f, 1f, 0.3f));
+        AudioManager.Instance?.PlayBossBarReveal();
 
         SetFill(0f);
         float elapsed = 0f;
@@ -122,6 +123,7 @@ public class BossHealthBarUI : MonoBehaviour
 
     private IEnumerator RevealLetter(TextMeshProUGUI letter)
     {
+        AudioManager.Instance?.PlayBossLetterBoom();
         SetLetterAlpha(letter, 1f);
         letter.transform.localScale = Vector3.zero;
 

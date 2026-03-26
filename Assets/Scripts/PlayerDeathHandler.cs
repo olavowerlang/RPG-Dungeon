@@ -14,13 +14,24 @@ public class PlayerDeathHandler : MonoBehaviour
     private void OnEnable()
     {
         if (_health != null)
+        {
             _health.OnDeath += HandleDeath;
+            _health.OnHit   += HandleHit;
+        }
     }
 
     private void OnDisable()
     {
         if (_health != null)
+        {
             _health.OnDeath -= HandleDeath;
+            _health.OnHit   -= HandleHit;
+        }
+    }
+
+    private void HandleHit()
+    {
+        AudioManager.Instance?.PlayPlayerTakeDmg();
     }
 
     private void HandleDeath()

@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
+        HasStarted = false;
     }
 
     private void Start()
@@ -57,8 +58,9 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        gameStarted = true;
-        HasStarted  = true;
+        if (gameStarted) return;
+        gameStarted  = true;
+        HasStarted   = true;
         spawningWave = true;
         //StartCoroutine(nameof(SpawnWave));
     }

@@ -72,6 +72,7 @@ public class DialogueManager : MonoBehaviour
                 if (entry.nameBox != null) entry.nameBox.SetActive(false);
 
         dialoguePanel.SetActive(true);
+        AudioManager.Instance?.PlayDialogueOpen();
         ShowLine(_currentLine);
     }
 
