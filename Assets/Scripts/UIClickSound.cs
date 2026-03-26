@@ -9,6 +9,6 @@ public class UIClickSound : MonoBehaviour
 {
     private void Start()
     {
-        GetComponent<Button>().onClick.AddListener(() => AudioManager.Instance?.PlayUIClick());
+        GetComponent<Button>().onClick.AddListener(() => AudioManager.Instance?.PlayGenericClick());
     }
 }

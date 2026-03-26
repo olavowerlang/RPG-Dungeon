@@ -24,7 +24,7 @@ public class MusicZone : MonoBehaviour
         switch (zone)
         {
             case Zone.StartArea:
-                AudioManager.Instance?.PlayStartAreaMusic();
+                AudioManager.Instance?.StopMusic();
                 AudioManager.Instance?.PlayStartAreaAmbient();
                 break;
             case Zone.Combat:

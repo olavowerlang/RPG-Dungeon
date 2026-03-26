@@ -120,6 +120,7 @@ public class UIManager : MonoBehaviour
     public void ShowGameOver()
     {
         gameOverPanel.SetActive(true);
+        AudioManager.Instance?.PlayGameOver();
     }
 
     public void RestartGame()

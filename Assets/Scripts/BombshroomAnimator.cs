@@ -137,7 +137,7 @@ public class BombshroomAnimator : MonoBehaviour
     public void OnDeathFrame() => AudioManager.Instance?.PlayShroomDeath();
 
     // Animation event — place at the end of death anim for the death gas burst
-    public void OnDeathGasFrame() => AudioManager.Instance?.PlayShroomGas();
+    public void OnDeathGasFrame() => AudioManager.Instance?.PlayShroomDeathGas();
 
     private IEnumerator FreezeAfterDeath()
     {

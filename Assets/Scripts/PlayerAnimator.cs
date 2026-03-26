@@ -46,7 +46,8 @@ public class PlayerAnimator : MonoBehaviour
         
         if (_health.IsDead && !_deathTriggered)
         {
-            _deathTriggered = true;   
+            _deathTriggered = true;
+            AudioManager.Instance?.PlayPlayerCloneDeath();
             _animator.SetTrigger(Die);
             _playerHitEffect.enabled = false;
             StartCoroutine(WaitForDeathAnim());

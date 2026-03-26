@@ -476,6 +476,7 @@ public class CloneAI : MonoBehaviour
         _state           = State.DashStrike;
         _faceDir         = toPlayer.normalized;
         _impulseVelocity = toPlayer.normalized * _dashForce;
+        AudioManager.Instance?.PlayPlayerDash();
     }
 
     private void EnterSwinging(Vector2 toPlayer)
@@ -569,6 +570,7 @@ public class CloneAI : MonoBehaviour
     private void OnDeath()
     {
         _state               = State.Dead;
+        AudioManager.Instance?.PlayPlayerCloneDeath();
         _impulseVelocity     = Vector2.zero;
         _rb.velocity         = Vector2.zero;
         _rb.bodyType         = RigidbodyType2D.Kinematic; // prevent physics from drifting corpse
@@ -591,7 +593,6 @@ public class CloneAI : MonoBehaviour
         if (BossHealthBarUI.Instance != null)
             BossHealthBarUI.Instance.Hide();
 
-        AudioManager.Instance?.PlayBossDeath();
         StopAllCoroutines(); // kills Phase2TalkRoutine if it's mid-dialogue so it can't call EnterMirrorStance
         StartCoroutine(VictoryRoutine());
     }
