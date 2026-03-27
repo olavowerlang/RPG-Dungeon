@@ -72,6 +72,7 @@ public class MiniSlimeAI : MonoBehaviour
             MoveDirection = dir;
             _rb.velocity = dir * hopForce + knockback;
             _hopTimer = hopInterval;
+            AudioManager.Instance?.PlayMiniSlimeJump();
         }
         else
         {

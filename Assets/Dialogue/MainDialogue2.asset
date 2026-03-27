@@ -50,6 +50,6 @@ MonoBehaviour:
     text: Now go, my silent friend! Follow this path and you'll find the mean mushrooms.
       Good luck!
   - speakerName: Pig
-    text: Oh, one last thing, "L" uses the dash.
+    text: Oh, one last thing, "L" or "Shift" uses the dash.
   - speakerName: Pig
     text: I don't know what that means why do I keep saying things like that.

@@ -8,6 +8,8 @@ public class DamageDealer : MonoBehaviour
     public float knockbackForce = 0f;
     [Tooltip("Selecione apenas as layers que este hit-box deve atingir (ex.: Player)")]
     [SerializeField] private LayerMask hitLayers;
+    [Tooltip("Enable only on player hitboxes — plays hit impact sound on successful hit")]
+    [SerializeField] private bool playHitSound = false;
 
     public int Damage
     {
@@ -67,6 +69,6 @@ public class DamageDealer : MonoBehaviour
         //calcula direção p/ knockback e dispara TakeHit
         Vector2 dir = (other.transform.position - transform.position).normalized;
         target.TakeHit(damage, dir, knockbackForce);
-        AudioManager.Instance?.PlayHitImpact();
+        if (playHitSound) AudioManager.Instance?.PlayHitImpact();
     }
 }

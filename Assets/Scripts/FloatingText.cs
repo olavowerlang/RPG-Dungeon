@@ -10,7 +10,7 @@ public class FloatingText : MonoBehaviour
 {
     [SerializeField] private float riseSpeed  = 1.2f;
     [SerializeField] private float duration   = 1.4f;
-    [SerializeField] private float fontSize   = 4f;
+    [SerializeField] private float fontSize   = 8f;
     [SerializeField] private Color textColor  = Color.yellow;
 
     private TextMeshPro _tmp;

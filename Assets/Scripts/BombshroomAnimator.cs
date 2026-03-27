@@ -174,7 +174,8 @@ public class BombshroomAnimator : MonoBehaviour
         // Guaranteed drop (e.g. Mushroom)
         if (guaranteedDrop != null)
         {
-            var go = Instantiate(itemDropPrefab, _ai.transform.position + Vector3.up * 0.4f, Quaternion.identity);
+            Vector3 offset1 = (Vector3)(Random.insideUnitCircle.normalized * Random.Range(0.5f, 1f));
+            var go = Instantiate(itemDropPrefab, _ai.transform.position + offset1, Quaternion.identity);
             go.transform.localScale = Vector3.one * 1.5f;
             go.GetComponent<ItemDrop>()?.Init(guaranteedDrop);
             go.AddComponent<DelayedReveal>().Reveal(0.45f);
@@ -186,7 +187,8 @@ public class BombshroomAnimator : MonoBehaviour
             ItemData drop = lootTable.Roll();
             if (drop != null)
             {
-                var go = Instantiate(itemDropPrefab, _ai.transform.position + Vector3.right * 0.5f, Quaternion.identity);
+                Vector3 offset2 = (Vector3)(Random.insideUnitCircle.normalized * Random.Range(0.5f, 1f));
+                var go = Instantiate(itemDropPrefab, _ai.transform.position + offset2, Quaternion.identity);
                 go.transform.localScale = Vector3.one * 1.5f;
                 go.GetComponent<ItemDrop>()?.Init(drop);
                 go.AddComponent<DelayedReveal>().Reveal(0.45f);

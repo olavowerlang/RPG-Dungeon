@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     [Header("Menu Principal")]
     [SerializeField] private Button startGameButton;
     [SerializeField] private Button quitGameButton;
+    [SerializeField] private GameObject logoImage;
 
     [Header("HUD - Vida")]
     [SerializeField] private GameObject healthImages;
@@ -46,9 +47,13 @@ public class UIManager : MonoBehaviour
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
         if (levelUpPanel != null) levelUpPanel.SetActive(false);
 
-        healthImages.SetActive(true);
-        if (goldText != null) goldText.gameObject.SetActive(true);
-        if (goldIcon != null) goldIcon.gameObject.SetActive(true);
+        // Hide logo, hearts and gold before start — skip on NG+ (game resumes immediately)
+        bool isNGPlus = NGPlusManager.Instance != null && NGPlusManager.Instance.IsNGPlus;
+        if (logoImage != null) logoImage.SetActive(!isNGPlus);
+
+        healthImages.SetActive(isNGPlus);
+        if (goldText != null) goldText.gameObject.SetActive(isNGPlus);
+        if (goldIcon != null) goldIcon.gameObject.SetActive(isNGPlus);
 
         if (GoldManager.Instance != null)
         {
@@ -60,16 +65,8 @@ public class UIManager : MonoBehaviour
     // Wire the Start button to this instead of HideMainMenu + StartGame separately
     public void OnStartPressed()
     {
-        var audio = AudioManager.Instance;
-        audio?.PlayGameStart();
+        AudioManager.Instance?.PlayGameStart();
         HideMainMenu();
-        float delay = audio != null ? audio.GameStartClipLength : 0f;
-        StartCoroutine(DelayedStartGame(delay));
-    }
-
-    private IEnumerator DelayedStartGame(float delay)
-    {
-        if (delay > 0f) yield return new WaitForSeconds(delay);
         _gameManager?.StartGame();
     }
 
@@ -78,6 +75,7 @@ public class UIManager : MonoBehaviour
     {
         startGameButton.gameObject.SetActive(false);
         quitGameButton.gameObject.SetActive(false);
+        if (logoImage != null) logoImage.SetActive(false);
 
         // --- CORREÇÃO: Mostra o HUD agora ---
         healthImages.gameObject.SetActive(true);

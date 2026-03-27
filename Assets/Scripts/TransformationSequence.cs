@@ -113,6 +113,7 @@ public class TransformationSequence : MonoBehaviour
         // Unfreeze player — visual is done
         if (_playerInput != null) _playerInput.enabled = true;
 
+        AudioManager.Instance?.StopAmbient();
         AudioManager.Instance?.PlayBossMusic();
 
         // — Post-transform dialogue —

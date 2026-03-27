@@ -97,7 +97,7 @@ public class BossHealthBarUI : MonoBehaviour
         if (cloneAI != null) cloneAI.enabled = false;
 
         yield return StartCoroutine(FadeGroup(rootGroup, 0f, 1f, 0.3f));
-        AudioManager.Instance?.PlayBossBarReveal();
+        AudioManager.Instance?.PlayBossBarFill();
 
         SetFill(0f);
         float elapsed = 0f;

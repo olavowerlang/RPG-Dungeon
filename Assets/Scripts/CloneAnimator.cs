@@ -98,6 +98,9 @@ public class CloneAnimator : MonoBehaviour
 
     // ── Animation Events (fired by the Animator Controller) ──────────────────
 
+    // Place on frame 0 of Player_Death animation
+    public void OnDeathFrame() => AudioManager.Instance?.PlayPlayerCloneDeath();
+
     public void EnableHitbox(int i)  => _hitboxes[i].BeginSwing();
     public void DisableHitbox(int i) => _hitboxes[i].EndSwing();
 

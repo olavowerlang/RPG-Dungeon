@@ -35,10 +35,10 @@ MonoBehaviour:
     text: 'Now, there are some slimes over there, weakly bastards but if you touch
       ''em won''t feel nice. Go kill them and absorb their components!!! '
   - speakerName: Pig
-    text: 'By the way, "I" opens your inventory and crafting table, "J" uses the
-      sword, and mouse interacts with inventory and some other things. '
+    text: 'By the way, "I" opens your inventory and crafting table, "J" or "space"
+      uses the sword, and "mouse" interacts with inventory and some other things. '
   - speakerName: Pig
-    text: Not that I know what this "I", "J" or "mouse" mean or anything I don't
-      know why I said that honestly.
+    text: Not that I know what these things mean or anything I don't know why I said
+      that honestly.
   - speakerName: Pig
     text: Aight good luck!!!

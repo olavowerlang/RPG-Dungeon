@@ -49,7 +49,8 @@ public class BombshroomDropper : MonoBehaviour
         // Guaranteed mushroom
         if (mushroomItem != null && itemDropPrefab != null)
         {
-            GameObject go = Instantiate(itemDropPrefab, pos + new Vector3(0.4f, 0.2f, 0f), Quaternion.identity);
+            Vector3 o1 = (Vector3)(Random.insideUnitCircle.normalized * Random.Range(0.5f, 1f));
+            GameObject go = Instantiate(itemDropPrefab, pos + o1, Quaternion.identity);
             go.GetComponent<ItemDrop>()?.Init(mushroomItem);
         }
 
@@ -57,7 +58,8 @@ public class BombshroomDropper : MonoBehaviour
         if (goldDropPrefab != null)
         {
             int amount = Random.Range(minGold, maxGold + 1);
-            GameObject go = Instantiate(goldDropPrefab, pos + new Vector3(-0.4f, 0.2f, 0f), Quaternion.identity);
+            Vector3 o2 = (Vector3)(Random.insideUnitCircle.normalized * Random.Range(0.5f, 1f));
+            GameObject go = Instantiate(goldDropPrefab, pos + o2, Quaternion.identity);
             go.GetComponent<GoldDrop>()?.Init(amount);
         }
 
@@ -67,7 +69,8 @@ public class BombshroomDropper : MonoBehaviour
             ItemData drop = lootTable.Roll();
             if (drop != null)
             {
-                GameObject go = Instantiate(itemDropPrefab, pos + new Vector3(0f, 0.4f, 0f), Quaternion.identity);
+                Vector3 o3 = (Vector3)(Random.insideUnitCircle.normalized * Random.Range(0.5f, 1f));
+                GameObject go = Instantiate(itemDropPrefab, pos + o3, Quaternion.identity);
                 go.GetComponent<ItemDrop>()?.Init(drop);
             }
         }

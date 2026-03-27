@@ -99,7 +99,8 @@ public class EnemyAnimator : MonoBehaviour
         ItemData drop = lootTable.Roll();
         if (drop == null) return;
 
-        Vector3 spawnPos = _skeletonFighter.transform.position + new Vector3(0.5f, 0f, 0f);
+        Vector3 offset = (Vector3)(Random.insideUnitCircle.normalized * Random.Range(0.5f, 1f));
+        Vector3 spawnPos = _skeletonFighter.transform.position + offset;
         GameObject dropGO = Instantiate(itemDropPrefab, spawnPos, Quaternion.identity);
         dropGO.GetComponent<ItemDrop>()?.Init(drop);
         dropGO.AddComponent<DelayedReveal>().Reveal(0.05f);

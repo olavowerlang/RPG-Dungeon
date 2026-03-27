@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 /// <summary>
 /// Central audio system. Persists across scenes.
@@ -67,8 +66,10 @@ public class AudioManager : MonoBehaviour
 
     [Header("Player")]
     [SerializeField] private AudioClip            playerAttackClip;
+    [SerializeField, Range(0f,1f)] private float  playerAttackVolume  = 0.5f;
+
     [SerializeField] private AudioClip            playerAttackClip2;
-    [SerializeField, Range(0f,1f)] private float  playerAttackVolume = 0.5f;
+    [SerializeField, Range(0f,1f)] private float  playerAttackVolume2 = 0.5f;
 
     [SerializeField] private AudioClip            playerTakeDmgClip;
     [SerializeField, Range(0f,1f)] private float  playerTakeDmgVolume = 0.8f;
@@ -80,17 +81,18 @@ public class AudioManager : MonoBehaviour
     [SerializeField, Range(0f,1f)] private float  grabItemVolume     = 0.8f;
 
     [SerializeField] private AudioClip            hitImpactClip;
-    [SerializeField] private AudioClip            hitImpactClip2;
     [SerializeField, Range(0f,1f)] private float  hitImpactVolume    = 0.8f;
 
     // ── Slime SFX ─────────────────────────────────────────────────────────────
 
     [Header("Slime")]
     [SerializeField] private AudioClip            slimeJumpClip;
-    [SerializeField, Range(0f,1f)] private float  slimeJumpVolume  = 0.7f;
+    [SerializeField, Range(0f,1f)] private float  slimeJumpVolume      = 1f;
+    [SerializeField, Range(0f,1f)] private float  miniSlimeJumpVolume  = 1f;
 
     [SerializeField] private AudioClip            slimeDeathClip;
-    [SerializeField, Range(0f,1f)] private float  slimeDeathVolume = 1f;
+    [SerializeField, Range(0f,1f)] private float  slimeDeathVolume     = 1f;
+    [SerializeField, Range(0f,1f)] private float  miniSlimeDeathVolume = 1f;
 
     // ── Skeleton SFX ──────────────────────────────────────────────────────────
 
@@ -133,17 +135,14 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip            playerCloneDeathClip;
     [SerializeField, Range(0f,1f)] private float  playerCloneDeathVolume = 1f;
 
-    [SerializeField] private AudioClip            bossBarRevealClip;
-    [SerializeField, Range(0f,1f)] private float  bossBarRevealVolume  = 1f;
-
     [SerializeField] private AudioClip            bossLetterBoomClip;
     [SerializeField, Range(0f,1f)] private float  bossLetterBoomVolume = 1f;
 
     [SerializeField] private AudioClip            bossTransformClip;
     [SerializeField, Range(0f,1f)] private float  bossTransformVolume = 1f;
 
-    [SerializeField] private AudioClip            bossPunchClip;
-    [SerializeField, Range(0f,1f)] private float  bossPunchVolume     = 0.8f;
+    [SerializeField] private AudioClip            bossBarFillClip;
+    [SerializeField, Range(0f,1f)] private float  bossBarFillVolume   = 1f;
 
     // ── Internal ──────────────────────────────────────────────────────────────
 
@@ -153,6 +152,9 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip            startAreaAmbientClip;
     [SerializeField, Range(0f,1f)] private float  startAreaAmbientVolume = 0.3f;
 
+    [SerializeField] private AudioClip            leavesRustlingClip;
+    [SerializeField, Range(0f,1f)] private float  leavesRustlingVolume   = 0.25f;
+
     [SerializeField] private AudioClip            caveEntranceClip;
     [SerializeField, Range(0f,1f)] private float  caveEntranceVolume  = 0.8f;
 
@@ -161,6 +163,7 @@ public class AudioManager : MonoBehaviour
 
     private AudioSource _music;
     private AudioSource _ambient;
+    private AudioSource _ambient2;   // second zone-1 loop (leaves rustling)
     private AudioSource _sfx;
     private AudioSource _attackSource;
     private AudioSource _dashSource;
@@ -185,6 +188,10 @@ public class AudioManager : MonoBehaviour
         _ambient.loop        = true;
         _ambient.playOnAwake = false;
 
+        _ambient2             = gameObject.AddComponent<AudioSource>();
+        _ambient2.loop        = true;
+        _ambient2.playOnAwake = false;
+
         _sfx             = gameObject.AddComponent<AudioSource>();
         _sfx.playOnAwake = false;
 
@@ -193,11 +200,34 @@ public class AudioManager : MonoBehaviour
 
         _dashSource             = gameObject.AddComponent<AudioSource>();
         _dashSource.playOnAwake = false;
+
     }
+
+    // Called by Unity whenever a value changes in the Inspector (Edit AND Play mode)
+    private void OnValidate()
+    {
+        if (_ambient  != null) _ambient.volume  = _ambient.clip == caveAmbientClip ? caveAmbientVolume : startAreaAmbientVolume;
+        if (_ambient2 != null) _ambient2.volume = leavesRustlingVolume;
+
+        if (_music != null)
+        {
+            if      (_music.clip == combatAreaMusic) _music.volume = combatAreaVolume;
+            else if (_music.clip == shopAreaMusic)   _music.volume = shopAreaVolume;
+            else if (_music.clip == bossMusic)       _music.volume = bossMusicVolume;
+        }
+
+    }
+
 
     private void Start()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+
+        // Preload all music clips so the first zone cross never causes a frame hitch
+        foreach (var clip in new[] { combatAreaMusic, shopAreaMusic, bossMusic })
+            if (clip != null && clip.loadState == AudioDataLoadState.Unloaded)
+                clip.LoadAudioData();
+
         PlayStartAreaAmbient();
     }
 
@@ -206,13 +236,16 @@ public class AudioManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         EnemyAmbientSound.ResetCounters();
         StopMusic();
         _ambient.Stop();
         _ambient.clip = null;
-        PlayStartAreaAmbient();
+        _ambient2.Stop();
+        _ambient2.clip = null;
+        // SceneAudioStarter in each scene handles playing the correct audio
     }
 
     // ── Generic SFX ───────────────────────────────────────────────────────────
@@ -228,8 +261,7 @@ public class AudioManager : MonoBehaviour
     public void PlayGenericClick()    => PlaySFX(genericClickClip,    genericClickVolume);
     public void PlayGameOver()        => PlaySFX(gameOverClip,        gameOverVolume);
     public void PlayFusion()          => PlaySFX(fusionClip,          fusionVolume);
-    public void PlayGameStart()        => PlaySFX(gameStartClip,       gameStartVolume);
-    public float GameStartClipLength   => gameStartClip != null ? gameStartClip.length : 0f;
+    public void PlayGameStart() => PlaySFX(gameStartClip, gameStartVolume);
     public void PlayDialogueOpen()    => PlaySFX(dialogueOpenClip,    dialogueOpenVolume);
     public void PlayDialogueAdvance() => PlaySFX(dialogueAdvanceClip, dialogueAdvanceVolume);
 
@@ -245,10 +277,10 @@ public class AudioManager : MonoBehaviour
     public void PlayPlayerAttack()
     {
         _attackToggle = !_attackToggle;
-        var clip = (_attackToggle && playerAttackClip2 != null) ? playerAttackClip2 : playerAttackClip;
-        if (clip == null) return;
-        _attackSource.clip   = clip;
-        _attackSource.volume = playerAttackVolume;
+        bool useSecond = _attackToggle && playerAttackClip2 != null;
+        _attackSource.clip   = useSecond ? playerAttackClip2 : playerAttackClip;
+        _attackSource.volume = useSecond ? playerAttackVolume2 : playerAttackVolume;
+        if (_attackSource.clip == null) return;
         _attackSource.Play();
     }
 
@@ -263,11 +295,7 @@ public class AudioManager : MonoBehaviour
     public void PlayGrabItem()  => PlaySFX(grabItemClip, grabItemVolume);
     public void PlayPlayerTakeDmg() => PlaySFX(playerTakeDmgClip, playerTakeDmgVolume);
 
-    public void PlayHitImpact()
-    {
-        var clip = (hitImpactClip2 != null && Random.value > 0.5f) ? hitImpactClip2 : hitImpactClip;
-        PlaySFX(clip, hitImpactVolume);
-    }
+    public void PlayHitImpact() => PlaySFX(hitImpactClip, hitImpactVolume);
 
     // ── Slime ─────────────────────────────────────────────────────────────────
 
@@ -285,7 +313,16 @@ public class AudioManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(duration);
         _slimeJumpsActive = Mathf.Max(0, _slimeJumpsActive - 1);
     }
-    public void PlaySlimeDeath() => PlaySFX(slimeDeathClip, slimeDeathVolume);
+    public void PlayMiniSlimeJump()
+    {
+        if (slimeJumpClip == null) return;
+        if (_slimeJumpsActive >= MaxSimultaneousJumps) return;
+        _slimeJumpsActive++;
+        _sfx.PlayOneShot(slimeJumpClip, miniSlimeJumpVolume);
+        StartCoroutine(ReleaseJumpSlot(slimeJumpClip.length));
+    }
+    public void PlaySlimeDeath()     => PlaySFX(slimeDeathClip, slimeDeathVolume);
+    public void PlayMiniSlimeDeath() => PlaySFX(slimeDeathClip, miniSlimeDeathVolume);
 
     // ── Skeleton ──────────────────────────────────────────────────────────────
 
@@ -322,19 +359,27 @@ public class AudioManager : MonoBehaviour
     // ── Boss ──────────────────────────────────────────────────────────────────
 
     public void PlayPlayerCloneDeath() => PlaySFX(playerCloneDeathClip, playerCloneDeathVolume);
-    public void PlayBossBarReveal()    => PlaySFX(bossBarRevealClip,    bossBarRevealVolume);
     public void PlayBossLetterBoom() => PlaySFX(bossLetterBoomClip, bossLetterBoomVolume);
     public void PlayBossTransform()  => PlaySFX(bossTransformClip,  bossTransformVolume);
-    public void PlayBossPunch()      => PlayPlayerAttack();
+    public void PlayBossBarFill()    => PlaySFX(bossBarFillClip, bossBarFillVolume);
 
     // ── Music ─────────────────────────────────────────────────────────────────
 
     public void PlayStartAreaAmbient()
     {
-        if (startAreaAmbientClip == null || _ambient.clip == startAreaAmbientClip) return;
-        _ambient.clip   = startAreaAmbientClip;
-        _ambient.volume = startAreaAmbientVolume;
-        _ambient.Play();
+        if (startAreaAmbientClip != null && _ambient.clip != startAreaAmbientClip)
+        {
+            _ambient.clip   = startAreaAmbientClip;
+            _ambient.volume = startAreaAmbientVolume;
+            _ambient.Play();
+        }
+
+        if (leavesRustlingClip != null && _ambient2.clip != leavesRustlingClip)
+        {
+            _ambient2.clip   = leavesRustlingClip;
+            _ambient2.volume = leavesRustlingVolume;
+            _ambient2.Play();
+        }
     }
 
     public void PlayCaveEntrance()
@@ -350,6 +395,8 @@ public class AudioManager : MonoBehaviour
     {
         _ambient.Stop();
         _ambient.clip = null;
+        _ambient2.Stop();
+        _ambient2.clip = null;
     }
 
     public void PlayCombatMusic()    => SwitchMusic(combatAreaMusic, combatAreaVolume);

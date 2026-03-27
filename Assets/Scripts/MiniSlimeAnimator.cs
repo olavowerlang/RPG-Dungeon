@@ -58,6 +58,9 @@ public class MiniSlimeAnimator : MonoBehaviour
         }
     }
 
+    // Animation event — place on the frame the mini slime death visually hits
+    public void OnDeathFrame() => AudioManager.Instance?.PlayMiniSlimeDeath();
+
     private void UpdateDirection()
     {
         Vector2 dir = _ai.MoveDirection;

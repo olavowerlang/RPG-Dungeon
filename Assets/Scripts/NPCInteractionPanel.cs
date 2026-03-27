@@ -88,7 +88,7 @@ public class NPCInteractionPanel : MonoBehaviour
             if (next >= _labels.Length) next = 0;
             if (next < 0) next = _labels.Length - 1;
 
-            if (_enabled[next]) { _selected = next; Refresh(); return; }
+            if (_enabled[next]) { _selected = next; Refresh(); AudioManager.Instance?.PlayGenericClick(); return; }
             next += dir;
             attempts++;
         }
@@ -98,6 +98,7 @@ public class NPCInteractionPanel : MonoBehaviour
     {
         if (!_enabled[_selected]) return;
         int chosen = _selected;
+        AudioManager.Instance?.PlayGenericClick();
         Hide();
         _onConfirm?.Invoke(chosen);
     }

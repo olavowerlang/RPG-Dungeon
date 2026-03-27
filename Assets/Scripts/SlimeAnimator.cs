@@ -74,6 +74,9 @@ public class SlimeAnimator : MonoBehaviour
         }
     }
 
+    // Animation event — place on the frame the slime death visually hits
+    public void OnDeathFrame() => AudioManager.Instance?.PlaySlimeDeath();
+
     private IEnumerator FreezeAfterDeath()
     {
         yield return new WaitForFixedUpdate();
@@ -108,7 +111,8 @@ public class SlimeAnimator : MonoBehaviour
         if (lootTable == null || itemDropPrefab == null) return;
         ItemData drop = lootTable.Roll();
         if (drop == null) return;
-        var go = Instantiate(itemDropPrefab, _ai.transform.position + Vector3.right * 0.5f, Quaternion.identity);
+        Vector3 slimeOffset = (Vector3)(Random.insideUnitCircle.normalized * Random.Range(0.5f, 1f));
+        var go = Instantiate(itemDropPrefab, _ai.transform.position + slimeOffset, Quaternion.identity);
         go.GetComponent<ItemDrop>()?.Init(drop);
         go.AddComponent<DelayedReveal>().Reveal(0.05f);
     }

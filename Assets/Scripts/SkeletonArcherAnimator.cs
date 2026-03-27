@@ -102,7 +102,8 @@ public class SkeletonArcherAnimator : MonoBehaviour
         if (lootTable == null || itemDropPrefab == null) return;
         ItemData drop = lootTable.Roll();
         if (drop == null) return;
-        var go = Instantiate(itemDropPrefab, _ai.transform.position + Vector3.right * 0.5f, Quaternion.identity);
+        Vector3 archerOffset = (Vector3)(Random.insideUnitCircle.normalized * Random.Range(0.5f, 1f));
+        var go = Instantiate(itemDropPrefab, _ai.transform.position + archerOffset, Quaternion.identity);
         go.GetComponent<ItemDrop>()?.Init(drop);
     }
 

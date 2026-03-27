@@ -218,6 +218,7 @@ public class CloneAI : MonoBehaviour
         Vector2 imp = _hitEffect.LastHitImpulse;
         if (imp.magnitude > 6f) imp = imp.normalized * 6f;
         _impulseVelocity += imp;
+        AudioManager.Instance?.PlayHitImpact();
     }
 
     private void FixedUpdate()
@@ -485,7 +486,7 @@ public class CloneAI : MonoBehaviour
         _attack2Triggered = false;
         _faceDir          = toPlayer.normalized;
         _impulseVelocity  = toPlayer.normalized * _attackPushForce;
-        AudioManager.Instance?.PlayBossPunch();
+        AudioManager.Instance?.PlayPlayerAttack();
         cloneAnimator?.TriggerAttack1();
     }
 
@@ -570,7 +571,6 @@ public class CloneAI : MonoBehaviour
     private void OnDeath()
     {
         _state               = State.Dead;
-        AudioManager.Instance?.PlayPlayerCloneDeath();
         _impulseVelocity     = Vector2.zero;
         _rb.velocity         = Vector2.zero;
         _rb.bodyType         = RigidbodyType2D.Kinematic; // prevent physics from drifting corpse
@@ -610,6 +610,7 @@ public class CloneAI : MonoBehaviour
         }
 
         // Death animation plays AFTER the last dialogue line is dismissed
+        AudioManager.Instance?.StopMusic();
         cloneAnimator?.TriggerDeath();
         // Wait for death anim to finish, with a hard timeout so it never hangs
         // if the Animator state name doesn't match "Player_Death"
