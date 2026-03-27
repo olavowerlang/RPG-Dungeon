@@ -50,6 +50,7 @@ MonoBehaviour:
   hitLayers:
     serializedVersion: 2
     m_Bits: 128
+  playHitSound: 0
 --- !u!60 &6665297483313648861
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -242,6 +243,7 @@ MonoBehaviour:
   hitLayers:
     serializedVersion: 2
     m_Bits: 128
+  playHitSound: 0
 --- !u!1 &4965421140415203020
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,6 +294,7 @@ MonoBehaviour:
   hitLayers:
     serializedVersion: 2
     m_Bits: 128
+  playHitSound: 0
 --- !u!60 &6162718568286168135
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -410,6 +413,7 @@ MonoBehaviour:
   hitLayers:
     serializedVersion: 2
     m_Bits: 128
+  playHitSound: 0
 --- !u!60 &456235686791472290
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -592,7 +596,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f124d36075e77364ca5c5d3bf844acc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 80
+  maxHP: 60
   currentHp: 0
 --- !u!114 &6716927578645877456
 MonoBehaviour:
@@ -610,6 +614,9 @@ MonoBehaviour:
   impulseDecayRate: 8
   blinkDuration: 0.2
   blinkFrequency: 0.1
+  deathParticleCount: 50
+  deathParticleSpeed: 5
+  deathParticleMaterial: {fileID: 0}
 --- !u!114 &1572747393361880495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -673,6 +680,7 @@ MonoBehaviour:
   phase2Dialogue: {fileID: 11400000, guid: 731c8975b7be1ad4a8658c0bf29afa54, type: 2}
   deathDialogue: {fileID: 11400000, guid: e3cf698204678624ebf16d7ac9647cae, type: 2}
   deathAnimDuration: 1.5
+  mainSceneName: Main Scene
 --- !u!114 &621693234268382134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -716,7 +724,6 @@ MonoBehaviour:
   minInterval: 6
   maxInterval: 13
   label: {fileID: 0}
-  yOffset: 1.4
   fadeInTime: 0.25
   holdTime: 2.8
   fadeOutTime: 0.4
@@ -836,6 +843,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62e5c5ba41fda5c4abf1f71ccffb4546, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animator: {fileID: 0}
 --- !u!95 &5728896038882801649
 Animator:
   serializedVersion: 5
@@ -907,6 +915,7 @@ MonoBehaviour:
   hitLayers:
     serializedVersion: 2
     m_Bits: 128
+  playHitSound: 0
 --- !u!60 &5255227850376319228
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -1094,3 +1103,4 @@ MonoBehaviour:
   hitLayers:
     serializedVersion: 2
     m_Bits: 128
+  playHitSound: 0

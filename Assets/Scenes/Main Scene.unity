@@ -14277,7 +14277,7 @@ MonoBehaviour:
   mushroomItem: {fileID: 11400000, guid: 34abe41b0ed49c14498248f8ecea9513, type: 2}
   requiredCount: 15
   blockedDialogue: {fileID: 11400000, guid: 302554e2924018a42ba64afcb96fd52e, type: 2}
-  debugBypass: 1
+  debugBypass: 0
 --- !u!61 &1180179923
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -476667,11 +476667,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3939633173304301534, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: maxHP
-      value: 111
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3939633173304301534, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: currentHp
-      value: 111
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6476758847589735046, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: onDeathAnimEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -476679,11 +476679,11 @@ PrefabInstance:
       objectReference: {fileID: 1753045830}
     - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: speed
-      value: 50
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: damage
-      value: 10
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: hasDash
@@ -476691,7 +476691,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: hasSword
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: dashForce
