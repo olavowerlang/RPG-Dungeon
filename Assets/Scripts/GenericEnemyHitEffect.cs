@@ -136,10 +136,10 @@ public class GenericEnemyHitEffect : MonoBehaviour, IDamageable
         if (_sr != null) _sr.enabled = true;
     }
 
-    public void TakeHit(int dmg, Vector2 dir, float knockback = 0f)
+    public bool TakeHit(int dmg, Vector2 dir, float knockback = 0f)
     {
-        if (_hp.IsDead) return;
-        if (_invulTimer > 0f) return;
+        if (_hp.IsDead) return false;
+        if (_invulTimer > 0f) return false;
 
         Vector2 imp  = dir.normalized * (knockForce + knockback);
         LastHitImpulse = imp;
@@ -148,6 +148,7 @@ public class GenericEnemyHitEffect : MonoBehaviour, IDamageable
 
         OnHitTaken?.Invoke();
         StartCoroutine(Blink());
+        return true;
     }
 
     private IEnumerator Blink()

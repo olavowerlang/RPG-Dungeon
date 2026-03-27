@@ -33,6 +33,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject victoryPanel;
 
     private GameManager _gameManager;
+    public static bool HudUnlocked { get; private set; } // persists across scene loads
 
     private void Awake()
     {
@@ -47,13 +48,15 @@ public class UIManager : MonoBehaviour
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
         if (levelUpPanel != null) levelUpPanel.SetActive(false);
 
-        // Hide logo, hearts and gold before start — skip on NG+ (game resumes immediately)
+        // Hide logo, hearts and gold before start — only on the initial load, not scene transitions
         bool isNGPlus = NGPlusManager.Instance != null && NGPlusManager.Instance.IsNGPlus;
-        if (logoImage != null) logoImage.SetActive(!isNGPlus);
 
-        healthImages.SetActive(isNGPlus);
-        if (goldText != null) goldText.gameObject.SetActive(isNGPlus);
-        if (goldIcon != null) goldIcon.gameObject.SetActive(isNGPlus);
+        if (logoImage != null) logoImage.SetActive(!isNGPlus && !HudUnlocked);
+
+        bool showHUD = isNGPlus || HudUnlocked;
+        healthImages.SetActive(showHUD);
+        if (goldText != null) goldText.gameObject.SetActive(showHUD);
+        if (goldIcon != null) goldIcon.gameObject.SetActive(showHUD);
 
         if (GoldManager.Instance != null)
         {
@@ -73,6 +76,7 @@ public class UIManager : MonoBehaviour
     // Chamado quando aperta "Start Game"
     public void HideMainMenu()
     {
+        HudUnlocked = true;
         startGameButton.gameObject.SetActive(false);
         quitGameButton.gameObject.SetActive(false);
         if (logoImage != null) logoImage.SetActive(false);
@@ -111,6 +115,7 @@ public class UIManager : MonoBehaviour
     {
         levelUpText.text = "LEVEL UP! +DMG";
         levelUpPanel.SetActive(true);
+        AudioManager.Instance?.PlayLevelUp();
         yield return new WaitForSeconds(3f);
         levelUpPanel.SetActive(false);
     }
@@ -123,6 +128,7 @@ public class UIManager : MonoBehaviour
 
     public void RestartGame()
     {
+        HudUnlocked = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

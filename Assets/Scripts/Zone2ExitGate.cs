@@ -24,7 +24,9 @@ public class Zone2ExitGate : MonoBehaviour
     {
         if (!other.gameObject.CompareTag("Player")) return;
 
-        if (!AllEnemiesDead())
+        bool isNGPlus = NGPlusManager.Instance != null && NGPlusManager.Instance.IsNGPlus;
+
+        if (!isNGPlus && !AllEnemiesDead())
         {
             if (DialogueManager.Instance != null && !DialogueManager.Instance.IsInDialogue)
                 DialogueManager.Instance.StartDialogue(blockedDialogue);

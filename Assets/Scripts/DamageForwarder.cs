@@ -14,8 +14,8 @@ public class DamageForwarder : MonoBehaviour, IDamageable
         _target = transform.parent.GetComponent<IDamageable>();
     }
 
-    public void TakeHit(int damage, Vector2 direction, float knockback = 0f)
+    public bool TakeHit(int damage, Vector2 direction, float knockback = 0f)
     {
-        _target?.TakeHit(damage, direction, knockback);
+        return _target != null && _target.TakeHit(damage, direction, knockback);
     }
 }

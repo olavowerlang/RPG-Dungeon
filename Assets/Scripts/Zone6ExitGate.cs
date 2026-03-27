@@ -18,8 +18,9 @@ public class Zone6ExitGate : MonoBehaviour
     {
         if (!other.gameObject.CompareTag("Player")) return;
 
+        bool isNGPlus = NGPlusManager.Instance != null && NGPlusManager.Instance.IsNGPlus;
         bool canPass = debugBypass ||
-                       MushroomQuestPig.QuestDone ||
+                       (!isNGPlus && MushroomQuestPig.QuestDone) ||
                        (InventoryManager.Instance != null &&
                         InventoryManager.Instance.HasIngredient(mushroomItem, requiredCount));
 

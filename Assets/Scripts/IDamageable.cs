@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IDamageable
 {
-    void TakeHit(int dmg, Vector2 hitDir, float knockback = 0f);
+    bool TakeHit(int dmg, Vector2 hitDir, float knockback = 0f);
 }

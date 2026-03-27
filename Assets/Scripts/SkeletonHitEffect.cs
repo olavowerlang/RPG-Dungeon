@@ -50,17 +50,18 @@ public class SkeletonHitEffect : MonoBehaviour, IDamageable
         if (_sr != null) _sr.enabled = true;
     }
 
-    public void TakeHit(int dmg, Vector2 dir, float knockback = 0f)
+    public bool TakeHit(int dmg, Vector2 dir, float knockback = 0f)
     {
-        if (_hp.IsDead) return;
+        if (_hp.IsDead) return false;
 
         _impulseVel += dir.normalized * (knockForce + knockback);
         _hp.TakeDamage(dmg);
 
-        if (_hp.IsDead) return;
+        if (_hp.IsDead) return true;
 
         StartCoroutine(Blink());
         StartCoroutine(Stun());
+        return true;
     }
 
     private IEnumerator Blink()

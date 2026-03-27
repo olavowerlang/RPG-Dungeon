@@ -28,15 +28,16 @@ public class PlayerHitEffect : MonoBehaviour, IDamageable
         _invuln = false;       // reseta flag
     }
 
-    public void TakeHit(int dmg, Vector2 dir, float knockback = 0f)
+    public bool TakeHit(int dmg, Vector2 dir, float knockback = 0f)
     {
-        if (_invuln || _hp.IsDead) return;
+        if (_invuln || _hp.IsDead) return false;
 
         _rb.velocity = Vector2.zero;
         _player.ApplyAttackPush(dir, _stats.receivedKnockForce);
 
         _hp.TakeDamage(dmg);
         StartCoroutine(BlinkInvuln());
+        return true;
     }
 
     private IEnumerator BlinkInvuln()

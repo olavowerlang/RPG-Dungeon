@@ -24,7 +24,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip            bossMusic;
     [SerializeField, Range(0f,1f)] private float  bossMusicVolume  = 0.5f;
 
-    [SerializeField] private float musicFadeTime = 0.6f;
+    [SerializeField] private float musicFadeTime     = 0.6f;
+    [SerializeField] private float musicStopFadeTime = 2.5f;
 
     // ── UI SFX ────────────────────────────────────────────────────────────────
 
@@ -40,6 +41,9 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField] private AudioClip            gameStartClip;
     [SerializeField, Range(0f,1f)] private float  gameStartVolume       = 1f;
+
+    [SerializeField] private AudioClip            levelUpClip;
+    [SerializeField, Range(0f,1f)] private float  levelUpVolume         = 1f;
 
     [SerializeField] private AudioClip            dialogueOpenClip;
     [SerializeField, Range(0f,1f)] private float  dialogueOpenVolume    = 0.6f;
@@ -262,6 +266,7 @@ public class AudioManager : MonoBehaviour
     public void PlayGameOver()        => PlaySFX(gameOverClip,        gameOverVolume);
     public void PlayFusion()          => PlaySFX(fusionClip,          fusionVolume);
     public void PlayGameStart() => PlaySFX(gameStartClip, gameStartVolume);
+    public void PlayLevelUp()   => PlaySFX(levelUpClip,   levelUpVolume);
     public void PlayDialogueOpen()    => PlaySFX(dialogueOpenClip,    dialogueOpenVolume);
     public void PlayDialogueAdvance() => PlaySFX(dialogueAdvanceClip, dialogueAdvanceVolume);
 
@@ -402,21 +407,24 @@ public class AudioManager : MonoBehaviour
     public void PlayCombatMusic()    => SwitchMusic(combatAreaMusic, combatAreaVolume);
     public void PlayShopMusic()      => SwitchMusic(shopAreaMusic,   shopAreaVolume);
     public void PlayBossMusic()      => SwitchMusic(bossMusic,       bossMusicVolume);
-    public void StopMusic()          => SwitchMusic(null, 0f);
+    public void StopMusic()          => SwitchMusic(null, 0f, musicStopFadeTime);
 
-    private void SwitchMusic(AudioClip clip, float targetVolume)
+    private AudioClip _targetMusicClip;
+
+    private void SwitchMusic(AudioClip clip, float targetVolume, float fadeTime = -1f)
     {
-        if (_music.clip == clip) return;
+        if (_targetMusicClip == clip) return;
+        _targetMusicClip = clip;
         if (_fadeRoutine != null) StopCoroutine(_fadeRoutine);
-        _fadeRoutine = StartCoroutine(FadeSwitch(clip, targetVolume));
+        _fadeRoutine = StartCoroutine(FadeSwitch(clip, targetVolume, fadeTime < 0f ? musicFadeTime : fadeTime));
     }
 
-    private IEnumerator FadeSwitch(AudioClip clip, float targetVolume)
+    private IEnumerator FadeSwitch(AudioClip clip, float targetVolume, float fadeTime)
     {
         float startVol = _music.volume;
-        for (float t = 0; t < musicFadeTime; t += Time.unscaledDeltaTime)
+        for (float t = 0; t < fadeTime; t += Time.unscaledDeltaTime)
         {
-            _music.volume = Mathf.Lerp(startVol, 0f, t / musicFadeTime);
+            _music.volume = Mathf.Lerp(startVol, 0f, t / fadeTime);
             yield return null;
         }
         _music.Stop();
@@ -427,9 +435,9 @@ public class AudioManager : MonoBehaviour
         _music.clip = clip;
         _music.Play();
 
-        for (float t = 0; t < musicFadeTime; t += Time.unscaledDeltaTime)
+        for (float t = 0; t < fadeTime; t += Time.unscaledDeltaTime)
         {
-            _music.volume = Mathf.Lerp(0f, targetVolume, t / musicFadeTime);
+            _music.volume = Mathf.Lerp(0f, targetVolume, t / fadeTime);
             yield return null;
         }
         _music.volume = targetVolume;

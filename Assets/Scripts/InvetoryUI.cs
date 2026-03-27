@@ -64,11 +64,12 @@ public class InventoryUI : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(toggleKey))
+        bool inDialogue = DialogueManager.Instance != null && DialogueManager.Instance.IsInDialogue;
+        if (Input.GetKeyDown(toggleKey) && !inDialogue)
             Toggle();
 
-        if (inventoryPanel.activeSelf && Input.GetKeyDown(KeyCode.Escape))
-            Close();
+        if (Input.GetKeyDown(KeyCode.Escape) && UIManager.HudUnlocked && !NPCInteractionPanel.IsOpen && !inDialogue)
+            Toggle();
     }
 
     public bool IsOpen => inventoryPanel.activeSelf;

@@ -8804,6 +8804,7 @@ Transform:
   - {fileID: 1842291850}
   - {fileID: 1795561310}
   - {fileID: 1232569398}
+  - {fileID: 1731515872}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &775163039
@@ -9849,7 +9850,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -722, y: 350}
-  m_SizeDelta: {x: 425, y: 250}
+  m_SizeDelta: {x: 440, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &856433814
 MonoBehaviour:
@@ -14276,7 +14277,7 @@ MonoBehaviour:
   mushroomItem: {fileID: 11400000, guid: 34abe41b0ed49c14498248f8ecea9513, type: 2}
   requiredCount: 15
   blockedDialogue: {fileID: 11400000, guid: 302554e2924018a42ba64afcb96fd52e, type: 2}
-  debugBypass: 0
+  debugBypass: 1
 --- !u!61 &1180179923
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -31056,6 +31057,96 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 0.02955246, y: 44.903145}
+  m_EdgeRadius: 0
+--- !u!1 &1731515871
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1731515872}
+  - component: {fileID: 1731515874}
+  - component: {fileID: 1731515873}
+  m_Layer: 0
+  m_Name: Zone67EnemyBarrier
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1731515872
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1731515871}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 318.7, y: 160.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 771630324}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1731515873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1731515871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f7875c744870504a8335755eb26ded2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!61 &1731515874
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1731515871}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 19.915298, y: -3.6270502}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 37.859894, y: 0.24861574}
   m_EdgeRadius: 0
 --- !u!1001 &1735537292
 PrefabInstance:
@@ -473925,12 +474016,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   combatAreaMusic: {fileID: 8300000, guid: d2af648ccabfb764783ff2ccb51e8f97, type: 3}
-  combatAreaVolume: 0.2
+  combatAreaVolume: 0.19
   shopAreaMusic: {fileID: 8300000, guid: 2952d732552aff049a14e9f916edbe17, type: 3}
-  shopAreaVolume: 0.15
+  shopAreaVolume: 0.135
   bossMusic: {fileID: 8300000, guid: 162440f06d3bc7944bd7d932d2b4c6d0, type: 3}
   bossMusicVolume: 0.25
   musicFadeTime: 0.6
+  musicStopFadeTime: 2.5
   genericClickClip: {fileID: 8300000, guid: 1cee6cb999bc94d43b43bc24ce6ac722, type: 3}
   genericClickVolume: 0.3
   fusionClip: {fileID: 8300000, guid: b98449a70c8528c4a8c466cd7cf20f10, type: 3}
@@ -473939,10 +474031,12 @@ MonoBehaviour:
   gameOverVolume: 0.6
   gameStartClip: {fileID: 8300000, guid: ba0dd7524a5a2e74fb5568d60391dfbb, type: 3}
   gameStartVolume: 0.6
+  levelUpClip: {fileID: 8300000, guid: 92dcccb1316ad1a469c7d969597a5aaa, type: 3}
+  levelUpVolume: 0.5
   dialogueOpenClip: {fileID: 8300000, guid: df244bbac8ab2f54ebee08262051f4c2, type: 3}
-  dialogueOpenVolume: 0.3
+  dialogueOpenVolume: 0.25
   dialogueAdvanceClip: {fileID: 8300000, guid: f33c88d8ae268f84fa2c24046cbe6707, type: 3}
-  dialogueAdvanceVolume: 0.35
+  dialogueAdvanceVolume: 0.3
   consumableClip: {fileID: 8300000, guid: 9551f6fd410494a4eaa459528e5dbd00, type: 3}
   consumableVolume: 0.5
   coinRewardClip: {fileID: 8300000, guid: 2a159922c112a2d428efbcb514186c4a, type: 3}
@@ -473950,7 +474044,7 @@ MonoBehaviour:
   shopBuyClip: {fileID: 8300000, guid: a05fbc9fcfca69843b30215d12f5efca, type: 3}
   shopBuyVolume: 0.6
   dashUnlockClip: {fileID: 8300000, guid: db205545ba851844fab0d12d65248d1d, type: 3}
-  dashUnlockVolume: 0.65
+  dashUnlockVolume: 0.5
   shopErrorClip: {fileID: 8300000, guid: 7575b780288f60e40991650ee7290de8, type: 3}
   shopErrorVolume: 0.4
   playerAttackClip: {fileID: 8300000, guid: a65dda7fea7333e4092b9120d1ef75b5, type: 3}
@@ -473983,15 +474077,15 @@ MonoBehaviour:
   skeletonIdleClip3: {fileID: 8300000, guid: 5d2521cd820dab74592070a4bd8a5c15, type: 3}
   skeletonIdleVolume: 0.25
   shroomRevealClip: {fileID: 8300000, guid: 6b8a84bf8bdd3b347b662a26015a8bfe, type: 3}
-  shroomRevealVolume: 0.4
+  shroomRevealVolume: 0.25
   shroomGasClip: {fileID: 8300000, guid: b5f1680a3a99ad74f9ddd3d9ee6c557e, type: 3}
-  shroomGasVolume: 0.25
+  shroomGasVolume: 0.225
   shroomDeathGasClip: {fileID: 8300000, guid: 8b357c835ecafaf4bbd29877ef914952, type: 3}
   shroomDeathGasVolume: 0.25
   shroomDeathClip: {fileID: 8300000, guid: fdb4929aa182c8141b7683cac27ef4f2, type: 3}
   shroomDeathVolume: 0.4
   shroomIdleClip: {fileID: 8300000, guid: 428a809ce177b2a48b48f0dabdbb9eee, type: 3}
-  shroomIdleVolume: 0.3
+  shroomIdleVolume: 0.25
   playerCloneDeathClip: {fileID: 8300000, guid: afc7cebc44d958545a98cc71d03191ac, type: 3}
   playerCloneDeathVolume: 0.4
   bossLetterBoomClip: {fileID: 8300000, guid: b1f84d52ec62941428b2e07ca87f780b, type: 3}
@@ -476573,11 +476667,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3939633173304301534, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: maxHP
-      value: 3
+      value: 111
       objectReference: {fileID: 0}
     - target: {fileID: 3939633173304301534, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: currentHp
-      value: 3
+      value: 111
       objectReference: {fileID: 0}
     - target: {fileID: 6476758847589735046, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: onDeathAnimEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
