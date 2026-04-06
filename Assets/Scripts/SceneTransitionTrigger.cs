@@ -20,8 +20,14 @@ public class SceneTransitionTrigger : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag("Player")) return;
-        if (requirePigDialogue  && !PigShopkeeper.MainDialogueDone) return;
-        if (requireMushroomTalk && !MushroomQuestPig.TalkDone) return;
+
+        bool isNGPlus = NGPlusManager.Instance != null && NGPlusManager.Instance.IsNGPlus;
+        if (!isNGPlus)
+        {
+            if (requirePigDialogue  && !PigShopkeeper.MainDialogueDone) return;
+            if (requireMushroomTalk && !MushroomQuestPig.TalkDone) return;
+        }
+
         NGPlusManager.Instance?.SnapshotForTransition();
         SceneManager.LoadScene(targetScene);
     }

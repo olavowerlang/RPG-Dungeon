@@ -19,10 +19,14 @@ public class EnemyContactDamage : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D col) { if (useCollision) TryDamage(col.collider); }
     private void OnCollisionStay2D(Collision2D col)  { if (useCollision) TryDamage(col.collider); }
 
-    /// <summary>Scales damage and knockback by a multiplier. Used by NGPlusEnemyScaler.</summary>
-    public void ScaleDamage(float multiplier)
+    /// <summary>
+    /// Scales enemy stats for NG+.
+    /// Knockback multiplies by the stat multiplier as usual.
+    /// Damage uses additive bonus: +0 at NG+1, +1 at NG+2, +2 at NG+3+, capped at +2.
+    /// </summary>
+    public void ScaleDamage(float multiplier, int ngPlusCount)
     {
-        damage   = Mathf.RoundToInt(damage * multiplier);
+        damage    += Mathf.Min(ngPlusCount - 1, 2);
         knockback *= multiplier;
     }
 

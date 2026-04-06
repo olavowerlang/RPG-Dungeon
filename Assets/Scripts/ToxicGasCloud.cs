@@ -20,6 +20,9 @@ public class ToxicGasCloud : MonoBehaviour
         _cols = GetComponentsInChildren<CircleCollider2D>();
         _tickTimer = 0f;
         Destroy(gameObject, lifetime);
+
+        if (NGPlusManager.Instance != null && NGPlusManager.Instance.IsNGPlus)
+            damagePerTick += Mathf.Min(NGPlusManager.Instance.NGPlusCount - 1, 2);
     }
 
     private void Update()

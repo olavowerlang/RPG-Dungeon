@@ -52,7 +52,7 @@ public class DialogueManager : MonoBehaviour
 
         if (_justOpened) { _justOpened = false; return; }
 
-        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.E))
             AdvanceDialogue();
     }
 
@@ -93,7 +93,7 @@ public class DialogueManager : MonoBehaviour
         dialogueText.text    = _lines[index].text;
 
         bool isLast = index == _lines.Length - 1;
-        continuePrompt.text = isLast ? "[E / Space] Close" : "[E / Space] Continue";
+        continuePrompt.text = isLast ? "[E] Close" : "[E] Continue";
 
         // Swap name boxes only when the speaker actually changes
         if (speakerBoxes != null && speakerBoxes.Length > 0 && speaker != _currentBoxSpeaker)

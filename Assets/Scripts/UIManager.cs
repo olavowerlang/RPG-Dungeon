@@ -129,7 +129,7 @@ public class UIManager : MonoBehaviour
     public void RestartGame()
     {
         HudUnlocked = false;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene("Main Scene");
     }
 
     public void QuitGame()

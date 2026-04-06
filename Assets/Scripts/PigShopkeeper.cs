@@ -37,6 +37,14 @@ public class PigShopkeeper : MonoBehaviour
     public static bool Instance3IntroDone { get; private set; }
     public static bool Instance3TalkDone  { get; private set; }
 
+    public static void ResetAll()
+    {
+        Instance2IntroDone = false;
+        Instance2TalkDone  = false;
+        Instance3IntroDone = false;
+        Instance3TalkDone  = false;
+    }
+
     // Backwards-compatibility alias
     public static bool MainDialogueDone => Instance2IntroDone;
 

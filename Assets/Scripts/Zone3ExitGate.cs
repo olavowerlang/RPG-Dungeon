@@ -14,6 +14,14 @@ public class Zone3ExitGate : MonoBehaviour
     {
         if (!other.gameObject.CompareTag("Player")) return;
 
+        // In NG+, the gate is always open — player can skip freely
+        bool isNGPlus = NGPlusManager.Instance != null && NGPlusManager.Instance.IsNGPlus;
+        if (isNGPlus)
+        {
+            GetComponent<BoxCollider2D>().enabled = false;
+            return;
+        }
+
         bool hasDash   = PlayerStats.Instance != null && PlayerStats.Instance.hasDash;
         bool talkDone  = PigShopkeeper.Instance2TalkDone;
 

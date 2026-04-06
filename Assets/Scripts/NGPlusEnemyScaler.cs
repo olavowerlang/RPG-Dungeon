@@ -17,9 +17,14 @@ public class NGPlusEnemyScaler : MonoBehaviour
         if (health != null)
             health.ScaleMaxHP(Mathf.RoundToInt(health.MaxHP * m));
 
+        int ngCount = NGPlusManager.Instance.NGPlusCount;
+
         var contact = GetComponent<EnemyContactDamage>();
         if (contact != null)
-            contact.ScaleDamage(m);
+            contact.ScaleDamage(m, ngCount);
+
+        foreach (var dealer in GetComponentsInChildren<DamageDealer>(true))
+            dealer.Damage += Mathf.Min(ngCount - 1, 2);
 
         GetComponent<SlimeAI>()?.ScaleForNGPlus(m);
         GetComponent<MiniSlimeAI>()?.ScaleForNGPlus(m);

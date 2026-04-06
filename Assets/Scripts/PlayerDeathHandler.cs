@@ -44,5 +44,8 @@ public class PlayerDeathHandler : MonoBehaviour
 
         if (CraftingSystem.Instance != null)
             CraftingSystem.Instance.ResetBuffs();
+
+        PigShopkeeper.ResetAll();
+        NPCDialogue.ResetZone1();
     }
 }

@@ -10,6 +10,11 @@ public class NPCDialogue : MonoBehaviour
     [SerializeField] private bool unlockSwordOnComplete;
     [SerializeField] private ItemData swordItem;
 
+    // Set when the zone 1 NPC (unlockSwordOnComplete) finishes their dialogue.
+    // Checked by Zone1ExitGate in NG+1.
+    public static bool Zone1MainDone { get; private set; }
+    public static void ResetZone1() { Zone1MainDone = false; }
+
     private bool _playerInRange;
     private bool _mainDone;
     private bool _wasInDialogue;
@@ -39,11 +44,15 @@ public class NPCDialogue : MonoBehaviour
                 DialogueManager.Instance.StartDialogue(d, () =>
                 {
                     _mainDone = true;
-                    if (unlockSwordOnComplete && PlayerStats.Instance != null)
+                    if (unlockSwordOnComplete)
                     {
-                        PlayerStats.Instance.hasSword = true;
-                        if (swordItem != null)
-                            InventoryManager.Instance.EquipSword(swordItem);
+                        Zone1MainDone = true;
+                        if (PlayerStats.Instance != null)
+                        {
+                            PlayerStats.Instance.hasSword = true;
+                            if (swordItem != null)
+                                InventoryManager.Instance.EquipSword(swordItem);
+                        }
                     }
                 });
             }

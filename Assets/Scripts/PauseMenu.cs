@@ -13,8 +13,13 @@ public class PauseMenu : MonoBehaviour
         if (StoreManager.Instance != null && StoreManager.Instance.IsStoreOpen) return;
         if (InventoryUI.Instance != null && InventoryUI.Instance.IsOpen) return;
 
-        if (Input.GetKeyDown(KeyCode.Escape))
-            SetPaused(!_paused);
+        if (!Input.GetKeyDown(KeyCode.Escape)) return;
+
+        // If InventoryUI would handle this ESC press, let it
+        bool inDialogue = DialogueManager.Instance != null && DialogueManager.Instance.IsInDialogue;
+        if (UIManager.HudUnlocked && !NPCInteractionPanel.IsOpen && !inDialogue) return;
+
+        SetPaused(!_paused);
     }
 
     private void SetPaused(bool paused)

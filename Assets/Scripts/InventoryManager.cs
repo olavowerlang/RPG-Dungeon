@@ -21,7 +21,7 @@ public class InventoryManager : MonoBehaviour
 
     public const int MaxIngredientSlots = 10;
 
-    // Sword slot — separate from ingredients
+    // Sword slot ï¿½ separate from ingredients
     public ItemData equippedSword { get; private set; } = null;
 
     // Ingredient slots only (max 10)
@@ -37,6 +37,7 @@ public class InventoryManager : MonoBehaviour
     {
         if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -109,6 +110,7 @@ public class InventoryManager : MonoBehaviour
     public void ClearInventory()
     {
         ingredientSlots.Clear();
+        equippedSword = null;
         OnInventoryChanged?.Invoke();
     }
 }

@@ -19,7 +19,13 @@ public class ArrowProjectile : MonoBehaviour
     private Rigidbody2D _rb;
 
     private void Awake() => _rb = GetComponent<Rigidbody2D>();
-    private void Start() => Destroy(gameObject, lifetime);
+
+    private void Start()
+    {
+        Destroy(gameObject, lifetime);
+        if (NGPlusManager.Instance != null && NGPlusManager.Instance.IsNGPlus)
+            damage += Mathf.Min(NGPlusManager.Instance.NGPlusCount - 1, 2);
+    }
 
     public void Init(Vector2 direction)
     {

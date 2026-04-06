@@ -12,6 +12,9 @@ public class NGPlusManager : MonoBehaviour
     // Always starts at 1 — doubled by SetGameCleared each run (NG+1=2x, NG+2=4x, etc.)
     public float EnemyStatMultiplier { get; private set; } = 1f;
 
+    // 1 = NG+1, 2 = NG+2, etc.
+    public int NGPlusCount { get; private set; } = 0;
+
     // ── Flags ────────────────────────────────────────────────────────────────
     public bool GameCleared { get; private set; }
     public bool IsNGPlus    { get; private set; }
@@ -25,6 +28,7 @@ public class NGPlusManager : MonoBehaviour
     public bool  CarriedHasDash        { get; private set; }
     public float CarriedMaxDashStamina { get; private set; }
     public int   CarriedMaxHP          { get; private set; }
+    public int   CarriedCurrentHP      { get; private set; }
     public int   CarriedGold           { get; private set; }
 
     private bool _hasTransitionSnapshot;
@@ -53,7 +57,8 @@ public class NGPlusManager : MonoBehaviour
         CarriedMaxDashStamina = ps.maxDashStamina;
 
         var health = ps.GetComponent<Health>();
-        CarriedMaxHP = health != null ? health.MaxHP : 3;
+        CarriedMaxHP     = health != null ? health.MaxHP     : 3;
+        CarriedCurrentHP = health != null ? health.currentHp : CarriedMaxHP;
 
         if (GoldManager.Instance != null)
             CarriedGold = GoldManager.Instance.Gold;
@@ -69,6 +74,10 @@ public class NGPlusManager : MonoBehaviour
         GameCleared           = true;
         IsNGPlus              = true;
         EnemyStatMultiplier  *= 2f; // NG+1=2x, NG+2=4x, etc.
+        NGPlusCount++;
+
+        PigShopkeeper.ResetAll();
+        NPCDialogue.ResetZone1();
 
         var ps = PlayerStats.Instance;
         if (ps != null)
@@ -82,7 +91,8 @@ public class NGPlusManager : MonoBehaviour
             CarriedMaxDashStamina = ps.maxDashStamina;
 
             var health = ps.GetComponent<Health>();
-            CarriedMaxHP = health != null ? health.MaxHP : 3;
+            CarriedMaxHP     = health != null ? health.MaxHP : 3;
+            CarriedCurrentHP = CarriedMaxHP; // full HP at the start of a new NG+ run
         }
 
         if (GoldManager.Instance != null)
@@ -116,7 +126,10 @@ public class NGPlusManager : MonoBehaviour
 
         var health = ps.GetComponent<Health>();
         if (health != null)
+        {
             health.ScaleMaxHP(CarriedMaxHP);
+            health.currentHp = Mathf.Clamp(CarriedCurrentHP, 1, CarriedMaxHP);
+        }
 
         if (GoldManager.Instance != null)
             GoldManager.Instance.SetGold(CarriedGold);
