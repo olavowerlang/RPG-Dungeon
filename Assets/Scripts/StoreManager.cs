@@ -47,6 +47,7 @@ public class StoreManager : MonoBehaviour
         {
             if (!GoldManager.Instance.SpendGold(item.price)) return false;
             CraftingSystem.Instance.ApplyDirectBuff(item.directBuffType);
+            storeUI.RefreshSlots();
             return true;
         }
 

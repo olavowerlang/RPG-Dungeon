@@ -40,6 +40,23 @@ public class StoreSlot : MonoBehaviour
         }
         if (feedbackText != null) feedbackText.gameObject.SetActive(false);
 
+        // Sold Out: Heart Container when player is at HP cap
+        if (item.isDirectBuff && item.directBuffType == BuffType.MaxHP)
+        {
+            var health = PlayerStats.Instance != null ? PlayerStats.Instance.GetComponent<Health>() : null;
+            if (health != null && health.MaxHP >= 10)
+            {
+                if (priceText != null)
+                {
+                    priceText.text = "Sold Out";
+                    priceText.color = Color.red;
+                    priceText.fontStyle = TMPro.FontStyles.Bold;
+                }
+                buyButton.interactable = false;
+                return;
+            }
+        }
+
         buyButton.onClick.AddListener(OnBuyClicked);
     }
 
