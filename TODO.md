@@ -25,7 +25,7 @@ Tick off with [x] as we go.
 
 - [ ] **Change iron item → diamond** — The item that grants the damage buff should be renamed/replaced: iron → diamond. Update ItemData asset name, icon, and any references.
 
-- [ ] **Heart Container "Sold Out" when cap reached** — When the player hits the HC limit, the store slot should show a "Sold Out" label/indicator instead of remaining purchasable.
+- [x] **Heart Container "Sold Out" when cap reached** — When the player hits the HC limit, the store slot should show a "Sold Out" label/indicator instead of remaining purchasable.
 
 - [ ] **Extend max hearts cap to 15 or 20** — Increase the maximum allowed hearts from current cap to 15 or 20. Update Health + StoreManager logic.
 
