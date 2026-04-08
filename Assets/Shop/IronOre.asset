@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: IronOre
   m_EditorClassIdentifier: 
   displayName: Iron
-  description: A chunk of iron ore. Makes you stronger.
+  description: A chunk of iron ore. Gives more dash Range
   icon: {fileID: 844263125, guid: 572bb35294ab715449c4c06f31b1fa55, type: 3}
-  price: 5
-  itemData: {fileID: 11400000, guid: ad0f58c26042ffa439c6ecd3dfce6583, type: 2}
+  price: 1
+  itemData: {fileID: 11400000, guid: 669c677c30ed35c44be8644e118294cb, type: 2}
   isDirectBuff: 0
-  directBuffType: 0
+  directBuffType: 1
   isUnlock: 0
   unlockType: 0
-  requiresDashUnlock: 0
+  requiresDashUnlock: 1

@@ -474089,7 +474089,9 @@ MonoBehaviour:
   playerCloneDeathClip: {fileID: 8300000, guid: afc7cebc44d958545a98cc71d03191ac, type: 3}
   playerCloneDeathVolume: 0.4
   bossLetterBoomClip: {fileID: 8300000, guid: b1f84d52ec62941428b2e07ca87f780b, type: 3}
-  bossLetterBoomVolume: 0.7
+  bossLetterBoomVolume: 1
+  bossAgainClip: {fileID: 8300000, guid: b1921694b92c6604dbc50ac6e3a3b40b, type: 3}
+  bossAgainVolume: 0.55
   bossTransformClip: {fileID: 8300000, guid: 371e394eb1eaf7f4ca56d0389f511a0a, type: 3}
   bossTransformVolume: 0.5
   bossBarFillClip: {fileID: 8300000, guid: 2a290b61b6099a145a074d3f600e3d09, type: 3}

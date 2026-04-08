@@ -29,6 +29,12 @@ public class BossHealthBarUI : MonoBehaviour
     [SerializeField] private float letterDelay = 0.35f;
     [SerializeField] private float letterPunch = 0.2f;
 
+    [Header("NG+ — \"again\"")]
+    [SerializeField] private TextMeshProUGUI againText;
+    [SerializeField] private float againPreDelay  = 0.4f;  // pause after U before "again" appears
+    [SerializeField] private float againFadeDrift = 0.45f; // fade+drift duration
+    [SerializeField] private float againDriftPixels = 6f;  // how many pixels it drifts downward
+
     [Header("Hide")]
     [SerializeField] private float hideDuration = 0.8f;
 
@@ -49,6 +55,7 @@ public class BossHealthBarUI : MonoBehaviour
         SetLetterAlpha(letterY, 0f);
         SetLetterAlpha(letterO, 0f);
         SetLetterAlpha(letterU, 0f);
+        if (againText != null) SetLetterAlpha(againText, 0f);
     }
 
     private void Start()
@@ -115,6 +122,13 @@ public class BossHealthBarUI : MonoBehaviour
         yield return new WaitForSeconds(letterDelay);
         yield return StartCoroutine(RevealLetter(letterU));
 
+        bool isNGPlus = NGPlusManager.Instance != null && NGPlusManager.Instance.GameCleared;
+        if (isNGPlus && againText != null)
+        {
+            yield return new WaitForSeconds(againPreDelay);
+            yield return StartCoroutine(RevealAgain());
+        }
+
         if (_playerInput != null) _playerInput.enabled = true;
         if (cloneAI != null) cloneAI.enabled = true;
 
@@ -139,6 +153,26 @@ public class BossHealthBarUI : MonoBehaviour
             yield return null;
         }
         letter.transform.localScale = Vector3.one;
+    }
+
+    private IEnumerator RevealAgain()
+    {
+        AudioManager.Instance?.PlayBossAgainSound();
+
+        Vector3 startPos = againText.rectTransform.anchoredPosition3D + new Vector3(0f, againDriftPixels, 0f);
+        Vector3 endPos   = againText.rectTransform.anchoredPosition3D;
+
+        float elapsed = 0f;
+        while (elapsed < againFadeDrift)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, elapsed / againFadeDrift);
+            SetLetterAlpha(againText, t);
+            againText.rectTransform.anchoredPosition3D = Vector3.Lerp(startPos, endPos, t);
+            yield return null;
+        }
+        SetLetterAlpha(againText, 1f);
+        againText.rectTransform.anchoredPosition3D = endPos;
     }
 
     private IEnumerator HideRoutine()

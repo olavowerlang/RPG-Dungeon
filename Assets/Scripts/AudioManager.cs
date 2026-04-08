@@ -142,6 +142,9 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip            bossLetterBoomClip;
     [SerializeField, Range(0f,1f)] private float  bossLetterBoomVolume = 1f;
 
+    [SerializeField] private AudioClip            bossAgainClip;
+    [SerializeField, Range(0f,1f)] private float  bossAgainVolume      = 1f;
+
     [SerializeField] private AudioClip            bossTransformClip;
     [SerializeField, Range(0f,1f)] private float  bossTransformVolume = 1f;
 
@@ -364,7 +367,8 @@ public class AudioManager : MonoBehaviour
     // ── Boss ──────────────────────────────────────────────────────────────────
 
     public void PlayPlayerCloneDeath() => PlaySFX(playerCloneDeathClip, playerCloneDeathVolume);
-    public void PlayBossLetterBoom() => PlaySFX(bossLetterBoomClip, bossLetterBoomVolume);
+    public void PlayBossLetterBoom()  => PlaySFX(bossLetterBoomClip, bossLetterBoomVolume);
+    public void PlayBossAgainSound()  => PlaySFX(bossAgainClip,      bossAgainVolume);
     public void PlayBossTransform()  => PlaySFX(bossTransformClip,  bossTransformVolume);
     public void PlayBossBarFill()    => PlaySFX(bossBarFillClip, bossBarFillVolume);
 

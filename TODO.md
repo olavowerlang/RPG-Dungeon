@@ -23,7 +23,7 @@ Tick off with [x] as we go.
 
 ## FEATURES & POLISH
 
-- [ ] **Change iron item → diamond** — The item that grants the damage buff should be renamed/replaced: iron → diamond. Update ItemData asset name, icon, and any references.
+- [x] **Change iron item → diamond** — The item that grants the damage buff should be renamed/replaced: iron → diamond. Update ItemData asset name, icon, and any references.
 
 - [x] **Heart Container "Sold Out" when cap reached** — When the player hits the HC limit, the store slot should show a "Sold Out" label/indicator instead of remaining purchasable.
 

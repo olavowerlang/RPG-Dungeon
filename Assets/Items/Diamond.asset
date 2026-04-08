@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ab493a543b946724ca198bf0f7733795, type: 3}
-  m_Name: IronOre
+  m_Name: Diamond
   m_EditorClassIdentifier: 
-  itemName: Gold Ore
-  description: A chunk of iron ore. Gives more dash range.
-  icon: {fileID: 844263125, guid: 572bb35294ab715449c4c06f31b1fa55, type: 3}
+  itemName: Diamond
+  description: A chunk of rare diamond. Makes you stronger.
+  icon: {fileID: -1092153859, guid: 572bb35294ab715449c4c06f31b1fa55, type: 3}
   itemType: 0
   goldValue: 0
   healAmount: 0
