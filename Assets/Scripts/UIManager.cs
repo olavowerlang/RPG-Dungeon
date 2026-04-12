@@ -35,6 +35,18 @@ public class UIManager : MonoBehaviour
     private GameManager _gameManager;
     public static bool HudUnlocked { get; private set; } // persists across scene loads
 
+    // ── Game-over intercept (used by CloneAI to speak before the panel shows) ─
+    private static System.Action _pendingGameOver;
+    private static bool          _gameOverSuppressed;
+
+    public static void SuppressNextGameOver() => _gameOverSuppressed = true;
+    public static void ResumeGameOver()
+    {
+        _gameOverSuppressed = false;
+        _pendingGameOver?.Invoke();
+        _pendingGameOver = null;
+    }
+
     private void Awake()
     {
         if (Instance != null && Instance != this) Destroy(this); 
@@ -113,21 +125,54 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator LevelUpRoutine(int level)
     {
-        levelUpText.text = "LEVEL UP! +DMG";
+        levelUpText.text = "LEVEL UP! +STRENGTH";
+        PositionLevelUpPanel();
         levelUpPanel.SetActive(true);
         AudioManager.Instance?.PlayLevelUp();
         yield return new WaitForSeconds(3f);
         levelUpPanel.SetActive(false);
     }
 
+    private void PositionLevelUpPanel()
+    {
+        if (healthImages == null || levelUpPanel == null) return;
+
+        var ps = PlayerStats.Instance;
+        if (ps == null) return;
+        var health = ps.GetComponent<Health>();
+        if (health == null) return;
+
+        int maxHp = health.MaxHP;
+        if (maxHp <= 0 || maxHp > healthImages.transform.childCount) return;
+
+        var lastHeart = healthImages.transform.GetChild(maxHp - 1) as RectTransform;
+        var panelRect  = levelUpPanel.GetComponent<RectTransform>();
+        if (lastHeart == null || panelRect == null) return;
+
+        // Place panel just to the right of the last heart's center + half its width
+        float halfW = lastHeart.rect.width * lastHeart.lossyScale.x * 0.5f;
+        panelRect.position = new Vector3(
+            lastHeart.position.x + halfW + 10f,
+            lastHeart.position.y,
+            panelRect.position.z
+        );
+    }
+
     public void ShowGameOver()
     {
+        if (_gameOverSuppressed)
+        {
+            _pendingGameOver = () => Instance?.ShowGameOver();
+            return;
+        }
         gameOverPanel.SetActive(true);
         AudioManager.Instance?.PlayGameOver();
     }
 
     public void RestartGame()
     {
+        _gameOverSuppressed = false;
+        _pendingGameOver    = null;
         HudUnlocked = false;
         SceneManager.LoadScene("Main Scene");
     }

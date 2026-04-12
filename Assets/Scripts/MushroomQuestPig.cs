@@ -19,6 +19,10 @@ public class MushroomQuestPig : MonoBehaviour
     [Header("Dialogue")]
     [SerializeField] private DialogueData rewardDialogue;
     [SerializeField] private DialogueData repeatDialogue;
+    [Tooltip("Index 0 = NG+,  1 = NG++,  2 = NG+++  (last slot reused for higher tiers)")]
+    [SerializeField] private DialogueData[] ngPlusRewardDialogues;
+    [Tooltip("Index 0 = NG+,  1 = NG++,  2 = NG+++  (last slot reused for higher tiers)")]
+    [SerializeField] private DialogueData[] ngPlusRepeatDialogues;
 
     [Header("UI")]
     [SerializeField] private GameObject          interactionPrompt;
@@ -89,8 +93,9 @@ public class MushroomQuestPig : MonoBehaviour
         QuestDone = true;
         TalkDone  = true;
 
-        if (rewardDialogue != null)
-            DialogueManager.Instance.StartDialogue(rewardDialogue);
+        var d = NGPlusManager.PickDialogue(rewardDialogue, ngPlusRewardDialogues);
+        if (d != null)
+            DialogueManager.Instance.StartDialogue(d);
     }
 
     private void OpenPanel()
@@ -110,8 +115,9 @@ public class MushroomQuestPig : MonoBehaviour
         _panelOpen = false;
         if (index == 0) // Talk
         {
-            if (DialogueManager.Instance != null && repeatDialogue != null)
-                DialogueManager.Instance.StartDialogue(repeatDialogue);
+            var d = NGPlusManager.PickDialogue(repeatDialogue, ngPlusRepeatDialogues);
+            if (DialogueManager.Instance != null && d != null)
+                DialogueManager.Instance.StartDialogue(d);
         }
         else if (index == 1) // Buy
         {

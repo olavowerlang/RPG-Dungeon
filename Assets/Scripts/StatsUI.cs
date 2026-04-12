@@ -4,13 +4,10 @@ using TMPro;
 public class StatsUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI speedText;
-    [SerializeField] private TextMeshProUGUI powerText;
-    [SerializeField] private TextMeshProUGUI maxHpText;
-    [SerializeField] private TextMeshProUGUI dashForceText;
+    [SerializeField] private TextMeshProUGUI strengthText;
+    [SerializeField] private TextMeshProUGUI dashText;
     [SerializeField] private TextMeshProUGUI knockbackText;
-
-    private static string Format(float value) =>
-        value == Mathf.Floor(value) ? ((int)value).ToString() : $"{value:F1}";
+    [SerializeField] private TextMeshProUGUI vitalityText;
 
     private void OnEnable()
     {
@@ -33,11 +30,14 @@ public class StatsUI : MonoBehaviour
         if (stats == null) return;
 
         var health = stats.GetComponent<Health>();
+        int displayVitality = health != null
+            ? Mathf.Max(1, 1 + health.MaxHP - stats.baseMaxHP)
+            : 1;
 
-        if (speedText != null)     speedText.text     = $"Speed: {Format(stats.speed)}";
-        if (powerText != null)     powerText.text     = $"Power: {stats.damage}";
-        if (maxHpText != null)     maxHpText.text     = $"Max HP: {(health != null ? health.MaxHP : 0)}";
-        if (dashForceText != null) dashForceText.text = $"Dash Force: {Format(stats.dashForce)}";
-        if (knockbackText != null) knockbackText.text = $"Knockback: {Format(stats.knockbackForce)}";
+        if (speedText    != null) speedText.text    = $"Speed: {stats.DisplaySpeed}";
+        if (strengthText != null) strengthText.text = $"Strength: {stats.DisplayStrength}";
+        if (dashText     != null) dashText.text     = $"Dash: {stats.DisplayDash}";
+        if (knockbackText!= null) knockbackText.text= $"Knockback: {stats.DisplayKnockback}";
+        if (vitalityText != null) vitalityText.text = $"Vitality: {displayVitality}";
     }
 }

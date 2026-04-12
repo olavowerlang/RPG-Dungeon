@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Recipe_IronForge
   m_EditorClassIdentifier: 
   recipeName: Iron Forge
-  resultDescription: +Dash Force
+  resultDescription: +DashForce
   ingredient: {fileID: 11400000, guid: 669c677c30ed35c44be8644e118294cb, type: 2}
   quantity: 1
   buffType: 1
-  buffValue: 3
+  buffValue: 2

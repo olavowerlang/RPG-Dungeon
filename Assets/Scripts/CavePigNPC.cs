@@ -15,7 +15,8 @@ public class CavePigNPC : MonoBehaviour
 {
     [Header("Dialogue")]
     [SerializeField] private DialogueData preTransformDialogue;
-    [SerializeField] private DialogueData ngPlusPreTransformDialogue;
+    [Tooltip("Index 0 = NG+,  1 = NG++,  2 = NG+++  (last slot reused for higher tiers)")]
+    [SerializeField] private DialogueData[] ngPlusPreTransformDialogues;
 
     [Header("References")]
     [SerializeField] private TransformationSequence transformationSequence;
@@ -146,10 +147,7 @@ public class CavePigNPC : MonoBehaviour
         _state = PigState.DialogueDone;
         if (interactionPrompt != null) interactionPrompt.SetActive(false);
 
-        bool isNGPlus = NGPlusManager.Instance != null && NGPlusManager.Instance.GameCleared;
-        DialogueData dialogue = isNGPlus && ngPlusPreTransformDialogue != null
-            ? ngPlusPreTransformDialogue
-            : preTransformDialogue;
+        DialogueData dialogue = NGPlusManager.PickDialogue(preTransformDialogue, ngPlusPreTransformDialogues);
 
         if (dialogue != null && DialogueManager.Instance != null)
             DialogueManager.Instance.StartDialogue(dialogue, () => transformationSequence.StartTransformation());

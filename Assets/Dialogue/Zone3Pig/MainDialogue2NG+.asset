@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4df0014cb02a0cf4bbbc7addabd2224a, type: 3}
+  m_Name: MainDialogue2NG+
+  m_EditorClassIdentifier: 
+  lines:
+  - speakerName: Pig
+    text: Now, my friend, you are a bit stronger, thanks to me!
+  - speakerName: Pig
+    text: And since it's because of none other than yours truly that you are still
+      alive and kickin', I think we can establish that you are in my debt. Right?
+  - speakerName: Pig
+    text: And since you're in my debt, I'm gonna need a liiiiiiiiittle favor from
+      you. Tiny I swear.
+  - speakerName: Pig
+    text: 'Ya see, I''mma let you in a little secret. '
+  - speakerName: Pig
+    text: I'm not really a pig.
+  - speakerName: Pig
+    text: ...
+  - speakerName: Pig
+    text: Yes, yes...you must be shocked. Speechless. I wouldn't know since you clearly
+      don't talk much.
+  - speakerName: Pig
+    text: "This is strange, im feeling d\xE9j\xE0 vu."
+  - speakerName: Pig
+    text: Anyways, it turns out there is a mushroom here in this forest that could
+      help me turn back to my human form.
+  - speakerName: Pig
+    text: There's just a little catch. The mushroom is actually alive and...not friendly.
+      And I need 15 of them. Also, there may be other not-friendly things lurking
+      around. Sooo...
+  - speakerName: Pig
+    text: That's where you come in! Yay!
+  - speakerName: Pig
+    text: Now, there's a good side to all of this. Mushroom dudes also drop ingredients
+      that serve as weapon upgrades, and those purple orbs! So you might as well
+      get stronger from it.
+  - speakerName: Pig
+    text: Since you never say anything, I'll just assume you're super on board with
+      this.
+  - speakerName: Pig
+    text: Now go, my silent friend! Follow this path and you'll find the mean mushrooms.
+      Good luck!
+  - speakerName: Pig
+    text: Oh, one last thing, "L" or "Shift" uses the dash.
+  - speakerName: Pig
+    text: I don't know what that means why do I keep saying things like that.

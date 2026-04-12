@@ -26,7 +26,7 @@ MonoBehaviour:
       to this store. '
   - speakerName: Pig
     text: "So, as a reward for not being completely useless, I'll let you grab a
-      cool new powe\u2014oh...you already have that also. Suspicious, I would say.
-      But im just a pig right? What do I know! Anyway."
+      cool new powe\u2014oh...you already have that also. Suspicious, I would say...very,
+      very weird. "
   - speakerName: Pig
-    text: 'Use "E" to interact with me and open the shop! '
+    text: Anyway. Use "E" to interact with me and open the shop.

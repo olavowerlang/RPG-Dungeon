@@ -22,6 +22,8 @@ public class TransformationSequence : MonoBehaviour
 
     [Header("Dialogue")]
     [SerializeField] private DialogueData postTransformDialogue;
+    [Tooltip("Index 0 = NG+,  1 = NG++,  2 = NG+++  (last slot reused for higher tiers)")]
+    [SerializeField] private DialogueData[] ngPlusPostTransformDialogues;
 
     [Header("Particles")]
     [SerializeField] private ParticleSystem transformParticles; // auto-created if null
@@ -117,10 +119,11 @@ public class TransformationSequence : MonoBehaviour
         AudioManager.Instance?.PlayBossMusic();
 
         // — Post-transform dialogue —
-        if (postTransformDialogue != null && DialogueManager.Instance != null)
+        var postDialogue = NGPlusManager.PickDialogue(postTransformDialogue, ngPlusPostTransformDialogues);
+        if (postDialogue != null && DialogueManager.Instance != null)
         {
             bool done = false;
-            DialogueManager.Instance.StartDialogue(postTransformDialogue, () => done = true);
+            DialogueManager.Instance.StartDialogue(postDialogue, () => done = true);
             yield return new WaitUntil(() => done);
         }
 

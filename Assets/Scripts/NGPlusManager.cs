@@ -108,6 +108,20 @@ public class NGPlusManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Returns the right DialogueData for the current NG+ tier.
+    /// tiers[0] = NG+, tiers[1] = NG++, tiers[2] = NG+++, etc.
+    /// Falls back to the last filled slot if NGPlusCount exceeds the array,
+    /// and falls back to <paramref name="fallback"/> if not in NG+ or array is empty.
+    /// </summary>
+    public static DialogueData PickDialogue(DialogueData fallback, DialogueData[] tiers)
+    {
+        var ng = Instance;
+        if (ng == null || !ng.GameCleared || ng.NGPlusCount < 1 || tiers == null || tiers.Length == 0) return fallback;
+        int i = Mathf.Min(ng.NGPlusCount - 1, tiers.Length - 1);
+        return tiers[i] != null ? tiers[i] : fallback;
+    }
+
+    /// <summary>
     /// Apply carried-over stats to a freshly loaded player. Call from NGPlusCarryOver.Start().
     /// </summary>
     public void ApplyCarryOver(PlayerStats ps)

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4df0014cb02a0cf4bbbc7addabd2224a, type: 3}
+  m_Name: MainDialogueNPCInstance3 NG+
+  m_EditorClassIdentifier: 
+  lines:
+  - speakerName: Pig
+    text: Well, shit. You actually made it.
+  - speakerName: Pig
+    text: Imma be honest with you fam, I did NOT expect to see you alive here.
+  - speakerName: Pig
+    text: Yes yes I'm so cruel what a cruel pig what a cruel world yada yada.
+  - speakerName: Pig
+    text: 'Now come on, pass me those mushroooooommmmmmsssssss. '
+  - speakerName: Pig
+    text: Here, 10 purple orbs as a thank you.
+  - speakerName: Pig
+    text: Now, I have one last favour to ask of you.
+  - speakerName: Pig
+    text: Awww come on, don't gimme that look, we're practically brothers at this
+      point!
+  - speakerName: Pig
+    text: So, here, you're gonna open the shop, buy stuff to your hearts content,
+      then go to that not-suspicious-at-all-cave over there, ok? Imma meet you there.

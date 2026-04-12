@@ -22,10 +22,10 @@ public class PigShopkeeper : MonoBehaviour
     [SerializeField] private DialogueData mainDialogue;
     [SerializeField] private DialogueData repeatDialogue;
 
-    [Header("NG+ Dialogue (optional — overrides above when game is cleared)")]
-    [SerializeField] private DialogueData ngPlusIntroDialogue;
-    [SerializeField] private DialogueData ngPlusMainDialogue;
-    [SerializeField] private DialogueData ngPlusRepeatDialogue;
+    [Header("NG+ Dialogue (index 0 = NG+,  1 = NG++,  2 = NG+++)")]
+    [SerializeField] private DialogueData[] ngPlusIntroDialogues;
+    [SerializeField] private DialogueData[] ngPlusMainDialogues;
+    [SerializeField] private DialogueData[] ngPlusRepeatDialogues;
 
     [Header("UI")]
     [SerializeField] private GameObject          interactionPrompt;
@@ -49,8 +49,6 @@ public class PigShopkeeper : MonoBehaviour
     public static bool MainDialogueDone => Instance2IntroDone;
 
     // ── Helpers ────────────────────────────────────────────────────────────────
-    private bool IsNG => NGPlusManager.Instance != null && NGPlusManager.Instance.GameCleared;
-
     private bool IntroDoneFlag
     {
         get => npcId == NpcId.Instance2 ? Instance2IntroDone : Instance3IntroDone;
@@ -63,9 +61,9 @@ public class PigShopkeeper : MonoBehaviour
         set { if (npcId == NpcId.Instance2) Instance2TalkDone = value; else Instance3TalkDone = value; }
     }
 
-    private DialogueData PickIntro   => IsNG && ngPlusIntroDialogue  != null ? ngPlusIntroDialogue  : introDialogue;
-    private DialogueData PickMain    => IsNG && ngPlusMainDialogue    != null ? ngPlusMainDialogue   : mainDialogue;
-    private DialogueData PickRepeat  => IsNG && ngPlusRepeatDialogue  != null ? ngPlusRepeatDialogue : repeatDialogue;
+    private DialogueData PickIntro   => NGPlusManager.PickDialogue(introDialogue,  ngPlusIntroDialogues);
+    private DialogueData PickMain    => NGPlusManager.PickDialogue(mainDialogue,   ngPlusMainDialogues);
+    private DialogueData PickRepeat  => NGPlusManager.PickDialogue(repeatDialogue, ngPlusRepeatDialogues);
 
     // ── Instance state ─────────────────────────────────────────────────────────
     private bool _playerInRange;

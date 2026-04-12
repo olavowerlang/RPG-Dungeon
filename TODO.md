@@ -53,20 +53,10 @@ Tick off with [x] as we go.
 
 - [ ] **Campfire sound** — Add ambient/SFX sound for the campfire in the cave scene.
 
-- [ ] **"Again, below you" clone line in NG++ onwards** — Clone should say this line (or variant) during the boss fight in NG++ and beyond.
+- [x] **"Again, below you" clone line in NG++ onwards** — Clone should say this line (or variant) during the boss fight in NG++ and beyond.
 
 - [ ] **Dialogue box continue prompt position** — The [E] continue/close prompt is in the wrong position on the dialogue box. Needs repositioning.
 
 - [ ] **PigShopkeeper position** — Move the PigShopkeeper GameObject a bit to the left in the editor.
 
-- [ ] **Clone death dialogue** — When the clone dies, it should say a line before the ending sequence. CloneAI hooks into Health.OnDeath, calls DialogueManager.StartDialogue(), delay ending sequence until dialogue finishes.
-
----
-
-## CONTENT (from afterfinish.txt)
-
 - [ ] **Boss death dialogue** — When player dies during clone fight, clone says a line. CloneAI hooks into Health.OnDeath, calls DialogueManager.StartDialogue(), delay game over screen. Pick name (pig / pig? / humberto), create DialogueData asset.
-
-- [ ] **UI design pass** — Replace all default Unity UI elements with custom art: health bar, XP bar, inventory panel, store, dialogue box, game over screen, victory screen.
-
-- [ ] **NG+ dialogues: write content** — All NPC dialogue variants for NG+/NG++/NG+++ tiers need actual written content and DialogueData assets created.

@@ -4,8 +4,10 @@ public class NPCDialogue : MonoBehaviour
 {
     [SerializeField] private DialogueData mainDialogue;
     [SerializeField] private DialogueData repeatDialogue;
-    [SerializeField] private DialogueData ngPlusMainDialogue;    // shown instead of main in NG+
-    [SerializeField] private DialogueData ngPlusRepeatDialogue;  // shown instead of repeat in NG+
+    [Tooltip("Index 0 = NG+,  1 = NG++,  2 = NG+++  (last slot reused for higher tiers)")]
+    [SerializeField] private DialogueData[] ngPlusMainDialogues;
+    [Tooltip("Index 0 = NG+,  1 = NG++,  2 = NG+++  (last slot reused for higher tiers)")]
+    [SerializeField] private DialogueData[] ngPlusRepeatDialogues;
     [SerializeField] private GameObject interactionPrompt;
     [SerializeField] private bool unlockSwordOnComplete;
     [SerializeField] private ItemData swordItem;
@@ -19,8 +21,6 @@ public class NPCDialogue : MonoBehaviour
     private bool _mainDone;
     private bool _wasInDialogue;
     private float _cooldown;
-
-    private bool IsNGPlus => NGPlusManager.Instance != null && NGPlusManager.Instance.GameCleared;
 
     private void Update()
     {
@@ -40,7 +40,7 @@ public class NPCDialogue : MonoBehaviour
         {
             if (!_mainDone)
             {
-                DialogueData d = IsNGPlus && ngPlusMainDialogue != null ? ngPlusMainDialogue : mainDialogue;
+                DialogueData d = NGPlusManager.PickDialogue(mainDialogue, ngPlusMainDialogues);
                 DialogueManager.Instance.StartDialogue(d, () =>
                 {
                     _mainDone = true;
@@ -58,7 +58,7 @@ public class NPCDialogue : MonoBehaviour
             }
             else
             {
-                DialogueData d = IsNGPlus && ngPlusRepeatDialogue != null ? ngPlusRepeatDialogue : repeatDialogue;
+                DialogueData d = NGPlusManager.PickDialogue(repeatDialogue, ngPlusRepeatDialogues);
                 DialogueManager.Instance.StartDialogue(d);
             }
         }

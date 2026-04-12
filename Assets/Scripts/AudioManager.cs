@@ -168,9 +168,13 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip            caveAmbientClip;
     [SerializeField, Range(0f,1f)] private float  caveAmbientVolume   = 0.3f;
 
+    [SerializeField] private AudioClip            campfireClip;
+    [SerializeField, Range(0f,1f)] private float  campfireVolume      = 0.3f;
+
     private AudioSource _music;
     private AudioSource _ambient;
     private AudioSource _ambient2;   // second zone-1 loop (leaves rustling)
+    private AudioSource _ambient3;   // campfire loop (start area)
     private AudioSource _sfx;
     private AudioSource _attackSource;
     private AudioSource _dashSource;
@@ -198,6 +202,10 @@ public class AudioManager : MonoBehaviour
         _ambient2             = gameObject.AddComponent<AudioSource>();
         _ambient2.loop        = true;
         _ambient2.playOnAwake = false;
+
+        _ambient3             = gameObject.AddComponent<AudioSource>();
+        _ambient3.loop        = true;
+        _ambient3.playOnAwake = false;
 
         _sfx             = gameObject.AddComponent<AudioSource>();
         _sfx.playOnAwake = false;
@@ -252,6 +260,8 @@ public class AudioManager : MonoBehaviour
         _ambient.clip = null;
         _ambient2.Stop();
         _ambient2.clip = null;
+        _ambient3.Stop();
+        _ambient3.clip = null;
         // SceneAudioStarter in each scene handles playing the correct audio
     }
 
@@ -389,6 +399,13 @@ public class AudioManager : MonoBehaviour
             _ambient2.volume = leavesRustlingVolume;
             _ambient2.Play();
         }
+
+        if (campfireClip != null && _ambient3.clip != campfireClip)
+        {
+            _ambient3.clip   = campfireClip;
+            _ambient3.volume = campfireVolume;
+            _ambient3.Play();
+        }
     }
 
     public void PlayCaveEntrance()
@@ -406,6 +423,8 @@ public class AudioManager : MonoBehaviour
         _ambient.clip = null;
         _ambient2.Stop();
         _ambient2.clip = null;
+        _ambient3.Stop();
+        _ambient3.clip = null;
     }
 
     public void PlayCombatMusic()    => SwitchMusic(combatAreaMusic, combatAreaVolume);

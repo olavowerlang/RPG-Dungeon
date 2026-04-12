@@ -4112,9 +4112,12 @@ MonoBehaviour:
   introDialogue: {fileID: 11400000, guid: 9cc3e4e6c47822b48904e9497b511e8f, type: 2}
   mainDialogue: {fileID: 11400000, guid: 659b915a2ffce034e9ce0c1d8a87f38c, type: 2}
   repeatDialogue: {fileID: 11400000, guid: 9725b3f40e6eb4943a141c6a5e3bc2b5, type: 2}
-  ngPlusIntroDialogue: {fileID: 11400000, guid: 829546d765259f44c8bd6d21b7b31da0, type: 2}
-  ngPlusMainDialogue: {fileID: 0}
-  ngPlusRepeatDialogue: {fileID: 0}
+  ngPlusIntroDialogues:
+  - {fileID: 0}
+  ngPlusMainDialogues:
+  - {fileID: 0}
+  ngPlusRepeatDialogues:
+  - {fileID: 0}
   interactionPrompt: {fileID: 355869966}
   interactionPanel: {fileID: 561781399}
 --- !u!1 &367297580
@@ -28410,10 +28413,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speedText: {fileID: 1269910865}
-  powerText: {fileID: 1371689802}
-  maxHpText: {fileID: 1344440251}
-  dashForceText: {fileID: 2090849271}
+  strengthText: {fileID: 1371689802}
+  dashText: {fileID: 2090849271}
   knockbackText: {fileID: 1436729129}
+  vitalityText: {fileID: 1344440251}
 --- !u!1001 &1563575328
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -474104,6 +474107,8 @@ MonoBehaviour:
   caveEntranceVolume: 0.6
   caveAmbientClip: {fileID: 8300000, guid: b4dcfa1410e67ed49bf1b090616a75f1, type: 3}
   caveAmbientVolume: 0.3
+  campfireClip: {fileID: 8300000, guid: 33f26542c36dad64a885aed76af092cb, type: 3}
+  campfireVolume: 0
 --- !u!4 &1995294363
 Transform:
   m_ObjectHideFlags: 0
@@ -474515,6 +474520,8 @@ MonoBehaviour:
   goldReward: 10
   rewardDialogue: {fileID: 11400000, guid: 1c16a80c4bacc7c42899ce132dee0ff2, type: 2}
   repeatDialogue: {fileID: 11400000, guid: bb4e6ef4196b79048bbc3a39d5ba827e, type: 2}
+  ngPlusRewardDialogues: []
+  ngPlusRepeatDialogues: []
   interactionPrompt: {fileID: 2013166589}
   interactionPanel: {fileID: 451555648}
   goldLineIndex: 5
@@ -474535,9 +474542,9 @@ MonoBehaviour:
   introDialogue: {fileID: 0}
   mainDialogue: {fileID: 0}
   repeatDialogue: {fileID: 0}
-  ngPlusIntroDialogue: {fileID: 0}
-  ngPlusMainDialogue: {fileID: 0}
-  ngPlusRepeatDialogue: {fileID: 0}
+  ngPlusIntroDialogues: []
+  ngPlusMainDialogues: []
+  ngPlusRepeatDialogues: []
   interactionPrompt: {fileID: 0}
   interactionPanel: {fileID: 0}
 --- !u!1 &2017156541
@@ -476601,7 +476608,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 269910103720412481, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: knockbackForce
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2344077595519012848, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: healthImageList.Array.data[0]
@@ -476653,7 +476660,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3587748931084824593, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: knockbackForce
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3684956290753258210, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: damage
@@ -476665,7 +476672,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3684956290753258210, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: knockbackForce
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3939633173304301534, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: maxHP
@@ -476681,11 +476688,11 @@ PrefabInstance:
       objectReference: {fileID: 1753045830}
     - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: speed
-      value: 15
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: damage
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: hasDash
@@ -476696,17 +476703,49 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: baseMaxHP
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: baseSpeed
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: dashForce
       value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: baseDamage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: baseDashForce
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: baseKnockback
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: knockbackForce
-      value: 3
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: displayDashStep
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: displaySpeedStep
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: dashStaminaRegenTime
       value: 1.25
       objectReference: {fileID: 0}
+    - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
+      propertyPath: displayKnockbackStep
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7940233324591537163, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: damage
       value: 1
@@ -476717,7 +476756,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7940233324591537163, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: knockbackForce
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8020791933456249186, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: damage
@@ -476729,7 +476768,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8020791933456249186, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: knockbackForce
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8832670325567890062, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: damage
@@ -476741,7 +476780,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8832670325567890062, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: knockbackForce
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9182031184127701325, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -476888,6 +476927,22 @@ PrefabInstance:
       propertyPath: unlockSwordOnComplete
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9007826219369476641, guid: 2f77d2f4e06ec744fbb4af28c71b8dcd, type: 3}
+      propertyPath: ngPlusMainDialogues.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007826219369476641, guid: 2f77d2f4e06ec744fbb4af28c71b8dcd, type: 3}
+      propertyPath: ngPlusRepeatDialogues.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007826219369476641, guid: 2f77d2f4e06ec744fbb4af28c71b8dcd, type: 3}
+      propertyPath: ngPlusMainDialogues.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 154abb3d050953b47a3386b9625c7527, type: 2}
+    - target: {fileID: 9007826219369476641, guid: 2f77d2f4e06ec744fbb4af28c71b8dcd, type: 3}
+      propertyPath: ngPlusRepeatDialogues.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: b5dbb3e711046c346948271ca9313d3f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

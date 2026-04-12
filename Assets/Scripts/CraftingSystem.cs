@@ -15,14 +15,6 @@ public class CraftingSystem : MonoBehaviour
     public float knockbackIncrement = 3.5f;
     public float dashStaminaIncrease = 1f;
 
-    // Base values for reset on death
-    private float _baseSpeed;
-    private float _baseAttackPush;
-    private float _baseDashForce;
-    private int _baseDamage;
-    private float _baseKnockback;
-    private float _baseDashStamina;
-
     private PlayerStats _playerStats;
     private DamageDealer[] _damageDealers;
     private Health _playerHealth;
@@ -43,12 +35,6 @@ public class CraftingSystem : MonoBehaviour
         {
             _damageDealers = _playerStats.GetDamageDealers();
             _playerHealth  = _playerStats.GetComponent<Health>();
-            _baseSpeed        = _playerStats.speed;
-            _baseAttackPush   = _playerStats.attackPushForce;
-            _baseDashForce    = _playerStats.dashForce;
-            _baseDamage       = _playerStats.damage;
-            _baseKnockback    = _playerStats.knockbackForce;
-            _baseDashStamina = _playerStats.maxDashStamina;
         }
     }
 
@@ -83,7 +69,7 @@ public class CraftingSystem : MonoBehaviour
         }
 
         InventoryManager.Instance.RemoveItem(ingredient, recipe.quantity);
-        ApplyBuff(recipe.buffType);
+        ApplyBuff(recipe.buffType, recipe.buffValue);
 
         AudioManager.Instance?.PlayFusion();
         OnFuseSuccess?.Invoke(recipe.resultDescription);
@@ -91,9 +77,11 @@ public class CraftingSystem : MonoBehaviour
         return true;
     }
 
-    public void ApplyDirectBuff(BuffType buffType) => ApplyBuff(buffType);
+    public void ApplyDirectBuff(BuffType buffType) => ApplyBuff(buffType, -1f);
 
-    private void ApplyBuff(BuffType buffType)
+    // value < 0 means "use the CraftingSystem's own increment field" (shop / direct buff path)
+    // value >= 0 means "use this exact amount" (recipe craft path)
+    private void ApplyBuff(BuffType buffType, float value = -1f)
     {
         if (_playerStats == null)
         {
@@ -109,25 +97,25 @@ public class CraftingSystem : MonoBehaviour
         {
             case BuffType.Damage:
                 if (_playerStats != null)
-                    _playerStats.AddDamage(damageIncrement);
+                    _playerStats.AddDamage(value >= 0f ? Mathf.RoundToInt(value) : damageIncrement);
                 break;
 
             case BuffType.DashSpeed:
                 if (_playerStats != null)
-                    _playerStats.dashForce += dashIncrement;
+                    _playerStats.dashForce += value >= 0f ? value : dashIncrement;
                 break;
 
             case BuffType.Knockback:
                 if (_playerStats != null)
                 {
-                    _playerStats.knockbackForce += knockbackIncrement;
+                    _playerStats.knockbackForce += value >= 0f ? value : knockbackIncrement;
                     _playerStats.PushToDealers();
                 }
                 break;
 
             case BuffType.MoveSpeed:
                 if (_playerStats != null)
-                    _playerStats.speed += speedIncrement;
+                    _playerStats.speed += value >= 0f ? value : speedIncrement;
                 break;
 
             case BuffType.MaxHP:
@@ -137,7 +125,7 @@ public class CraftingSystem : MonoBehaviour
 
             case BuffType.DashStamina:
                 if (_playerStats != null)
-                    _playerStats.maxDashStamina += dashStaminaIncrease;
+                    _playerStats.maxDashStamina += value >= 0f ? value : dashStaminaIncrease;
                 break;
         }
     }
@@ -146,13 +134,15 @@ public class CraftingSystem : MonoBehaviour
     {
         if (_playerStats != null)
         {
-            _playerStats.speed           = _baseSpeed;
-            _playerStats.attackPushForce = _baseAttackPush;
-            _playerStats.dashForce       = _baseDashForce;
-            _playerStats.damage          = _baseDamage;
-            _playerStats.knockbackForce  = _baseKnockback;
-            _playerStats.maxDashStamina  = _baseDashStamina;
+            _playerStats.speed          = _playerStats.baseSpeed;
+            _playerStats.dashForce      = _playerStats.baseDashForce;
+            _playerStats.damage         = _playerStats.baseDamage;
+            _playerStats.knockbackForce = _playerStats.baseKnockback;
+            _playerStats.maxDashStamina = _playerStats.baseMaxDashStamina;
             _playerStats.PushToDealers();
         }
+
+        if (_playerHealth != null && _playerStats != null)
+            _playerHealth.ScaleMaxHP(_playerStats.baseMaxHP);
     }
 }

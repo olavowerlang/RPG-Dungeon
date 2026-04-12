@@ -69,6 +69,14 @@ public class CloneAI : MonoBehaviour
     [Header("Dialogue")]
     [SerializeField] private DialogueData phase2Dialogue;
     [SerializeField] private DialogueData deathDialogue;
+    [Tooltip("What clone says when the PLAYER dies mid-fight")]
+    [SerializeField] private DialogueData playerDeathDialogue;
+    [Tooltip("Index 0 = NG+,  1 = NG++,  2 = NG+++  (last slot reused for higher tiers)")]
+    [SerializeField] private DialogueData[] ngPlusPhase2Dialogues;
+    [Tooltip("Index 0 = NG+,  1 = NG++,  2 = NG+++  (last slot reused for higher tiers)")]
+    [SerializeField] private DialogueData[] ngPlusDeathDialogues;
+    [Tooltip("Index 0 = NG+,  1 = NG++,  2 = NG+++  (last slot reused for higher tiers)")]
+    [SerializeField] private DialogueData[] ngPlusPlayerDeathDialogues;
 
     // ── Private state ────────────────────────────────────────────────────────
 
@@ -78,6 +86,7 @@ public class CloneAI : MonoBehaviour
     private Transform          _player;
     private Rigidbody2D        _playerRb;
     private Animator           _playerAnimator;
+    private Health             _playerHealth;
 
     // Cloned from PlayerStats on Awake
     private float _approachSpeed;
@@ -159,6 +168,10 @@ public class CloneAI : MonoBehaviour
         _health.OnDeath += OnDeath;
         _hitEffect.OnHitTaken += OnCloneHit;
 
+        _playerHealth = playerObj.GetComponent<Health>();
+        if (_playerHealth != null)
+            _playerHealth.OnDeath += OnPlayerDeath;
+
         // NG+ health scaling (stats are mirrored from player so no AI tuning needed)
         if (NGPlusManager.Instance != null && NGPlusManager.Instance.IsNGPlus)
             _health.ScaleMaxHP(Mathf.RoundToInt(_health.MaxHP * NGPlusManager.Instance.EnemyStatMultiplier));
@@ -209,8 +222,9 @@ public class CloneAI : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (_health    != null) _health.OnDeath         -= OnDeath;
-        if (_hitEffect != null) _hitEffect.OnHitTaken   -= OnCloneHit;
+        if (_health       != null) _health.OnDeath          -= OnDeath;
+        if (_hitEffect    != null) _hitEffect.OnHitTaken    -= OnCloneHit;
+        if (_playerHealth != null) _playerHealth.OnDeath    -= OnPlayerDeath;
     }
 
     private void OnCloneHit()
@@ -539,10 +553,11 @@ public class CloneAI : MonoBehaviour
 
         yield return new WaitUntil(() => cameraReady);
 
-        if (phase2Dialogue != null && DialogueManager.Instance != null)
+        var p2d = NGPlusManager.PickDialogue(phase2Dialogue, ngPlusPhase2Dialogues);
+        if (p2d != null && DialogueManager.Instance != null)
         {
             bool done = false;
-            DialogueManager.Instance.StartDialogue(phase2Dialogue, () => done = true);
+            DialogueManager.Instance.StartDialogue(p2d, () => done = true);
             yield return new WaitUntil(() => done);
         }
         else
@@ -562,6 +577,41 @@ public class CloneAI : MonoBehaviour
         _isPhase2 = true;
         _fightingLines?.StartLines();
         EnterMirrorStance();
+    }
+
+    // ── Player death (clone taunts before game over panel) ───────────────────
+
+    private void OnPlayerDeath()
+    {
+        // Only react while the fight is actually running
+        if (_state == State.Dead || _state == State.Idle) return;
+
+        UIManager.SuppressNextGameOver();
+        StopAllCoroutines();
+        _impulseVelocity = Vector2.zero;
+        _rb.velocity     = Vector2.zero;
+        _state           = State.Idle;
+        cloneAnimator?.SetWalking(false);
+        _fightingLines?.StopLines();
+
+        StartCoroutine(PlayerDeathDialogueRoutine());
+    }
+
+    private IEnumerator PlayerDeathDialogueRoutine()
+    {
+        // Wait for the death animation to start playing on the player side
+        yield return new WaitForSecondsRealtime(1.5f);
+
+        var dd = NGPlusManager.PickDialogue(playerDeathDialogue, ngPlusPlayerDeathDialogues);
+        if (dd != null && DialogueManager.Instance != null)
+        {
+            bool done = false;
+            DialogueManager.Instance.StartDialogue(dd, () => done = true);
+            yield return new WaitUntil(() => done);
+        }
+
+        yield return new WaitForSecondsRealtime(0.5f);
+        UIManager.ResumeGameOver();
     }
 
     [Header("Death Animation")]
@@ -602,10 +652,11 @@ public class CloneAI : MonoBehaviour
         // Brief pause so clone just stands still before speaking
         yield return new WaitForSecondsRealtime(1f);
 
-        if (deathDialogue != null && DialogueManager.Instance != null)
+        var dd = NGPlusManager.PickDialogue(deathDialogue, ngPlusDeathDialogues);
+        if (dd != null && DialogueManager.Instance != null)
         {
             bool done = false;
-            DialogueManager.Instance.StartDialogue(deathDialogue, () => done = true);
+            DialogueManager.Instance.StartDialogue(dd, () => done = true);
             yield return new WaitUntil(() => done);
         }
 
