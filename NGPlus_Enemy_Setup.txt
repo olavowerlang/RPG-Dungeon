@@ -1,0 +1,108 @@
+NG+ ENEMY AREA SETUP GUIDE
+==========================
+
+WHAT IS THIS FOR?
+-----------------
+This system lets you have different enemy layouts per NG+ tier.
+Each area of the map can have a different number of enemies and
+different bombshroom positions for normal run, NG+, NG++, etc.
+The script (NGPlusEnemySet.cs) automatically activates the right
+group when the scene loads based on which NG+ cycle you're in.
+
+
+HOW TO SET UP ONE AREA (repeat for every area you want to change)
+-----------------------------------------------------------------
+
+1. CREATE THE PARENT
+   - In the Hierarchy, right-click -> Create Empty
+   - Name it something like: EnemyArea_Zone1, EnemyArea_Corridor, etc.
+   - Set its position to (0, 0, 0)
+
+2. GROUP YOUR EXISTING ENEMIES
+   - Right-click the parent -> Create Empty child
+   - Name it: Enemies_Base
+   - Select all the existing enemies in that area
+   - Drag them all under Enemies_Base
+
+3. BUILD THE NG+ VARIANT
+   - Right-click Enemies_Base -> Duplicate
+   - Rename the copy to: Enemies_NGPlus
+   - Inside Enemies_NGPlus: add more enemies, move bombshrooms
+     to new positions, delete/add whatever you want
+   - This is what the area looks like in NG+
+
+4. BUILD THE NG++ VARIANT (optional, repeat for NG+++ etc.)
+   - Right-click Enemies_NGPlus -> Duplicate
+   - Rename to: Enemies_NGPlusPlus
+   - Adjust for NG++
+
+5. HIDE THE VARIANT GROUPS
+   - Click Enemies_NGPlus in the Hierarchy
+   - In the Inspector, UNCHECK the active checkbox (top left)
+   - Do the same for Enemies_NGPlusPlus
+   - Leave Enemies_Base ACTIVE (it is the default)
+
+6. ATTACH THE SCRIPT
+   - Select the parent (EnemyArea_Zone1)
+   - In Inspector -> Add Component -> search NGPlusEnemySet
+   - Drag Enemies_Base into the "Base Enemies" slot
+   - Set "Ng Plus Tiers" size to 2 (or however many tiers you have)
+   - Element 0 = Enemies_NGPlus
+   - Element 1 = Enemies_NGPlusPlus
+
+7. REPEAT for every other area that needs NG+ changes
+
+
+NOTES
+-----
+- You can have as many EnemyArea parents as you want across the map.
+  Each one is independent and they all switch tiers in sync.
+- If you only want 1 NG+ tier and no NG++, just set size to 1.
+- NG+++ and beyond: add more elements to the Ng Plus Tiers array.
+  The last filled slot is reused for any tier beyond what you filled.
+- Normal run always uses Enemies_Base.
+- Save the scene after setup.
+
+
+CURRENT STATUS (as of last session)
+------------------------------------
+
+ENEMY AREA SETUP
+  [x] Zone 1 big area (image 31) — NG+ variant in progress, mostly done
+  [ ] Zone 1 big area — NG++ variant not started
+  [ ] Zone 1 big area — NG+++ variant not started
+  [ ] Starting area — not started (no variants created yet)
+  [ ] Corridor/mushroom area (image 32) — not started
+  (add more areas here as you identify them)
+
+DIALOGUE SETUP (separate from enemies — see NPCDialogue/PigShopkeeper scripts)
+  All NPC scripts already support ngPlusMainDialogues[], ngPlusRepeatDialogues[] arrays.
+  You just need to create DialogueData assets and assign them in the Inspector.
+  [ ] Zone 1 Pig — NG+/++/+++ dialogue assets not created/assigned
+  [ ] Shop Pig 2 — NG+/++/+++ dialogue assets not created/assigned
+  [ ] Mushroom Quest Pig — NG+/++/+++ dialogue assets not created/assigned
+  [ ] Cave Pig (pre/post transform) — NG+/++/+++ dialogue assets not created/assigned
+  [ ] Clone (phase 2 + death + player death) — NG+/++/+++ dialogue assets not created/assigned
+
+MISSING EDITOR REFERENCES (need to wire up in Inspector)
+  The following scripts have NEW fields added in code that are
+  not yet assigned in the Unity Editor. Open each GameObject
+  and drag the correct assets/objects into the empty slots:
+
+  NGPlusEnemySet (on each EnemyArea parent):
+    [ ] Base Enemies slot
+    [ ] Ng Plus Tiers array elements
+
+  StatsUI (on the inventory/stats panel):
+    [ ] strengthText  (was: powerText)
+    [ ] dashText      (was: dashForceText)
+    [ ] vitalityText  (was: maxHpText)
+    NOTE: old text references are now renamed — rewire all 5 slots.
+
+  CloneAI (on the Clone boss GameObject):
+    [ ] Player Death Dialogue slot (new — what clone says when player dies mid-fight)
+    [ ] Ng Plus Player Death Dialogues array (NG+ variants of the above)
+
+  UIManager (already assigned — double check):
+    [ ] Level Up Panel
+    [ ] Level Up Text
