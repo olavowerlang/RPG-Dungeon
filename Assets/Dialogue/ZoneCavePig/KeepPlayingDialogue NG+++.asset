@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4df0014cb02a0cf4bbbc7addabd2224a, type: 3}
+  m_Name: KeepPlayingDialogue NG+++
+  m_EditorClassIdentifier: 
+  lines:
+  - speakerName: Humberto
+    text: What?
+  - speakerName: Humberto
+    text: WHAT? THE? FUCK?
+  - speakerName: Humberto
+    text: WHY THE FUCK DO YOU WANNA KEEP FIGHTING? WHAT IS WRONG WITH YOU?
+  - speakerName: Humberto
+    text: "YOU DON'T EVEN KNOW HOW TO GET OUT OF HERE, WHY WOULD YOU CHOOSE THIS
+      CURSED OPTION? I\u2014"
+  - speakerName: Humberto
+    text: I can't even begin to comprehend this!
+  - speakerName: Humberto Garcia Sauvignon the Dragonslayer, the Liberator, the Great
+      Wizard
+    text: 'No, I won''t let it end like this. I''M HUMBERTO GARCIA SAUVIGNON! The
+      Dragonslayer, the Liberator, the Great Wizard! '
+  - speakerName: Humberto Garcia Sauvignon, the Dragonslayer, the Liberator, the
+      Great Wizard
+    text: FACE MY FURY!!!!!

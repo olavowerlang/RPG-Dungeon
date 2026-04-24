@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: Flower
   description: A medicinal flower. Increases movement speed.
   icon: {fileID: 579678406, guid: 91b14c99d6ab82445adbe01fd46ebac0, type: 3}
-  price: 1
+  price: 2
   itemData: {fileID: 11400000, guid: be7e82b0701f1b6439d29ad84a32b1cd, type: 2}
   isDirectBuff: 0
   directBuffType: 3

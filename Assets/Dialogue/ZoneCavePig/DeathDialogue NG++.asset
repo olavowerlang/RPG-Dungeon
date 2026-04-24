@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4df0014cb02a0cf4bbbc7addabd2224a, type: 3}
+  m_Name: DeathDialogue NG++
+  m_EditorClassIdentifier: 
+  lines:
+  - speakerName: Humberto Garcia
+    text: AAAAAaaaaaaaaaaaaaaaaaaaarghhhhhhhhhhhhhh!!!!!!!!!!!
+  - speakerName: Humberto Garcia
+    text: Im DYINGGGGGGGGGGGGGGGGGGGGGGGGG!
+  - speakerName: Humberto Garcia
+    text: I SAID THAT SHIT ALREADY ALSO! *HUFF...HUFF* FUCK!
+  - speakerName: Humberto Garcia
+    text: How could you kill me AGAIN, you're so MEAN!
+  - speakerName: Humberto Garcia
+    text: What about my great-great-great-great-great-great-great-great-great-great-grandchildren?
+      Have you no HEART?
+  - speakerName: Humberto Garcia
+    text: You're gonna make me go through this again won't you?
+  - speakerName: Humberto Garcia
+    text: Fuuuck. You're sadistic. A psycopath!
+  - speakerName: Humberto Garcia
+    text: "Aight im out wait I said that befo\u2014"

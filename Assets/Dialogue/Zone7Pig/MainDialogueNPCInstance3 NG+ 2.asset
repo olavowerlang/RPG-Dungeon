@@ -10,17 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4df0014cb02a0cf4bbbc7addabd2224a, type: 3}
-  m_Name: DeathDialogue
+  m_Name: MainDialogueNPCInstance3 NG+ 2
   m_EditorClassIdentifier: 
   lines:
   - speakerName: Humberto
-    text: AAAAAaaaaaaaaaaaaaaaaaaaarghhhhhhhhhhhhhh!!!!!!!!!!!
+    text: Nice, you made it.
   - speakerName: Humberto
-    text: Im DYINGGGGGGGGGGGGGGGGGGGGGGGGG!
+    text: Heeere some money for you.
   - speakerName: Humberto
-    text: FUUUUUUUUUUUUUUUUUUUUUUUUUUUU.........................*HUFF...HUFF*.............UUUUUUUUUUCKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK!
+    text: Don't think you'll need it though.
   - speakerName: Humberto
-    text: How could I lose to a BRAINDEAD MORON like YOU, that doesn't even know
-      his OWN NAME?!
-  - speakerName: Humberto
-    text: Aight I'm out.
+    text: Meet me inside the cave when you are done.

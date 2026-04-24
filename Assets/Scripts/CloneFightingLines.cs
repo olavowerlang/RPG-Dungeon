@@ -54,6 +54,7 @@ public class CloneFightingLines : MonoBehaviour
     public void StartLines()
     {
         if (_running) return;
+        if (NGPlusManager.Instance != null && NGPlusManager.Instance.NGPlusCount >= 3) return;
         _running = true;
         StartCoroutine(LineLoop());
     }

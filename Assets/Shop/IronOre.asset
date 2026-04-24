@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: Iron
   description: A chunk of iron ore. Gives more dash Range
   icon: {fileID: 844263125, guid: 572bb35294ab715449c4c06f31b1fa55, type: 3}
-  price: 1
+  price: 2
   itemData: {fileID: 11400000, guid: 669c677c30ed35c44be8644e118294cb, type: 2}
   isDirectBuff: 0
   directBuffType: 1

@@ -10,17 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4df0014cb02a0cf4bbbc7addabd2224a, type: 3}
-  m_Name: DeathDialogue
+  m_Name: DeathDialogueNG+
   m_EditorClassIdentifier: 
   lines:
   - speakerName: Humberto
-    text: AAAAAaaaaaaaaaaaaaaaaaaaarghhhhhhhhhhhhhh!!!!!!!!!!!
+    text: Again....
   - speakerName: Humberto
-    text: Im DYINGGGGGGGGGGGGGGGGGGGGGGGGG!
+    text: This...is worse than death....
   - speakerName: Humberto
-    text: FUUUUUUUUUUUUUUUUUUUUUUUUUUUU.........................*HUFF...HUFF*.............UUUUUUUUUUCKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK!
+    text: Will this nightmare ever end?
   - speakerName: Humberto
-    text: How could I lose to a BRAINDEAD MORON like YOU, that doesn't even know
-      his OWN NAME?!
-  - speakerName: Humberto
-    text: Aight I'm out.
+    text: What is wrong with you? You're a monster. Just let me DIE!!! PERMANENTLY!!!
+  - speakerName: Humberto Garcia Sauvignon
+    text: The mighty Humberto Garcia Sauvignon, reduced to this...
+  - speakerName: Humberto Garcia Sauvignon
+    text: "I don't wanna go back I don't wanna go back I don't wanna go ba\u2014"

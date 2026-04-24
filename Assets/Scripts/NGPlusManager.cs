@@ -16,8 +16,11 @@ public class NGPlusManager : MonoBehaviour
     public int NGPlusCount { get; private set; } = 0;
 
     // ── Flags ────────────────────────────────────────────────────────────────
-    public bool GameCleared { get; private set; }
-    public bool IsNGPlus    { get; private set; }
+    public bool GameCleared             { get; private set; }
+    public bool IsNGPlus                { get; private set; }
+    public bool HasDeclinedFreedomOffer { get; private set; }
+
+    public void SetDeclinedFreedomOffer() => HasDeclinedFreedomOffer = true;
 
     // ── Carried-over player stats ─────────────────────────────────────────────
     public float CarriedSpeed          { get; private set; }
@@ -32,6 +35,7 @@ public class NGPlusManager : MonoBehaviour
     public int   CarriedGold           { get; private set; }
 
     private bool _hasTransitionSnapshot;
+    private bool _debugSkipCarryOver;
 
     private void Awake()
     {
@@ -108,6 +112,21 @@ public class NGPlusManager : MonoBehaviour
     }
 
     /// <summary>
+    /// DEBUG ONLY — forces a specific NG+ tier instantly.
+    /// tier 1 = NG+, 2 = NG++, 3 = NG+++, etc.
+    /// </summary>
+    public void DebugForceNGPlusTier(int tier)
+    {
+        if (tier < 1) return;
+        NGPlusCount          = tier;
+        IsNGPlus             = true;
+        GameCleared          = true;
+        EnemyStatMultiplier  = Mathf.Pow(2f, tier);
+        _debugSkipCarryOver  = true; // don't let ApplyCarryOver wipe the player's scene stats
+        Debug.Log($"[DEBUG] Forced NG+ tier {tier} — multiplier x{EnemyStatMultiplier}");
+    }
+
+    /// <summary>
     /// Returns the right DialogueData for the current NG+ tier.
     /// tiers[0] = NG+, tiers[1] = NG++, tiers[2] = NG+++, etc.
     /// Falls back to the last filled slot if NGPlusCount exceeds the array,
@@ -126,6 +145,7 @@ public class NGPlusManager : MonoBehaviour
     /// </summary>
     public void ApplyCarryOver(PlayerStats ps)
     {
+        if (_debugSkipCarryOver) return;
         if ((!IsNGPlus && !_hasTransitionSnapshot) || ps == null) return;
         _hasTransitionSnapshot = false;
 

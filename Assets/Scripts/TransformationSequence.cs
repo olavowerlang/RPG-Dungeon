@@ -25,6 +25,12 @@ public class TransformationSequence : MonoBehaviour
     [Tooltip("Index 0 = NG+,  1 = NG++,  2 = NG+++  (last slot reused for higher tiers)")]
     [SerializeField] private DialogueData[] ngPlusPostTransformDialogues;
 
+    [Header("NG+++ Freedom Offer")]
+    [SerializeField] private DialogueData    freedomOfferDialogue;   // Humberto's plea before the choice
+    [SerializeField] private DialogueData    ng3KeepGoingDialogue;   // exclusive line if player refuses
+    [SerializeField] private FreedomChoiceUI freedomChoiceUI;
+    [SerializeField] private TrueEndingSequence trueEndingSequence;
+
     [Header("Particles")]
     [SerializeField] private ParticleSystem transformParticles; // auto-created if null
     [SerializeField] private Material       particleMaterial;   // assign URP Particles/Unlit material
@@ -116,7 +122,6 @@ public class TransformationSequence : MonoBehaviour
         if (_playerInput != null) _playerInput.enabled = true;
 
         AudioManager.Instance?.StopAmbient();
-        AudioManager.Instance?.PlayBossMusic();
 
         // — Post-transform dialogue —
         var postDialogue = NGPlusManager.PickDialogue(postTransformDialogue, ngPlusPostTransformDialogues);
@@ -127,7 +132,65 @@ public class TransformationSequence : MonoBehaviour
             yield return new WaitUntil(() => done);
         }
 
+        yield return null; // safety gap before next dialogue
+
+        // — NG+++ Freedom Offer —
+        bool shouldOffer = NGPlusManager.Instance != null
+            && NGPlusManager.Instance.NGPlusCount == 3
+            && !NGPlusManager.Instance.HasDeclinedFreedomOffer;
+
+        if (shouldOffer)
+        {
+            if (_playerInput != null) _playerInput.enabled = false;
+
+            if (freedomOfferDialogue != null && DialogueManager.Instance != null)
+            {
+                bool offerDone = false;
+                DialogueManager.Instance.StartDialogue(freedomOfferDialogue, () => offerDone = true);
+                yield return new WaitUntil(() => offerDone);
+            }
+
+            bool chose = false;
+            bool choseFree = false;
+            if (freedomChoiceUI != null)
+            {
+                freedomChoiceUI.Show(
+                    onFree: () => { choseFree = true; chose = true; },
+                    onLoop: () => { choseFree = false; chose = true; }
+                );
+                yield return new WaitUntil(() => chose);
+            }
+            else
+            {
+                // Fallback if UI not wired — default to keep loop
+                chose = true;
+                choseFree = false;
+            }
+
+            if (choseFree)
+            {
+                cloneAI?.ForceDead();
+                trueEndingSequence?.StartEnding();
+                yield break;
+            }
+            else
+            {
+                NGPlusManager.Instance.SetDeclinedFreedomOffer();
+                if (_playerInput != null) _playerInput.enabled = true;
+
+                yield return null;
+
+                if (ng3KeepGoingDialogue != null && DialogueManager.Instance != null)
+                {
+                    bool keepDone = false;
+                    DialogueManager.Instance.StartDialogue(ng3KeepGoingDialogue, () => keepDone = true);
+                    yield return new WaitUntil(() => keepDone);
+                }
+            }
+        }
+
         // — Reveal HP bar and start fight —
+        AudioManager.Instance?.PlayBossMusic();
         if (BossHealthBarUI.Instance != null)
             BossHealthBarUI.Instance.RevealBar();
 

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4df0014cb02a0cf4bbbc7addabd2224a, type: 3}
-  m_Name: DeathDialogue
+  m_Name: DeathDialogue 1
   m_EditorClassIdentifier: 
   lines:
   - speakerName: Humberto
@@ -21,6 +21,6 @@ MonoBehaviour:
     text: FUUUUUUUUUUUUUUUUUUUUUUUUUUUU.........................*HUFF...HUFF*.............UUUUUUUUUUCKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK!
   - speakerName: Humberto
     text: How could I lose to a BRAINDEAD MORON like YOU, that doesn't even know
-      his OWN NAME?!
+      his OWN NAME?! AGAIN?!
   - speakerName: Humberto
     text: Aight I'm out.

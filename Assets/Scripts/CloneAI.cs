@@ -468,6 +468,20 @@ public class CloneAI : MonoBehaviour
         EnterMirrorStance();
     }
 
+    public void ForceDead()
+    {
+        _state           = State.Dead;
+        StopAllCoroutines();
+        _impulseVelocity = Vector2.zero;
+        _rb.velocity     = Vector2.zero;
+        _rb.bodyType     = RigidbodyType2D.Kinematic;
+        var col = GetComponent<Collider2D>();
+        if (col != null) col.enabled = false;
+        cloneAnimator?.SetWalking(false);
+        _fightingLines?.StopLines();
+        if (BossHealthBarUI.Instance != null) BossHealthBarUI.Instance.Hide();
+    }
+
     private void EnterMirrorStance()
     {
         _state           = State.MirrorStance;

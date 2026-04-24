@@ -10,17 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4df0014cb02a0cf4bbbc7addabd2224a, type: 3}
-  m_Name: DeathDialogue
+  m_Name: MainDialogueNPCInstance3 NG+ 1
   m_EditorClassIdentifier: 
   lines:
   - speakerName: Humberto
-    text: AAAAAaaaaaaaaaaaaaaaaaaaarghhhhhhhhhhhhhh!!!!!!!!!!!
+    text: Ouukay.
   - speakerName: Humberto
-    text: Im DYINGGGGGGGGGGGGGGGGGGGGGGGGG!
+    text: Pass me those goddamn mushrooms kid.
   - speakerName: Humberto
-    text: FUUUUUUUUUUUUUUUUUUUUUUUUUUUU.........................*HUFF...HUFF*.............UUUUUUUUUUCKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK!
-  - speakerName: Humberto
-    text: How could I lose to a BRAINDEAD MORON like YOU, that doesn't even know
-      his OWN NAME?!
-  - speakerName: Humberto
-    text: Aight I'm out.
+    text: Thanks. Now be a good boy and proceed to the big suspicious cave behind
+      me please.

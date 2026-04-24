@@ -15,7 +15,10 @@ MonoBehaviour:
   displayName: Fruit
   description: A juicy fruit. Gives greater knockback.
   icon: {fileID: 298038387, guid: 338eb9325b511bf4dbf0184fff5f5d9c, type: 3}
-  price: 1
+  price: 2
   itemData: {fileID: 11400000, guid: eb8516da371237046aed31744211e5f4, type: 2}
   isDirectBuff: 0
   directBuffType: 2
+  isUnlock: 0
+  unlockType: 0
+  requiresDashUnlock: 0

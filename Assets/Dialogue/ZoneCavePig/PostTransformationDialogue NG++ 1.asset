@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4df0014cb02a0cf4bbbc7addabd2224a, type: 3}
+  m_Name: PostTransformationDialogue NG++ 1
+  m_EditorClassIdentifier: 
+  lines:
+  - speakerName: Humberto
+    text: Ta-dah!
+  - speakerName: Humberto
+    text: ...
+  - speakerName: Humberto
+    text: You're so boring.
+  - speakerName: Humberto
+    text: Okay, here's the deal silent man. Since you helped me a lot, Imma help
+      you out also, if you help me out one last time.
+  - speakerName: Humberto
+    text: We wont fight here. You will let me go, and we will get out of this forest
+      together. I know the way.
+  - speakerName: Humberto
+    text: I won't try anything, I promise, you're clearly stronger than me anyway.
+  - speakerName: Humberto
+    text: So, what do you say, help out a friend here? As weird as you are I can't
+      imagine why you would want to stay here in this hellish infinite loop.
+  - speakerName: Humberto
+    text: Right?
+  - speakerName: Humberto
+    text: ...
+  - speakerName: Humberto
+    text: ...right?

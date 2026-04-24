@@ -39,6 +39,7 @@ public class UIManager : MonoBehaviour
     private static System.Action _pendingGameOver;
     private static bool          _gameOverSuppressed;
 
+    public static void ResetHudUnlocked() => HudUnlocked = false;
     public static void SuppressNextGameOver() => _gameOverSuppressed = true;
     public static void ResumeGameOver()
     {

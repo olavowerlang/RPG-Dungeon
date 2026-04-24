@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4df0014cb02a0cf4bbbc7addabd2224a, type: 3}
-  m_Name: RepeatDialogue1NPC1NG+
+  m_Name: RepeatDialogue1NPC1NG+++
   m_EditorClassIdentifier: 
   lines:
-  - speakerName: Pig
-    text: What? Go kill those slimes. Or don't! Do whatever you want!
+  - speakerName: Humberto
+    text: What? You lost? Jesus, how do I keep losing to someone so dense.

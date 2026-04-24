@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4df0014cb02a0cf4bbbc7addabd2224a, type: 3}
+  m_Name: Phase2Dialogue NG+ 1
+  m_EditorClassIdentifier: 
+  lines:
+  - speakerName: Humberto Garcia Sauvignon
+    text: Okay...okay! Calm down a sec! *Huff...huff* turns out...being a pig for
+      years...can make you weak.
+  - speakerName: Humberto Garcia Sauvignon
+    text: Whew...*huff...huff* I thought...since I got all your stats...this would
+      be a piece of cake...but apparently that's not how this works.
+  - speakerName: Humberto Garcia Sauvignon
+    text: I...have said that before, haven't I?
+  - speakerName: Humberto Garcia Sauvignon
+    text: Well, shit.
+  - speakerName: Humberto Garcia Sauvignon
+    text: I need to go back, I may have great-great-great-great-great-great-great-great-great-great-grandkids,
+      you know?
+  - speakerName: Humberto Garcia Sauvignon
+    text: 'Don''t you feel empathy for that? '
+  - speakerName: Humberto Garcia Sauvignon
+    text: And let's be honest, you're a weird one, I bet there's nobody waiting for
+      you out there, son.
+  - speakerName: Humberto Garcia Sauvignon
+    text: Do a solid for your boy Humberto and just go down, won't you?
+  - speakerName: Humberto Garcia Sauvignon
+    text: Thanks. Let's go.
