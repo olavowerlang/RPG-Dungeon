@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Cave.unity
     guid: b5522c47e79d6b546ac67f5720934028
+  - enabled: 1
+    path: Assets/Scenes/GoodEnding.unity
+    guid: c2b2feb12b434714baa9a8549bfbe2b1
   m_configObjects: {}

@@ -269,7 +269,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8624511
 Transform:
   m_ObjectHideFlags: 0
@@ -2478,7 +2478,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &91070446
 Transform:
   m_ObjectHideFlags: 0
@@ -7485,7 +7485,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -410.80005, y: -338.9}
+  m_AnchoredPosition: {x: -410.80005, y: -342.4}
   m_SizeDelta: {x: 80, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &311859685
@@ -8383,12 +8383,15 @@ MonoBehaviour:
   ngPlusIntroDialogues:
   - {fileID: 11400000, guid: 829546d765259f44c8bd6d21b7b31da0, type: 2}
   - {fileID: 11400000, guid: 6ad1fef1578857f429bb42b50701d17f, type: 2}
+  - {fileID: 11400000, guid: 70fd054853ecc0642abcd76d7e3bdd98, type: 2}
   ngPlusMainDialogues:
   - {fileID: 11400000, guid: 33fdacd7006311d4b8aea4a319f41251, type: 2}
   - {fileID: 11400000, guid: 1997b1ae1b5e3504f931e8f655f5dab9, type: 2}
+  - {fileID: 11400000, guid: c38001630e6b9d545b9f01299c879608, type: 2}
   ngPlusRepeatDialogues:
   - {fileID: 11400000, guid: 59a1e980491f42d4d993d580929e4d12, type: 2}
   - {fileID: 11400000, guid: eb53002f589758545bb3dd778abb502d, type: 2}
+  - {fileID: 11400000, guid: 5f3dba2ff06d12647a89eb891d28c0ab, type: 2}
   interactionPrompt: {fileID: 355869966}
   interactionPanel: {fileID: 561781399}
 --- !u!1001 &357428861
@@ -11629,6 +11632,8 @@ MonoBehaviour:
   baseEnemies: {fileID: 8624510}
   ngPlusTiers:
   - {fileID: 1415926976}
+  - {fileID: 533034612}
+  - {fileID: 91070445}
 --- !u!4 &512854914
 Transform:
   m_ObjectHideFlags: 0
@@ -13893,6 +13898,7 @@ MonoBehaviour:
     nameBox: {fileID: 730415977}
   - speakerName: Humberto
     nameBox: {fileID: 2024715480}
+  extraBoxes: []
 --- !u!4 &595812750
 Transform:
   m_ObjectHideFlags: 0
@@ -48604,7 +48610,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d8ce15bef14a724faee1dd327725c16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTier: 2
+  targetTier: 3
 --- !u!4 &1758010136
 Transform:
   m_ObjectHideFlags: 0
@@ -493631,9 +493637,11 @@ MonoBehaviour:
   ngPlusRewardDialogues:
   - {fileID: 11400000, guid: 14340191132e09541a63e4a3201f8e92, type: 2}
   - {fileID: 11400000, guid: e707edf9421c3d24c9b77ec971c65f70, type: 2}
+  - {fileID: 11400000, guid: ffc3adf8e9f6d7945b68260d303aa171, type: 2}
   ngPlusRepeatDialogues:
   - {fileID: 11400000, guid: 3d23309639b5e4a44ad73c7d7476afc1, type: 2}
   - {fileID: 11400000, guid: 258f1c0613c568548aeac6e7fa128513, type: 2}
+  - {fileID: 11400000, guid: 04aa755e374deb548965b12e74e55f1a, type: 2}
   interactionPrompt: {fileID: 2013166589}
   interactionPanel: {fileID: 451555648}
   goldLineIndex: 5
@@ -494051,7 +494059,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -380.70007, y: -338.9}
+  m_AnchoredPosition: {x: -380, y: -342.43}
   m_SizeDelta: {x: 140, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &2027076429
@@ -495114,7 +495122,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -275.80005, y: -338.9}
+  m_AnchoredPosition: {x: -275.80005, y: -342.3}
   m_SizeDelta: {x: 350, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2051508600
@@ -497341,11 +497349,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9007826219369476641, guid: 2f77d2f4e06ec744fbb4af28c71b8dcd, type: 3}
       propertyPath: ngPlusMainDialogues.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9007826219369476641, guid: 2f77d2f4e06ec744fbb4af28c71b8dcd, type: 3}
       propertyPath: ngPlusRepeatDialogues.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9007826219369476641, guid: 2f77d2f4e06ec744fbb4af28c71b8dcd, type: 3}
       propertyPath: ngPlusMainDialogues.Array.data[0]
@@ -497356,6 +497364,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 67d20f3ea1d302541af546d47c298b49, type: 2}
     - target: {fileID: 9007826219369476641, guid: 2f77d2f4e06ec744fbb4af28c71b8dcd, type: 3}
+      propertyPath: ngPlusMainDialogues.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 670d5013f0cc1294fb6df0b27f91fa0a, type: 2}
+    - target: {fileID: 9007826219369476641, guid: 2f77d2f4e06ec744fbb4af28c71b8dcd, type: 3}
       propertyPath: ngPlusRepeatDialogues.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: b5dbb3e711046c346948271ca9313d3f, type: 2}
@@ -497363,6 +497375,10 @@ PrefabInstance:
       propertyPath: ngPlusRepeatDialogues.Array.data[1]
       value: 
       objectReference: {fileID: 11400000, guid: 4e1dc8adcf38d764a895ec5bfbce6b9b, type: 2}
+    - target: {fileID: 9007826219369476641, guid: 2f77d2f4e06ec744fbb4af28c71b8dcd, type: 3}
+      propertyPath: ngPlusRepeatDialogues.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: c324bc40a0b55db4391fb9d7ebb1d614, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

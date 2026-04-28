@@ -1,5 +1,4 @@
 using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -17,21 +16,18 @@ public class TrueEndingSequence : MonoBehaviour
     [SerializeField] private DialogueData farewellDialogue;
 
     [Header("UI")]
-    [SerializeField] private GameObject      endingPanel;
-    [SerializeField] private Image           blackOverlay;
-    [SerializeField] private TextMeshProUGUI endingText;
+    [SerializeField] private GameObject endingPanel;
+    [SerializeField] private Image      blackOverlay;
 
     [Header("Settings")]
-    [SerializeField] private string mainSceneName  = "Main Scene";
-    [SerializeField] private float  blackFadeTime  = 2f;
-    [SerializeField] private float  textFadeInTime = 2f;
-    [SerializeField] private float  displayTime    = 6f;
+    [SerializeField] private string cutsceneSceneName = "GoodEnding";
+    [SerializeField] private string mainSceneName     = "Main Scene";
+    [SerializeField] private float  blackFadeTime     = 2f;
 
     private void Awake()
     {
         Instance = this;
         SetBlackAlpha(0f);
-        if (endingText != null) endingText.alpha = 0f;
         if (endingPanel != null) endingPanel.SetActive(false);
     }
 
@@ -64,27 +60,13 @@ public class TrueEndingSequence : MonoBehaviour
         }
         SetBlackAlpha(1f);
 
-        // Fade in ending text
-        if (endingText != null)
-        {
-            t = 0f;
-            while (t < textFadeInTime)
-            {
-                t += Time.unscaledDeltaTime;
-                endingText.alpha = Mathf.Clamp01(t / textFadeInTime);
-                yield return null;
-            }
-            endingText.alpha = 1f;
-        }
-
-        yield return new WaitForSecondsRealtime(displayTime);
-
-        // Destroy NGPlusManager so Main Scene starts a completely fresh session
+        // Reset session state before leaving
         if (NGPlusManager.Instance != null)
             Destroy(NGPlusManager.Instance.gameObject);
-
         UIManager.ResetHudUnlocked();
-        SceneManager.LoadScene(mainSceneName);
+
+        // Load cutscene scene — screen is already black so transition is seamless
+        SceneManager.LoadScene(cutsceneSceneName);
     }
 
     private void SetBlackAlpha(float a)

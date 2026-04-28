@@ -27,6 +27,29 @@ public class NPCInteractionPanel : MonoBehaviour
     private bool        _isOpen;
     private float       _confirmCooldown;
 
+    private Transform    _worldTarget;
+    private RectTransform _rt;
+    private Canvas        _rootCanvas;
+
+    private void Awake()
+    {
+        _rt         = GetComponent<RectTransform>();
+        _rootCanvas = GetComponentInParent<Canvas>();
+        if (optionTexts == null || optionTexts.Length == 0)
+            optionTexts = GetComponentsInChildren<TextMeshProUGUI>(true);
+    }
+
+    // Call before Show() to make the panel follow a world-space object (e.g. the NPC).
+    public void SetWorldTarget(Transform target) => _worldTarget = target;
+
+    private void LateUpdate()
+    {
+        if (!_isOpen || _worldTarget == null || Camera.main == null || _rt == null) return;
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(_worldTarget.position + Vector3.up * 1.2f);
+        if (screenPos.z > 0f)
+            _rt.position = screenPos;
+    }
+
     private void Update()
     {
         if (!_isOpen) return;
@@ -73,8 +96,9 @@ public class NPCInteractionPanel : MonoBehaviour
 
     public void Hide()
     {
-        _isOpen = false;
-        IsOpen  = false;
+        _isOpen      = false;
+        IsOpen       = false;
+        _worldTarget = null;
         gameObject.SetActive(false);
     }
 
@@ -108,13 +132,14 @@ public class NPCInteractionPanel : MonoBehaviour
         for (int i = 0; i < optionTexts.Length; i++)
         {
             if (optionTexts[i] == null) continue;
-            if (i < _labels.Length)
-            {
-                optionTexts[i].text = _labels[i];
-                optionTexts[i].color = !_enabled[i] ? greyedColor
-                                     : i == _selected ? selectedColor
-                                     : normalColor;
-            }
+            bool hasLabel = i < _labels.Length;
+            optionTexts[i].gameObject.SetActive(hasLabel);
+            if (!hasLabel) continue;
+            optionTexts[i].text  = _labels[i];
+            optionTexts[i].alpha = 1f;
+            optionTexts[i].color = !_enabled[i] ? greyedColor
+                                 : i == _selected ? selectedColor
+                                 : normalColor;
         }
     }
 }

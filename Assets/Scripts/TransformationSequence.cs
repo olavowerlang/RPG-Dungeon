@@ -26,7 +26,6 @@ public class TransformationSequence : MonoBehaviour
     [SerializeField] private DialogueData[] ngPlusPostTransformDialogues;
 
     [Header("NG+++ Freedom Offer")]
-    [SerializeField] private DialogueData    freedomOfferDialogue;   // Humberto's plea before the choice
     [SerializeField] private DialogueData    ng3KeepGoingDialogue;   // exclusive line if player refuses
     [SerializeField] private FreedomChoiceUI freedomChoiceUI;
     [SerializeField] private TrueEndingSequence trueEndingSequence;
@@ -142,13 +141,6 @@ public class TransformationSequence : MonoBehaviour
         if (shouldOffer)
         {
             if (_playerInput != null) _playerInput.enabled = false;
-
-            if (freedomOfferDialogue != null && DialogueManager.Instance != null)
-            {
-                bool offerDone = false;
-                DialogueManager.Instance.StartDialogue(freedomOfferDialogue, () => offerDone = true);
-                yield return new WaitUntil(() => offerDone);
-            }
 
             bool chose = false;
             bool choseFree = false;

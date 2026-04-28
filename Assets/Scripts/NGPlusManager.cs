@@ -49,6 +49,7 @@ public class NGPlusManager : MonoBehaviour
     /// </summary>
     public void SnapshotForTransition()
     {
+        _debugSkipCarryOver = false;
         var ps = PlayerStats.Instance;
         if (ps == null) return;
 
@@ -77,8 +78,9 @@ public class NGPlusManager : MonoBehaviour
     {
         GameCleared           = true;
         IsNGPlus              = true;
-        EnemyStatMultiplier  *= 2f; // NG+1=2x, NG+2=4x, etc.
         NGPlusCount++;
+        EnemyStatMultiplier   = NGPlusCount;
+        _debugSkipCarryOver   = false;
 
         PigShopkeeper.ResetAll();
         NPCDialogue.ResetZone1();
@@ -121,7 +123,7 @@ public class NGPlusManager : MonoBehaviour
         NGPlusCount          = tier;
         IsNGPlus             = true;
         GameCleared          = true;
-        EnemyStatMultiplier  = Mathf.Pow(2f, tier);
+        EnemyStatMultiplier  = tier;
         _debugSkipCarryOver  = true; // don't let ApplyCarryOver wipe the player's scene stats
         Debug.Log($"[DEBUG] Forced NG+ tier {tier} — multiplier x{EnemyStatMultiplier}");
     }

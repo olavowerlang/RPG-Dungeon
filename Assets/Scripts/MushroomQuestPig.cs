@@ -29,7 +29,8 @@ public class MushroomQuestPig : MonoBehaviour
     [SerializeField] private NPCInteractionPanel interactionPanel;
 
     [Header("Gold Pop")]
-    [SerializeField] private int goldLineIndex = 5;
+    [Tooltip("Which dialogue line index (0-based) triggers the gold reward, per NG+ tier. Index 0 = base, 1 = NG+, 2 = NG++, 3 = NG+++. Last entry reused for higher tiers.")]
+    [SerializeField] private int[] goldLineIndexes = { 5 };
 
     private bool _playerInRange;
     private bool _panelOpen;
@@ -47,11 +48,19 @@ public class MushroomQuestPig : MonoBehaviour
     private void OnLineShown(int index)
     {
         if (_goldGiven || !QuestDone) return;
-        if (index != goldLineIndex) return;
+
+        int tier        = NGPlusManager.Instance != null ? NGPlusManager.Instance.NGPlusCount : 0;
+        int arrayIndex  = goldLineIndexes != null && goldLineIndexes.Length > 0
+                          ? Mathf.Min(tier, goldLineIndexes.Length - 1)
+                          : 0;
+        int targetLine  = goldLineIndexes != null && goldLineIndexes.Length > 0
+                          ? goldLineIndexes[arrayIndex]
+                          : 0;
+
+        if (index != targetLine) return;
 
         _goldGiven = true;
-        if (GoldManager.Instance != null)
-            GoldManager.Instance.AddGold(goldReward);
+        GoldManager.Instance?.AddGold(goldReward);
         AudioManager.Instance?.PlayCoinReward();
 
         var player = GameObject.FindWithTag("Player");

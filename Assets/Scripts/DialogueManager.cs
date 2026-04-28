@@ -27,6 +27,8 @@ public class DialogueManager : MonoBehaviour
     [Header("Speaker Name Boxes (optional)")]
     [Tooltip("Map each speaker name to a pre-sized name box. All boxes are hidden except the active speaker's.")]
     [SerializeField] private SpeakerBox[] speakerBoxes;
+    [Tooltip("Extra name box GameObjects that should always be hidden during dialogue but aren't mapped to any speaker.")]
+    [SerializeField] private GameObject[] extraBoxes;
 
     private string _currentBoxSpeaker;
 
@@ -67,9 +69,7 @@ public class DialogueManager : MonoBehaviour
         _onComplete = onComplete;
         _currentBoxSpeaker = null;
 
-        if (speakerBoxes != null)
-            foreach (var entry in speakerBoxes)
-                if (entry.nameBox != null) entry.nameBox.SetActive(false);
+        HideAllBoxes();
 
         dialoguePanel.SetActive(true);
         AudioManager.Instance?.PlayDialogueOpen();
@@ -107,6 +107,18 @@ public class DialogueManager : MonoBehaviour
         OnLineShown?.Invoke(index);
     }
 
+    private void HideAllBoxes()
+    {
+        // Hide every DialogueBG2* child automatically — covers registered and unregistered boxes
+        foreach (Transform child in dialoguePanel.transform)
+            if (child.name.StartsWith("DialogueBG2"))
+                child.gameObject.SetActive(false);
+
+        if (extraBoxes != null)
+            foreach (var box in extraBoxes)
+                if (box != null) box.SetActive(false);
+    }
+
     public void ForceEnd()
     {
         if (!IsInDialogue) return;
@@ -118,9 +130,7 @@ public class DialogueManager : MonoBehaviour
         IsInDialogue = false;
         dialoguePanel.SetActive(false);
         _currentBoxSpeaker = null;
-        if (speakerBoxes != null)
-            foreach (var entry in speakerBoxes)
-                if (entry.nameBox != null) entry.nameBox.SetActive(false);
+        HideAllBoxes();
         _onComplete?.Invoke();
         _onComplete = null;
     }

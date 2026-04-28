@@ -1,19 +1,19 @@
 using System;
 using UnityEngine;
+using TMPro;
 
 /// <summary>
-/// Shown after Humberto's freedom offer dialogue in NG+++.
-/// Two buttons: let him go (true ending) or keep the loop (continue fighting).
-/// Wire OnFreePressed / OnLoopPressed to the respective button OnClick events in the Inspector.
+/// Freedom choice panel for NG+++.
+/// Reuses NPCInteractionPanel for arrow-key navigation and cycling sound.
+/// Shows an explanatory text above the two options.
 /// </summary>
 public class FreedomChoiceUI : MonoBehaviour
 {
     public static FreedomChoiceUI Instance { get; private set; }
 
-    [SerializeField] private GameObject panel;
-
-    private Action _onFree;
-    private Action _onLoop;
+    [SerializeField] private GameObject          panel;
+    [SerializeField] private TextMeshProUGUI     bodyText;
+    [SerializeField] private NPCInteractionPanel interactionPanel;
 
     private void Awake()
     {
@@ -23,21 +23,30 @@ public class FreedomChoiceUI : MonoBehaviour
 
     public void Show(Action onFree, Action onLoop)
     {
-        _onFree = onFree;
-        _onLoop = onLoop;
+        if (interactionPanel == null)
+        {
+            Debug.LogError("[FreedomChoiceUI] interactionPanel not assigned — defaulting to loop.");
+            onLoop?.Invoke();
+            return;
+        }
+
         if (panel != null) panel.SetActive(true);
-    }
 
-    // Wire these to the buttons in the Inspector
-    public void OnFreePressed()
-    {
-        if (panel != null) panel.SetActive(false);
-        _onFree?.Invoke();
-    }
-
-    public void OnLoopPressed()
-    {
-        if (panel != null) panel.SetActive(false);
-        _onLoop?.Invoke();
+        interactionPanel.Show(
+            labels:    new[] { "Free him", "Break his will" },
+            enabled:   new[] { true, true },
+            onConfirm: index =>
+            {
+                if (panel != null) panel.SetActive(false);
+                if (index == 0) onFree?.Invoke();
+                else            onLoop?.Invoke();
+            },
+            onCancel: () =>
+            {
+                // Escape = same as "Keep going"
+                if (panel != null) panel.SetActive(false);
+                onLoop?.Invoke();
+            }
+        );
     }
 }
