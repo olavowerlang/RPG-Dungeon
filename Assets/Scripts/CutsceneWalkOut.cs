@@ -9,8 +9,6 @@ public class CutsceneWalkOut : MonoBehaviour
     [Header("Characters")]
     [SerializeField] private Transform character1;
     [SerializeField] private Transform character2;
-    [SerializeField] private Animator  animator1;
-    [SerializeField] private Animator  animator2;
 
     [Header("Walk Settings")]
     [SerializeField] private float walkSpeed    = 1.5f;
@@ -33,11 +31,9 @@ public class CutsceneWalkOut : MonoBehaviour
     private static readonly int DirYHash       = Animator.StringToHash("DirY");
     private static readonly int PlayerWalkHash = Animator.StringToHash("Player_Walk");
 
-    private bool          _forcingWalk;
-    private CloneAnimator _cloneAnim1;
-    private CloneAnimator _cloneAnim2;
-    private Animator[]    _anims1;
-    private Animator[]    _anims2;
+    private bool       _forcingWalk;
+    private Animator[] _anims1;
+    private Animator[] _anims2;
 
     private void Awake()
     {
@@ -47,61 +43,61 @@ public class CutsceneWalkOut : MonoBehaviour
 
     private void Start()
     {
-        // Collect ALL animators on each character — avoids picking the wrong one when there are multiple
-        _anims1 = character1 != null ? character1.GetComponentsInChildren<Animator>(true) : new Animator[0];
-        _anims2 = character2 != null ? character2.GetComponentsInChildren<Animator>(true) : new Animator[0];
+        _anims1 = Gather(character1);
+        _anims2 = Gather(character2);
 
-        // Also keep inspector refs as fallback (backward-compat with scene wiring)
-        if (animator1 == null && _anims1.Length > 0) animator1 = _anims1[0];
-        if (animator2 == null && _anims2.Length > 0) animator2 = _anims2[0];
-
-        // Find CloneAnimator on both characters (drives the correct internal Animator ref)
-        if (character1 != null)
-            _cloneAnim1 = character1.GetComponentInChildren<CloneAnimator>(true)
-                       ?? character1.GetComponentInParent<CloneAnimator>(true);
-        if (character2 != null)
-            _cloneAnim2 = character2.GetComponentInChildren<CloneAnimator>(true)
-                       ?? character2.GetComponentInParent<CloneAnimator>(true);
-
-        // Stop coroutines AND disable — just disabling leaves coroutines running in Unity
+        // Kill every script that touches animation or movement on both characters
         foreach (Transform ch in new[] { character1, character2 })
         {
             if (ch == null) continue;
-            foreach (var s in ch.GetComponentsInChildren<PlayerAnimator>(true))
-                { s.StopAllCoroutines(); s.enabled = false; }
-            foreach (var s in ch.GetComponentsInParent<PlayerAnimator>(true))
-                { s.StopAllCoroutines(); s.enabled = false; }
-            foreach (var s in ch.GetComponentsInChildren<CloneAI>(true))
-                { s.StopAllCoroutines(); s.enabled = false; }
-            foreach (var s in ch.GetComponentsInParent<CloneAI>(true))
-                { s.StopAllCoroutines(); s.enabled = false; }
+            DisableAll<PlayerAnimator>(ch);
+            DisableAll<PlayerController>(ch);
+            DisableAll<PlayerInput>(ch);
+            DisableAll<CloneAI>(ch);
+            DisableAll<CloneAnimator>(ch);
         }
 
-        // Unfreeze and rebind ALL animators on both characters
-        foreach (var anim in _anims1) { if (anim != null) { anim.speed = 1f; anim.Rebind(); anim.Update(0f); } }
-        foreach (var anim in _anims2) { if (anim != null) { anim.speed = 1f; anim.Rebind(); anim.Update(0f); } }
+        // Unfreeze and reset all animators
+        foreach (var anim in _anims1) Reset(anim);
+        foreach (var anim in _anims2) Reset(anim);
 
         _forcingWalk = true;
         StartCoroutine(CutsceneRoutine());
     }
 
-    // Runs after ALL Updates — wins over PlayerAnimator/CloneAI every frame
     private void LateUpdate()
     {
         if (!_forcingWalk) return;
-        ForceWalkDown(_anims1, _cloneAnim1);
-        ForceWalkDown(_anims2, _cloneAnim2);
+        ForceWalkDown(_anims1);
+        ForceWalkDown(_anims2);
     }
 
-    private void ForceWalkDown(Animator[] anims, CloneAnimator cloneAnim)
-    {
-        if (cloneAnim != null)
-        {
-            cloneAnim.SetWalking(true);
-            cloneAnim.SetDirection(Vector2.down);
-        }
+    // ── helpers ──────────────────────────────────────────────────────────────
 
-        if (anims == null) return;
+    private static Animator[] Gather(Transform root)
+    {
+        if (root == null) return new Animator[0];
+        return root.GetComponentsInChildren<Animator>(true);
+    }
+
+    private static void DisableAll<T>(Transform root) where T : MonoBehaviour
+    {
+        foreach (var c in root.GetComponentsInChildren<T>(true))
+            { c.StopAllCoroutines(); c.enabled = false; }
+        foreach (var c in root.GetComponentsInParent<T>(true))
+            { c.StopAllCoroutines(); c.enabled = false; }
+    }
+
+    private static void Reset(Animator anim)
+    {
+        if (anim == null) return;
+        anim.speed = 1f;
+        anim.Rebind();
+        anim.Update(0f);
+    }
+
+    private static void ForceWalkDown(Animator[] anims)
+    {
         foreach (var anim in anims)
         {
             if (anim == null) continue;
@@ -114,6 +110,8 @@ public class CutsceneWalkOut : MonoBehaviour
         }
     }
 
+    // ── cutscene ─────────────────────────────────────────────────────────────
+
     private IEnumerator CutsceneRoutine()
     {
         float fadeElapsed = 0f;
@@ -122,26 +120,17 @@ public class CutsceneWalkOut : MonoBehaviour
         // Phase 1: walk + fade in simultaneously
         while (walkElapsed < walkDuration)
         {
-            float dt    = Time.deltaTime;
-            walkElapsed += dt;
-
-            if (fadeElapsed < fadeInTime)
-            {
-                fadeElapsed += dt;
-                SetOverlayAlpha(Mathf.SmoothStep(1f, 0f, Mathf.Clamp01(fadeElapsed / fadeInTime)));
-            }
-            else
-            {
-                SetOverlayAlpha(0f);
-            }
-
+            float dt = Time.deltaTime;
+            walkElapsed  += dt;
+            fadeElapsed  += dt;
+            SetOverlayAlpha(Mathf.SmoothStep(1f, 0f, Mathf.Clamp01(fadeElapsed / fadeInTime)));
             if (character1 != null) character1.Translate(Vector3.down * walkSpeed * dt);
             if (character2 != null) character2.Translate(Vector3.down * walkSpeed * dt);
             yield return null;
         }
         SetOverlayAlpha(0f);
 
-        // Phase 2: keep walking AND moving during fade to black — characters never visibly stop
+        // Phase 2: keep walking during fade to black
         float fadeOut = 0f;
         while (fadeOut < fadeOutTime)
         {
@@ -154,12 +143,10 @@ public class CutsceneWalkOut : MonoBehaviour
         }
         SetOverlayAlpha(1f);
 
-        // Screen is fully black — stop
+        // Screen black — stop walking
         _forcingWalk = false;
         foreach (var anim in _anims1) if (anim != null) anim.SetBool(IsWalkingHash, false);
         foreach (var anim in _anims2) if (anim != null) anim.SetBool(IsWalkingHash, false);
-        _cloneAnim1?.SetWalking(false);
-        _cloneAnim2?.SetWalking(false);
 
         // Credits
         if (creditsText != null)
@@ -181,8 +168,8 @@ public class CutsceneWalkOut : MonoBehaviour
     private void SetOverlayAlpha(float a)
     {
         if (blackOverlay == null) return;
-        Color c  = blackOverlay.color;
-        c.a      = a;
+        Color c = blackOverlay.color;
+        c.a = a;
         blackOverlay.color = c;
     }
 }
