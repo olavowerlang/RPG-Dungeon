@@ -48581,51 +48581,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1976200964752312674, guid: 03a5022ba10e36c42b4c35a8510600be, type: 3}
   m_PrefabInstance: {fileID: 937717595}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1758010134
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1758010136}
-  - component: {fileID: 1758010135}
-  m_Layer: 0
-  m_Name: debug_ngplus
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1758010135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1758010134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d8ce15bef14a724faee1dd327725c16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetTier: 0
---- !u!4 &1758010136
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1758010134}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 238.01442, y: 167.8065, z: -2.0757036}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1760030605
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -497028,7 +496983,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 269910103720412481, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: knockbackForce
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2344077595519012848, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: healthImageList.Array.data[0]
@@ -497080,7 +497035,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3587748931084824593, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: knockbackForce
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3684956290753258210, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: damage
@@ -497092,7 +497047,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3684956290753258210, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: knockbackForce
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3939633173304301534, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: maxHP
@@ -497108,7 +497063,7 @@ PrefabInstance:
       objectReference: {fileID: 1753045830}
     - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: speed
-      value: 14
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: damage
@@ -497128,7 +497083,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: baseSpeed
-      value: 14
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6998037774450371524, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: dashForce
@@ -497176,7 +497131,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7940233324591537163, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: knockbackForce
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8020791933456249186, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: damage
@@ -497188,7 +497143,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8020791933456249186, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: knockbackForce
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8832670325567890062, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: damage
@@ -497200,7 +497155,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8832670325567890062, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: knockbackForce
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 9182031184127701325, guid: 20ec2939324f02c478b0859112eb03c9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -497596,4 +497551,3 @@ SceneRoots:
   - {fileID: 673570331}
   - {fileID: 1995294363}
   - {fileID: 640216458}
-  - {fileID: 1758010136}

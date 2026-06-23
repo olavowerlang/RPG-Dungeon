@@ -370,9 +370,9 @@ MonoBehaviour:
   guardTimeRange: {x: 3, y: 6}
   dashPrepTime: 0.25
   cooldownTime: 1
-  approachSpeed: 10
-  orbitSpeed: 10
-  dashSpeed: 20
+  approachSpeed: 6
+  orbitSpeed: 9
+  dashSpeed: 13
   enemyAnim: {fileID: 2888495946629483239}
   sfVisual: {fileID: 2331855477847601003}
 --- !u!114 &1704261684058217405

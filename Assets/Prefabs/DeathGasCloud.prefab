@@ -84,7 +84,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damagePerTick: 1
   tickInterval: 0.5
-  lifetime: 4
+  lifetime: 3
   playerLayer:
     serializedVersion: 2
     m_Bits: 64

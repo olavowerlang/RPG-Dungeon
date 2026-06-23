@@ -53,7 +53,8 @@ public class InventoryManager : MonoBehaviour
         OnInventoryChanged?.Invoke();
     }
 
-    public bool HasSword() => equippedSword != null;
+    public bool HasSword() => equippedSword != null
+        || (PlayerStats.Instance != null && PlayerStats.Instance.hasSword);
 
     public bool AddItem(ItemData item, int quantity = 1)
     {

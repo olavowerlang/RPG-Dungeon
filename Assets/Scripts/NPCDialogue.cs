@@ -24,7 +24,7 @@ public class NPCDialogue : MonoBehaviour
 
     private void Update()
     {
-        bool inDialogue = DialogueManager.Instance.IsInDialogue;
+        bool inDialogue = DialogueManager.Instance != null && DialogueManager.Instance.IsInDialogue;
 
         // Cooldown prevents same E press that closes dialogue from reopening it
         if (_wasInDialogue && !inDialogue) _cooldown = 0.15f;

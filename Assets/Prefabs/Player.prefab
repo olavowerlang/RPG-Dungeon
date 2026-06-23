@@ -253,6 +253,16 @@ MonoBehaviour:
   blinkFreq: 0.06
   startingXPLimit: 10
   damagePerLevel: 1
+  baseSpeed: 10
+  baseDashForce: 60
+  baseDamage: 1
+  baseKnockback: 0
+  baseMaxHP: 3
+  baseMaxDashStamina: 3
+  displaySpeedStep: 2.5
+  displayDashStep: 5
+  displayKnockbackStep: 3.5
+  displayStrengthStep: 1
 --- !u!114 &3077389631497478883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -388,6 +398,7 @@ MonoBehaviour:
   hitLayers:
     serializedVersion: 2
     m_Bits: 128
+  playHitSound: 0
 --- !u!1 &3621374817365952636
 GameObject:
   m_ObjectHideFlags: 0
@@ -579,6 +590,7 @@ MonoBehaviour:
   hitLayers:
     serializedVersion: 2
     m_Bits: 128
+  playHitSound: 0
 --- !u!60 &6075194609592001521
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -697,6 +709,7 @@ MonoBehaviour:
   hitLayers:
     serializedVersion: 2
     m_Bits: 128
+  playHitSound: 0
 --- !u!60 &6253705833903231219
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -816,6 +829,7 @@ MonoBehaviour:
   hitLayers:
     serializedVersion: 2
     m_Bits: 128
+  playHitSound: 0
 --- !u!60 &9058475679537386947
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -928,6 +942,7 @@ MonoBehaviour:
   hitLayers:
     serializedVersion: 2
     m_Bits: 128
+  playHitSound: 0
 --- !u!60 &1675296443811148569
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -1121,3 +1136,4 @@ MonoBehaviour:
   hitLayers:
     serializedVersion: 2
     m_Bits: 128
+  playHitSound: 0

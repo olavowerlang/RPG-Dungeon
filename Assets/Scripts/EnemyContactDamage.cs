@@ -26,7 +26,7 @@ public class EnemyContactDamage : MonoBehaviour
     /// </summary>
     public void ScaleDamage(float multiplier, int ngPlusCount)
     {
-        damage    += Mathf.Min(ngPlusCount - 1, 2);
+        damage    = 1 + Mathf.Max(0, ngPlusCount - 3);
         knockback *= multiplier;
     }
 

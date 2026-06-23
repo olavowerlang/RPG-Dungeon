@@ -3,6 +3,19 @@ using UnityEngine;
 
 public class XPManager : MonoBehaviour
 {
+    public static event Action<int> OnLevelUp;
+
+    private static int   _savedLevel    = 1;
+    private static float _savedXP       = 0f;
+    private static int   _savedXPLimit  = -1;
+
+    public static void ResetSavedProgress()
+    {
+        _savedLevel   = 1;
+        _savedXP      = 0f;
+        _savedXPLimit = -1;
+    }
+
     [SerializeField] private int level = 1;
     [SerializeField] private float xpStorage = 0;
 
@@ -14,7 +27,17 @@ public class XPManager : MonoBehaviour
     {
         _stats = GetComponent<PlayerStats>();
         _health = GetComponent<Health>();
-        _xpLimit = _stats.startingXPLimit;
+
+        level      = _savedLevel;
+        xpStorage  = _savedXP;
+        _xpLimit   = _savedXPLimit > 0 ? _savedXPLimit : _stats.startingXPLimit;
+    }
+
+    private void OnDestroy()
+    {
+        _savedLevel   = level;
+        _savedXP      = xpStorage;
+        _savedXPLimit = _xpLimit;
     }
 
     private void Start()
@@ -39,6 +62,8 @@ public class XPManager : MonoBehaviour
 
             _stats.AddDamage(_stats.damagePerLevel);
             _health?.HealFull();
+
+            OnLevelUp?.Invoke(level);
 
             if(UIManager.Instance != null)
                 UIManager.Instance.ShowLevelUpMessage(level);

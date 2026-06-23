@@ -13,10 +13,11 @@ public class DebugNGPlusSkip : MonoBehaviour
     {
         if (targetTier < 1) return;
 
-        // If NGPlusManager doesn't exist yet, create it
         if (NGPlusManager.Instance == null)
             new GameObject("NGPlusManager").AddComponent<NGPlusManager>();
 
-        NGPlusManager.Instance.DebugForceNGPlusTier(targetTier);
+        // Only force the tier if the game hasn't naturally progressed past it
+        if (NGPlusManager.Instance.NGPlusCount < targetTier)
+            NGPlusManager.Instance.DebugForceNGPlusTier(targetTier);
     }
 }

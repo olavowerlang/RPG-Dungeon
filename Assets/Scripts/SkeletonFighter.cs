@@ -67,9 +67,8 @@ public class SkeletonFighter : MonoBehaviour
         PickNewPatrolTarget();
         ResetGuardTimer();
         
-        dashSpeed = Random.Range(18f, 25f);
-        orbitSpeed = Random.Range(8f, 15f);
-        approachSpeed = Random.Range(8f, 15f);
+        orbitSpeed = Random.Range(5f, 9f);
+        approachSpeed = Random.Range(5f, 9f);
         patrolSpeed = approachSpeed;
         orbitRadius = Random.Range(7f, 14f);
         cooldownTime = Random.Range(0.3f, 1f);
@@ -255,6 +254,15 @@ public class SkeletonFighter : MonoBehaviour
     {
         if (dir == Vector2.zero) return;
         LastDirection = dir;
+    }
+
+    public void ScaleForNGPlus(float m)
+    {
+        detectionRadius *= m;
+        approachSpeed   *= m;
+        orbitSpeed      *= m;
+        dashSpeed       *= m;
+        patrolSpeed     *= m;
     }
 
     public void OnAttackAnimationEnd()

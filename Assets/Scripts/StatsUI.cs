@@ -14,15 +14,18 @@ public class StatsUI : MonoBehaviour
         Refresh();
         if (CraftingSystem.Instance != null)
             CraftingSystem.Instance.OnFuseSuccess += OnFuseSuccess;
+        XPManager.OnLevelUp += OnLevelUp;
     }
 
     private void OnDisable()
     {
         if (CraftingSystem.Instance != null)
             CraftingSystem.Instance.OnFuseSuccess -= OnFuseSuccess;
+        XPManager.OnLevelUp -= OnLevelUp;
     }
 
     private void OnFuseSuccess(string _) => Refresh();
+    private void OnLevelUp(int _) => Refresh();
 
     private void Refresh()
     {
