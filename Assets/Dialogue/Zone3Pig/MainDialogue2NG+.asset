@@ -28,10 +28,9 @@ MonoBehaviour:
   - speakerName: Pig
     text: ...
   - speakerName: Pig
-    text: Yes, yes...you must be shocked. Speechless. I wouldn't know since you clearly
-      don't talk much.
+    text: I feel like that's not new info for you.
   - speakerName: Pig
-    text: "This is strange, im feeling d\xE9j\xE0 vu."
+    text: "I'm feeling d\xE9j\xE0 vu."
   - speakerName: Pig
     text: Anyways, it turns out there is a mushroom here in this forest that could
       help me turn back to my human form.
@@ -40,7 +39,7 @@ MonoBehaviour:
       And I need 15 of them. Also, there may be other not-friendly things lurking
       around. Sooo...
   - speakerName: Pig
-    text: That's where you come in! Yay!
+    text: 'That''s where you come in! '
   - speakerName: Pig
     text: Now, there's a good side to all of this. Mushroom dudes also drop ingredients
       that serve as weapon upgrades, and those purple orbs! So you might as well
@@ -52,6 +51,5 @@ MonoBehaviour:
     text: Now go, my silent friend! Follow this path and you'll find the mean mushrooms.
       Good luck!
   - speakerName: Pig
-    text: Oh, one last thing, "L" or "Shift" uses the dash.
-  - speakerName: Pig
-    text: I don't know what that means why do I keep saying things like that.
+    text: I would tell you how to use the dash and all, but...seems like that would
+      be useless.

@@ -86,7 +86,7 @@ MonoBehaviour:
   patrolSpeed: 10
   waypointThreshold: 10
   patrolWaitTime: 1
-  cooldownTime: 2
+  cooldownTime: 3
   gasCloudPrefab: {fileID: 8270777386418842536, guid: 5d4ddd8974984f447bcc94109f08dc37, type: 3}
   deathGasCloudPrefab: {fileID: 8270777386418842536, guid: 1b958f0539f31f541aaa896d06d1ffb1, type: 3}
   bombshroomAnimator: {fileID: 2563951763494428798}
@@ -102,8 +102,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f124d36075e77364ca5c5d3bf844acc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 12
-  currentHp: 12
+  maxHP: 17
+  currentHp: 17
 --- !u!114 &3212453222629200239
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - speakerName: Pig
-    text: What? Are you lost again? Not like you got lots of other options on the
-      path ahead, I think you can manage to make it there on your own!
+    text: What? You're not lost, right? I feel like you can see the cave entrance
+      there.

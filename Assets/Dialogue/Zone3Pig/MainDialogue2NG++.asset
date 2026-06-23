@@ -26,9 +26,7 @@ MonoBehaviour:
     text: I don't know how this happened, but I guess it is possible...this forest
       does mysterious things.
   - speakerName: Pig
-    text: 'Do me a favor and get me 15 mushrooms, ok?
-
-      I need those for a potion.'
+    text: Do me a favor and get me 15 mushrooms, ok? I need those for a potion.
   - speakerName: Humberto
     text: Also, my name is Humberto.
   - speakerName: Humberto

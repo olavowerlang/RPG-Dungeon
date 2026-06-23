@@ -14,19 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - speakerName: Pig
-    text: Ho ho! I see you've slain all the slimes and are a bit stronger. Seems
-      like you're not THAT useless after all. Congrats. Yay.
+    text: Ho ho! I see you've slain all the slimes and are a bit stronger. Turns
+      out you knew how to use that sword, after all!
   - speakerName: Pig
-    text: 'Now, as you can see, this here''s my lil'' shop. Remember those purple
-      orbs I told you about?  '
+    text: Now, as you may know, this here's my lil' shop. You know the purple orbs,
+      right?
   - speakerName: Pig
     text: You can use them to buy all kinds of things in this establishment.
   - speakerName: Pig
-    text: 'You know, those same ones you use in crafting, and others that are exclusive
-      to this store. '
+    text: 'Those same ones you use in crafting, and others that are exclusive to
+      this store. '
   - speakerName: Pig
     text: "So, as a reward for not being completely useless, I'll let you grab a
       cool new powe\u2014oh...you already have that also. Suspicious, I would say...very,
       very weird. "
   - speakerName: Pig
-    text: Anyway. Use "E" to interact with me and open the shop.
+    text: VERY weird.

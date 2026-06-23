@@ -35,7 +35,8 @@ public class Health : MonoBehaviour
 
     public void AddMaxHP(int amount)
     {
-        maxHP = Mathf.Min(maxHP + amount, 10);
+        maxHP     = Mathf.Min(maxHP + amount, 10);
+        currentHp = maxHP;
     }
 
     /// <summary>Sets max HP to an exact value and refills current HP. Used by NGPlusEnemyScaler.</summary>

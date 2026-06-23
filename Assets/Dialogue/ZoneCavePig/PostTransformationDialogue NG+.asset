@@ -23,7 +23,7 @@ MonoBehaviour:
     text: You just saw a talking pig transform in a clone of you, and you don't even
       flinch. What in the seven hells is going on here?
   - speakerName: Pig?
-    text: Plus, you already had the sword and dash...
+    text: Plus, you already had the sword and the dash...
   - speakerName: Pig?
     text: Son, did you travel back in time by any chance?
   - speakerName: Pig?
@@ -31,7 +31,7 @@ MonoBehaviour:
   - speakerName: Humberto
     text: I'm Humberto, by the way. Nice to meet you.
   - speakerName: Humberto
-    text: So, unfortunately I'm gonna have to stop you right here. You're too dangerous.
+    text: So, unfortunately, I'm gonna have to stop you right here. You're too dangerous.
   - speakerName: Humberto
     text: I'm grateful for your help though, so I am gonna make this quick.
   - speakerName: Humberto

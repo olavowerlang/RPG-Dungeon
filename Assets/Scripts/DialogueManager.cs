@@ -79,6 +79,14 @@ public class DialogueManager : MonoBehaviour
     private void AdvanceDialogue()
     {
         AudioManager.Instance?.PlayDialogueAdvance();
+
+        var ng = NGPlusManager.Instance;
+        if (ng != null && ng.NGPlusCount >= 4)
+        {
+            EndDialogue();
+            return;
+        }
+
         _currentLine++;
         if (_currentLine >= _lines.Length)
             EndDialogue();
@@ -88,6 +96,18 @@ public class DialogueManager : MonoBehaviour
 
     private void ShowLine(int index)
     {
+        // NG+4 and beyond: all NPCs are beyond narrative — show no name, just gibberish
+        var ng = NGPlusManager.Instance;
+        if (ng != null && ng.NGPlusCount >= 4)
+        {
+            speakerNameText.text = "";
+            dialogueText.text    = "makes unintelligible noises.";
+            continuePrompt.text  = "[E] Close";
+            HideAllBoxes();
+            OnLineShown?.Invoke(index);
+            return;
+        }
+
         string speaker = _lines[index].speakerName;
         speakerNameText.text = speaker;
         dialogueText.text    = _lines[index].text;

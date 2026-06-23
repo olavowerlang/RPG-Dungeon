@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// Attach to every enemy prefab (NOT the player, NOT the clone).
 /// In Start(), scales HP, contact damage, and all AI stats if this is a NG+ run.
-/// Multiplier doubles each cleared run: NG+1=x2, NG+2=x4, etc.
+/// Multiplier scales linearly: NG+1=x1, NG+2=x2, NG+3=x3, etc.
 /// </summary>
 public class NGPlusEnemyScaler : MonoBehaviour
 {

@@ -115,12 +115,13 @@ public class TransformationSequence : MonoBehaviour
         // Fall (slower — elegant reveal)
         yield return StartCoroutine(FadeFlash(1f, 0f, flashFallDuration));
 
+        AudioManager.Instance?.StopAmbient();
+        AudioManager.Instance?.PlayBossMusic();
+
         yield return new WaitForSeconds(postSwapDelay);
 
         // Unfreeze player — visual is done
         if (_playerInput != null) _playerInput.enabled = true;
-
-        AudioManager.Instance?.StopAmbient();
 
         // — Post-transform dialogue —
         var postDialogue = NGPlusManager.PickDialogue(postTransformDialogue, ngPlusPostTransformDialogues);
@@ -182,7 +183,6 @@ public class TransformationSequence : MonoBehaviour
         }
 
         // — Reveal HP bar and start fight —
-        AudioManager.Instance?.PlayBossMusic();
         if (BossHealthBarUI.Instance != null)
             BossHealthBarUI.Instance.RevealBar();
 

@@ -6421,11 +6421,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1446153250572261050, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
       propertyPath: detectionRadius
-      value: 6
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1446153250572261050, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
       propertyPath: ambushDetectionRadius
-      value: 6
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2215439132552722463, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
       propertyPath: m_Name
@@ -13338,11 +13338,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1446153250572261050, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
       propertyPath: detectionRadius
-      value: 6
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1446153250572261050, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
       propertyPath: ambushDetectionRadius
-      value: 6
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2215439132552722463, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
       propertyPath: m_Name
@@ -24873,7 +24873,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1446153250572261050, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
       propertyPath: detectionRadius
-      value: 6
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1446153250572261050, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
       propertyPath: ambushDetectionRadius
@@ -25828,7 +25828,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1446153250572261050, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
       propertyPath: detectionRadius
-      value: 6
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1446153250572261050, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
       propertyPath: ambushDetectionRadius
@@ -48610,7 +48610,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d8ce15bef14a724faee1dd327725c16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTier: 3
+  targetTier: 0
 --- !u!4 &1758010136
 Transform:
   m_ObjectHideFlags: 0
@@ -53456,11 +53456,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1446153250572261050, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
       propertyPath: detectionRadius
-      value: 6
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1446153250572261050, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
       propertyPath: ambushDetectionRadius
-      value: 6
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2215439132552722463, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
       propertyPath: m_Name
@@ -493644,7 +493644,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 04aa755e374deb548965b12e74e55f1a, type: 2}
   interactionPrompt: {fileID: 2013166589}
   interactionPanel: {fileID: 451555648}
-  goldLineIndex: 5
+  goldLineIndexes: 05000000
 --- !u!114 &2013166597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -493927,11 +493927,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1446153250572261050, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
       propertyPath: detectionRadius
-      value: 6
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1446153250572261050, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
       propertyPath: ambushDetectionRadius
-      value: 6
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2215439132552722463, guid: 08bbbb41a92feb64bbb74ad82ce63858, type: 3}
       propertyPath: m_Name

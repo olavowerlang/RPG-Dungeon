@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - speakerName: Pig
-    text: Now, my friend, you are a bit stronger, thanks to me!
+    text: Now, my friend, you are a bit stronger, thanks to me, no less!
   - speakerName: Pig
     text: And since it's because of none other than yours truly that you are still
       alive and kickin', I think we can establish that you are in my debt. Right?
   - speakerName: Pig
-    text: And since you're in my debt, I'm gonna need a liiiiiiiiittle favor from
-      you. Tiny I swear.
+    text: And since you're in my debt, I'm gonna need a liiiiiittle favor from you.
+      Tiny I swear.
   - speakerName: Pig
     text: 'Ya see, I''mma let you in a little secret. '
   - speakerName: Pig
@@ -52,4 +52,4 @@ MonoBehaviour:
   - speakerName: Pig
     text: Oh, one last thing, "L" or "Shift" uses the dash.
   - speakerName: Pig
-    text: I don't know what that means why do I keep saying things like that.
+    text: I don't know why I keep saying things like that.

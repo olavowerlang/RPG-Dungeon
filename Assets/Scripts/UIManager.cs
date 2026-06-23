@@ -102,9 +102,6 @@ public class UIManager : MonoBehaviour
             UpdateGoldUI(GoldManager.Instance != null ? GoldManager.Instance.Gold : 0);
         }
         if (goldIcon != null) goldIcon.gameObject.SetActive(true);
-
-        if (GoldManager.Instance != null)
-            GoldManager.Instance.OnGoldChanged += UpdateGoldUI;
     }
 
     // --- Atualiza Barra e Texto do Nível ---

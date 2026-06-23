@@ -26,19 +26,16 @@ MonoBehaviour:
   - speakerName: Pig
     text: Since you have that sword, you certainly know it is magical, right? It
       absorbs certain components to make you stronger. Use it right and maybe you'll
-      stop being such a weakling. Now for your lack of wits...I'm afraid that's beyond
-      me.
+      get the job done. Now for your lack of wits...I'm afraid that's beyond me.
   - speakerName: Pig
-    text: Also, you definitely know you should keep an eye out for the purple orbs
-      enemies drop, they might come in handy.
+    text: Also, you definitely also know you should keep an eye out for the purple
+      orbs enemies drop, they might come in handy.
   - speakerName: Pig
-    text: 'Now, there are some slimes over there, weakly bastards but if you touch
-      ''em won''t feel nice. Go kill them and absorb their components!!! '
+    text: Now, go kill those weak-ass bastard slimes.
   - speakerName: Pig
     text: 'By the way, "I" opens your inventory and crafting table, "J" or "space"
       uses the sword, and "mouse" interacts with inventory and some other things. '
   - speakerName: Pig
-    text: Not that I know what these things mean or anything I don't know why I said
-      that honestly.
+    text: But of course you know this already since you stole my sword 'n all right.
   - speakerName: Pig
     text: Aight good luck!!!
